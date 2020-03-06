@@ -1,0 +1,9 @@
+labeled:
+  - name: Invalid
+    body: Please follow the issue (pull request) templates.
+    action: close
+  - name: Forum
+    body: |
+      Please ask questions about GitHub Actions at the following forum.
+      https://github.community/t5/GitHub-Actions/bd-p/actions
+    action: close

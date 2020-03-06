@@ -1,0 +1,16 @@
+name: 'Label Commenter'
+description: 'Label triggered GitHub Actions for commenting on issues or pull requests, then close or reopen those'
+author: 'peaceiris'
+inputs:
+  github_token:
+    description: 'Auth token used to manage issues or pull requests'
+    default: ${{ github.token }}
+  config_file:
+    description: 'Path to action setting file'
+    default: '.github/commenter.yml'
+runs:
+  using: 'node12'
+  main: 'lib/index.js'
+branding:
+  icon: 'tag'
+  color: 'orange'
