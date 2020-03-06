@@ -41,7 +41,7 @@ if [ "${CURRENT_BRANCH}" != "master" ]; then
   git pull origin "${CURRENT_BRANCH}"
 else
   git pull origin master
-  git tag -d v0 || true
+  git tag -d v1 || true
   git pull origin --tags
 fi
 
