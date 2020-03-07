@@ -4,7 +4,7 @@
 [![Release Feed](https://img.shields.io/badge/release-feed-yellow)](https://github.com/peaceiris/actions-label-commenter/releases.atom)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=peaceiris/actions-label-commenter)](https://dependabot.com)
 
-<img width="400" alt="Label Commenter GitHub Action" src="./images/ogp.jpg">
+<img width="600" alt="Label Commenter GitHub Action" src="./images/ogp.jpg">
 
 
 
