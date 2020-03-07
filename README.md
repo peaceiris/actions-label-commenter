@@ -38,15 +38,26 @@ jobs:
 ```yaml
 # .github/commenter.yml
 
-labeled:
-  - name: Invalid
-    body: Please follow the issue (pull request) templates.
-    action: close
-  - name: Forum
-    body: |
-      Please ask questions about GitHub Actions at the following forum.
-      https://github.community/t5/GitHub-Actions/bd-p/actions
-    action: close
+labels:
+  - name: invalid
+    labeled:
+      issue:
+        body: Please follow the issue templates.
+        action: close
+      pr:
+        body: Please follow the pull request templates.
+        action: close
+    unlabeled:
+      issue:
+        body: Thank you for following the template. The repository owner will reply.
+        action: open
+  - name: forum
+    labeled:
+      issue:
+        body: |
+          Please ask questions about GitHub Actions at the following forum.
+          https://github.community/t5/GitHub-Actions/bd-p/actions
+        action: close
 ```
 
 
