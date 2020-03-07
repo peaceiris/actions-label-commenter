@@ -27,10 +27,15 @@ jobs:
   comment:
     runs-on: ubuntu-18.04
     steps:
-      - uses: peaceiris/actions-label-commenter@v1
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: Commenter
+        uses: peaceiris/actions-label-commenter@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # config_file: .github/commenter.yml
+          # config_file: .github/commenter_test_1.yml
 ```
 
 ### Action Setting
