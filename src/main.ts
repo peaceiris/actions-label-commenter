@@ -54,10 +54,10 @@ export async function run(): Promise<void> {
     console.log(config);
     let commentBody = '';
     let finalAction = '';
-    Object.keys(config.action).forEach(label => {
-      if (config.action[label]['name'] === labelName) {
-        commentBody = config.action[label]['body'];
-        finalAction = config.action[label]['action'];
+    Object.keys(config[`${action}`]).forEach(label => {
+      if (config[`${action}`][label].name === labelName) {
+        commentBody = config[`${action}`][label].body;
+        finalAction = config[`${action}`][label].action;
       }
     });
     core.info(`\
