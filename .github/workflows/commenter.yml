@@ -15,6 +15,6 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Commenter
-        uses: peaceiris/actions-label-commenter@v0.1.5
+        uses: peaceiris/actions-label-commenter@v0.2.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
