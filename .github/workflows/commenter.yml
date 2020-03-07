@@ -14,11 +14,11 @@ jobs:
   comment:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: v0.1.3
+#       - uses: actions/checkout@v2
+#         with:
+#           ref: v0.1.3
 
       - name: Commenter
-        uses: ./
+        uses: peaceiris/actions-label-commenter@v0.1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
