@@ -37,7 +37,7 @@ export async function run(): Promise<void> {
 
     console.log(context);
 
-    const action = context.payload.action;
+    const event = context.payload.action;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const labelName = (context.payload as any).label.name;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,7 +45,7 @@ export async function run(): Promise<void> {
     core.info(`\
 [INFO] config_file: ${inps.ConfigFilePath}
 [INFO] labelName: ${labelName}
-[INFO] action: ${action}
+[INFO] event: ${event}
 [INFO] issueNumber: ${issueNumber}\
 `);
 
@@ -54,10 +54,14 @@ export async function run(): Promise<void> {
     console.log(config);
     let commentBody = '';
     let finalAction = '';
-    Object.keys(config[`${action}`]).forEach(label => {
-      if (config[`${action}`][label].name === labelName) {
-        commentBody = config[`${action}`][label].body;
-        finalAction = config[`${action}`][label].action;
+    if (config[`${event}`] === void 0) {
+      core.info(`no configuration for ${event} ${labelName}`);
+      return;
+    }
+    Object.keys(config[`${event}`]).forEach(label => {
+      if (config[`${event}`][label].name === labelName) {
+        commentBody = config[`${event}`][label].body;
+        finalAction = config[`${event}`][label].action;
       }
     });
     core.info(`\
