@@ -17,9 +17,11 @@ on:
   issues:
     types:
       - labeled
+      - unlabeled
   pull_request:
     types:
       - labeled
+      - unlabeled
 
 jobs:
   comment:
