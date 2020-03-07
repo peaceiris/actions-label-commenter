@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [0.2.0](https://github.com/peaceiris/actions-label-commenter/compare/v0.1.5...v0.2.0) (2020-03-07)
+
+
+### feat
+
+* Add main features ([08dd022](https://github.com/peaceiris/actions-label-commenter/commit/08dd02298f7a17e8ad56416b605ee97905d67fc0))
+
+
+
 ## [0.1.5](https://github.com/peaceiris/actions-label-commenter/compare/v0.1.4...v0.1.5) (2020-03-07)
 
 
