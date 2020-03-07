@@ -34,7 +34,6 @@ async function openIssue(
 export async function run(): Promise<void> {
   try {
     const inps: Inputs = getInputs();
-    core.info(`[INFO] config_file: ${inps.ConfigFilePath}`);
 
     console.log(context);
 
@@ -43,17 +42,28 @@ export async function run(): Promise<void> {
     const labelName = (context.payload as any).label.name;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const issueNumber = (context.payload as any).issue.number;
+    core.info(`\
+[INFO] config_file: ${inps.ConfigFilePath}
+[INFO] labelName: ${labelName}
+[INFO] action: ${action}
+[INFO] issueNumber: ${issueNumber}\
+`);
 
     const configFilePath = inps.ConfigFilePath;
     const config = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
+    console.log(config);
     let commentBody = '';
     let finalAction = '';
-    Object.keys(config[`${action}`]).forEach(label => {
-      if (config.inputs[label]['name'] === labelName) {
-        commentBody = config.inputs[label]['body'];
-        finalAction = config.inputs[label]['action'];
+    Object.keys(config.action).forEach(label => {
+      if (config.action[label]['name'] === labelName) {
+        commentBody = config.action[label]['body'];
+        finalAction = config.action[label]['action'];
       }
     });
+    core.info(`\
+[INFO] commentBody: ${commentBody}
+[INFO] finalAction: ${finalAction}\
+`);
 
     const githubToken = inps.GithubToken;
     const githubClient = new GitHub(githubToken);
