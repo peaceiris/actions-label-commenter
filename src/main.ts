@@ -35,7 +35,9 @@ export async function run(): Promise<void> {
   try {
     const inps: Inputs = getInputs();
 
-    console.log(context);
+    if (core.isDebug()) {
+      console.log(context);
+    }
 
     const eventName = context.eventName;
     const labelEvent = context.payload.action;
@@ -59,7 +61,9 @@ export async function run(): Promise<void> {
 
     const configFilePath = inps.ConfigFilePath;
     const config = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
-    console.log(config);
+    if (core.isDebug()) {
+      console.log(config);
+    }
 
     let isExistLabel = false;
     let labelIndex = '';
@@ -73,12 +77,12 @@ export async function run(): Promise<void> {
     });
 
     if (!isExistLabel) {
-      core.info(`no configuration for ${labelName}`);
+      core.info(`[INFO] no configuration for ${labelName}`);
       return;
     }
 
     if (config.labels[labelIndex][`${labelEvent}`] === void 0) {
-      core.info(`no configuration for ${labelName} ${labelEvent}`);
+      core.info(`[INFO] no configuration for ${labelName} ${labelEvent}`);
       return;
     }
 
