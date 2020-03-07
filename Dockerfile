@@ -9,11 +9,13 @@ RUN apt-get update && \
     build-essential \
     libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev autoconf \
     ca-certificates \
-    wget && \
-    rm -rf /var/lib/apt/lists/*
+    wget \
+    vim && \
+    rm -rf /var/lib/apt/lists/* && \
+    npm i -g npm
 
 WORKDIR /git
-ENV GIT_VERSION="2.25.0"
+ENV GIT_VERSION="2.25.1"
 RUN wget -q "https://github.com/git/git/archive/v${GIT_VERSION}.tar.gz" && \
     tar -zxf "./v${GIT_VERSION}.tar.gz" && \
     rm "./v${GIT_VERSION}.tar.gz" && \
