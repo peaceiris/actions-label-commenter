@@ -30,7 +30,7 @@ jobs:
       - uses: peaceiris/actions-label-commenter@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          config_file: .github/commenter.yml
+          # config_file: .github/commenter.yml
 ```
 
 ### Action Setting
@@ -57,6 +57,20 @@ labels:
         body: |
           Please ask questions about GitHub Actions at the following forum.
           https://github.community/t5/GitHub-Actions/bd-p/actions
+        action: close
+  - name: wontfix
+    labeled:
+      issue:
+        body: This will not be worked on but we appreciate your contribution.
+        action: close
+    unlabeled:
+      issue:
+        body: This has become active again.
+        action: open
+  - name: duplicate
+    labeled:
+      issue:
+        body: This issue or pull request already exists.
         action: close
 ```
 
