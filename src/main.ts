@@ -9,8 +9,8 @@ export async function run(): Promise<void> {
     core.info(`[INFO] config_file: ${inps.ConfigFilePath}`);
 
     const context = github.context;
-    core.info(`[INFO] context ${context}`);
-    core.info(`[INFO] payload ${context.payload}`);
+    console.log(`[INFO] context ${context}`);
+    console.log(`[INFO] payload ${context.payload}`);
   } catch (error) {
     throw new Error(error.message);
   }
