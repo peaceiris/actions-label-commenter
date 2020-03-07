@@ -53,14 +53,30 @@ export async function run(): Promise<void> {
     const config = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
     console.log(config);
 
-    if (config[`${labelName}`][`${labelEvent}`] === void 0) {
+    let isExistLabel = false;
+    let labelIndex = '';
+    Object.keys(config.labels).forEach(label => {
+      if (config.labels[label].name === labelName) {
+        isExistLabel = true;
+        if (labelIndex === '') {
+          labelIndex = label;
+        }
+      }
+    });
+
+    if (!isExistLabel) {
+      core.info(`no configuration for ${labelName}`);
+      return;
+    }
+
+    if (config.labels[labelIndex][`${labelEvent}`] === void 0) {
       core.info(`no configuration for ${labelName} ${labelEvent}`);
       return;
     }
 
     if (
-      config[`${labelName}`][`${labelEvent}`].issue === void 0 &&
-      config[`${labelName}`][`${labelEvent}`].pr === void 0
+      config.labels[labelIndex][`${labelEvent}`].issue === void 0 &&
+      config.labels[labelIndex][`${labelEvent}`].pr === void 0
     ) {
       throw new Error(
         `not found any definition for labels.${labelName}.${labelEvent}`
@@ -71,20 +87,20 @@ export async function run(): Promise<void> {
     let eventType = '';
     if (eventName === 'issues') {
       eventType = 'issue';
-      if (config[`${labelName}`][`${labelEvent}`].issue === void 0) {
+      if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
         eventType = 'pr';
       }
     } else if (eventName === 'pull_request') {
       eventType = 'pr';
-      if (config[`${labelName}`][`${labelEvent}`].pr === void 0) {
+      if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
         eventType = 'issue';
       }
     }
 
     const commentBody =
-      config[`${labelName}`][`${labelEvent}`][`${eventType}`].body;
+      config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
     const finalAction =
-      config[`${labelName}`][`${labelEvent}`][`${eventType}`].action;
+      config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
     core.info(`\
 [INFO] commentBody: ${commentBody}
 [INFO] finalAction: ${finalAction}\

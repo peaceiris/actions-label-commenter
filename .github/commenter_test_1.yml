@@ -1,5 +1,5 @@
 labels:
-  invalid:
+  - name: invalid
     labeled:
       issue:
         body: Please follow the issue templates.
@@ -11,7 +11,7 @@ labels:
       issue:
         body: Thank you for following the template. The repository owner will reply.
         action: open
-  forum:
+  - name: forum
     labeled:
       issue:
         body: |
