@@ -12,6 +12,8 @@
 
 Label triggered GitHub Actions for commenting on issues or pull requests, then close or reopen those.
 
+This Action was submitted to the [GitHub Actions Hackathon](https://github.blog/2020-02-27-were-challenging-you-to-create-your-very-own-github-actions/).
+
 
 
 ## Getting Started
