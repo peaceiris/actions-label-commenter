@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.0.0](https://github.com/peaceiris/actions-label-commenter/compare/v0.3.2...v1.0.0) (2020-03-07)
+
+
+### ci
+
+* update commenter config ([e2e2834](https://github.com/peaceiris/actions-label-commenter/commit/e2e28341af9833e1f224bab913e6b7e5d3c8102f))
+* update commenter config ([b102755](https://github.com/peaceiris/actions-label-commenter/commit/b1027553d591275ae670861afcaa84eb268f1f39))
+
+### docs
+
+* update config file content (#4) ([b46b0c6](https://github.com/peaceiris/actions-label-commenter/commit/b46b0c615d5ca8da9bf15eff54dfb0092178618f)), closes [#4](https://github.com/peaceiris/actions-label-commenter/issues/4)
+
+
+
 ## [0.3.2](https://github.com/peaceiris/actions-label-commenter/compare/v0.3.1...v0.3.2) (2020-03-07)
 
 
