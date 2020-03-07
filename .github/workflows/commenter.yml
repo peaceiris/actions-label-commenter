@@ -1,0 +1,22 @@
+name: Commenter
+
+on:
+  issues:
+    types:
+      - labeled
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  comment:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: v0.1.2
+
+      - name: Commenter
+        uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
