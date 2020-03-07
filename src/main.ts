@@ -37,11 +37,19 @@ export async function run(): Promise<void> {
 
     console.log(context);
 
+    const eventName = context.eventName;
     const labelEvent = context.payload.action;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const labelName = (context.payload as any).label.name;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const issueNumber = (context.payload as any).issue.number;
+    let issueNumber = '';
+    if (eventName === 'issues') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      issueNumber = (context.payload as any).issue.number;
+    } else if (eventName === 'pull_request') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      issueNumber = (context.payload as any).number;
+    }
+
     core.info(`\
 [INFO] config_file: ${inps.ConfigFilePath}
 [INFO] labelName: ${labelName}
@@ -83,7 +91,6 @@ export async function run(): Promise<void> {
       );
     }
 
-    const eventName = context.eventName;
     let eventType = '';
     if (eventName === 'issues') {
       eventType = 'issue';
