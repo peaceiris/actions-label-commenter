@@ -4,6 +4,8 @@
 [![Release Feed](https://img.shields.io/badge/release-feed-yellow)](https://github.com/peaceiris/actions-label-commenter/releases.atom)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=peaceiris/actions-label-commenter)](https://dependabot.com)
 
+<img width="400" alt="Label Commenter GitHub Action" src="./images/ogp.jpg">
+
 
 
 ## Label Commenter Action
@@ -13,6 +15,8 @@ Label triggered GitHub Actions for commenting on issues or pull requests, then c
 
 
 ## Getting Started
+
+Create your GitHub Actions workflow file and Label Commenter Action setting file. Commit those and push to the remote master branch.
 
 ### Workflow Setting
 
@@ -43,7 +47,7 @@ jobs:
         uses: peaceiris/actions-label-commenter@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # config_file: .github/commenter_test_1.yml
+          # config_file: .github/commenter.yml
 ```
 
 ### Action Setting
@@ -86,6 +90,30 @@ labels:
         body: This issue or pull request already exists.
         action: close
 ```
+
+
+
+## Examples
+
+### Comment and Close Invalid Format Issue or Pull Request
+
+![](images/demo_1.jpg)
+
+### Reopen Issue or Pull Request
+
+![](images/demo_2.jpg)
+
+### Comment and Close Wontfix Issue or Pull Request
+
+![](images/demo_3.jpg)
+
+### Comment and Close Duplicate Issue or Pull Request
+
+![](images/demo_4.jpg)
+
+### Comment multiple line
+
+![](images/demo_5.jpg)
 
 
 

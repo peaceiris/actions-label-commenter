@@ -22,4 +22,4 @@ jobs:
         uses: peaceiris/actions-label-commenter@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # config_file: .github/commenter_test_1.yml
+          # config_file: .github/commenter.yml
