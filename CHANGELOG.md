@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.5](https://github.com/peaceiris/actions-label-commenter/compare/v0.1.4...v0.1.5) (2020-03-07)
+
+
+### ci
+
+* use v0.1.4 [skip ci] ([667904c](https://github.com/peaceiris/actions-label-commenter/commit/667904c47d565d124f0d32f2a375a7311f498ada))
+* use v0.1.5 [skip ci] ([0376f04](https://github.com/peaceiris/actions-label-commenter/commit/0376f04ff3eaa8412c0ab69b3916f68d72df0c60))
+
+### fix
+
+* log ([2e2c86d](https://github.com/peaceiris/actions-label-commenter/commit/2e2c86de0c5cab8f2240156e0b0273d6c042bd27))
+
+
+
 ## [0.1.4](https://github.com/peaceiris/actions-label-commenter/compare/v0.1.3...v0.1.4) (2020-03-07)
 
 
