@@ -18,6 +18,7 @@ jobs:
         with:
           ref: master
       - name: Commenter
-        uses: peaceiris/actions-label-commenter@v0.2.2
+        uses: peaceiris/actions-label-commenter@v0.2.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          config_file: .github/commenter_test_1.yml
