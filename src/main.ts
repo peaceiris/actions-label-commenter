@@ -41,7 +41,7 @@ export async function run(): Promise<void> {
     const labelEvent = context.payload.action;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const labelName = (context.payload as any).label.name;
-    let issueNumber = '';
+    let issueNumber = 0;
     if (eventName === 'issues') {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       issueNumber = (context.payload as any).issue.number;
