@@ -38,7 +38,7 @@ on:
       - unlabeled
 
 jobs:
-  comment:
+  label-commenter:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
