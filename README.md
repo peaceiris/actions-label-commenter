@@ -21,7 +21,7 @@ This Action was submitted to the [GitHub Actions Hackathon](https://github.blog/
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Label Commenter Action](#label-commenter-action)
+
 - [Getting Started](#getting-started)
   - [Workflow Setting](#workflow-setting)
   - [Action Setting](#action-setting)
