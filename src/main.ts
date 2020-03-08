@@ -32,113 +32,117 @@ async function openIssue(
 }
 
 export async function run(): Promise<void> {
-  const inps: Inputs = getInputs();
+  try {
+    const inps: Inputs = getInputs();
 
-  if (core.isDebug()) {
-    console.log(context);
-  }
+    if (core.isDebug()) {
+      console.log(context);
+    }
 
-  const eventName = context.eventName;
-  const labelEvent = context.payload.action;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const labelName = (context.payload as any).label.name;
-  let issueNumber = 0;
-  if (eventName === 'issues') {
+    const eventName = context.eventName;
+    const labelEvent = context.payload.action;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    issueNumber = (context.payload as any).issue.number;
-  } else if (eventName === 'pull_request') {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    issueNumber = (context.payload as any).number;
-  }
+    const labelName = (context.payload as any).label.name;
+    let issueNumber = 0;
+    if (eventName === 'issues') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      issueNumber = (context.payload as any).issue.number;
+    } else if (eventName === 'pull_request') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      issueNumber = (context.payload as any).number;
+    }
 
-  core.info(`\
-[INFO] config_file: ${inps.ConfigFilePath}
-[INFO] labelName: ${labelName}
-[INFO] labelEvent: ${labelEvent}
-[INFO] issueNumber: ${issueNumber}\
-`);
+    core.info(`\
+  [INFO] config_file: ${inps.ConfigFilePath}
+  [INFO] labelName: ${labelName}
+  [INFO] labelEvent: ${labelEvent}
+  [INFO] issueNumber: ${issueNumber}\
+  `);
 
-  const configFilePath = inps.ConfigFilePath;
-  const config = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
-  if (core.isDebug()) {
-    console.log(config);
-  }
+    const configFilePath = inps.ConfigFilePath;
+    const config = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
+    if (core.isDebug()) {
+      console.log(config);
+    }
 
-  let isExistLabel = false;
-  let labelIndex = '';
-  Object.keys(config.labels).forEach(label => {
-    if (config.labels[label].name === labelName) {
-      isExistLabel = true;
-      if (labelIndex === '') {
-        labelIndex = label;
+    let isExistLabel = false;
+    let labelIndex = '';
+    Object.keys(config.labels).forEach(label => {
+      if (config.labels[label].name === labelName) {
+        isExistLabel = true;
+        if (labelIndex === '') {
+          labelIndex = label;
+        }
+      }
+    });
+
+    if (!isExistLabel) {
+      core.info(`[INFO] no configuration labels.${labelName}`);
+      return;
+    }
+
+    if (config.labels[labelIndex][`${labelEvent}`] === void 0) {
+      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}`);
+      return;
+    }
+
+    if (
+      config.labels[labelIndex][`${labelEvent}`].issue === void 0 &&
+      config.labels[labelIndex][`${labelEvent}`].pr === void 0
+    ) {
+      throw new Error(
+        `not found any definition labels.${labelName}.${labelEvent}`
+      );
+    }
+
+    let eventType = '';
+    if (eventName === 'issues') {
+      eventType = 'issue';
+      if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
+        eventType = 'pr';
+      }
+    } else if (eventName === 'pull_request') {
+      eventType = 'pr';
+      if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
+        eventType = 'issue';
       }
     }
-  });
 
-  if (!isExistLabel) {
-    core.info(`[INFO] no configuration labels.${labelName}`);
-    return;
-  }
+    const commentBody =
+      config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
+    const finalAction =
+      config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
+    core.info(`\
+  [INFO] commentBody: ${commentBody}
+  [INFO] finalAction: ${finalAction}\
+  `);
 
-  if (config.labels[labelIndex][`${labelEvent}`] === void 0) {
-    core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}`);
-    return;
-  }
+    const githubToken = inps.GithubToken;
+    const githubClient = new GitHub(githubToken);
+    await githubClient.issues.createComment({
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      issue_number: context.issue.number,
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      body: commentBody
+    });
 
-  if (
-    config.labels[labelIndex][`${labelEvent}`].issue === void 0 &&
-    config.labels[labelIndex][`${labelEvent}`].pr === void 0
-  ) {
-    throw new Error(
-      `not found any definition labels.${labelName}.${labelEvent}`
-    );
-  }
-
-  let eventType = '';
-  if (eventName === 'issues') {
-    eventType = 'issue';
-    if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
-      eventType = 'pr';
+    if (finalAction === 'close') {
+      await closeIssue(githubClient, issueNumber);
+    } else if (finalAction === 'open') {
+      await openIssue(githubClient, issueNumber);
+    } else if (finalAction === '') {
+      core.info(
+        `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`
+      );
+    } else {
+      throw new Error(
+        `invalid value "${finalAction}" labels.${labelName}.${labelEvent}.${eventType}.action`
+      );
     }
-  } else if (eventName === 'pull_request') {
-    eventType = 'pr';
-    if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
-      eventType = 'issue';
-    }
+
+    return;
+  } catch (error) {
+    throw new Error(`${error.message}`);
   }
-
-  const commentBody =
-    config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
-  const finalAction =
-    config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
-  core.info(`\
-[INFO] commentBody: ${commentBody}
-[INFO] finalAction: ${finalAction}\
-`);
-
-  const githubToken = inps.GithubToken;
-  const githubClient = new GitHub(githubToken);
-  await githubClient.issues.createComment({
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    issue_number: context.issue.number,
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    body: commentBody
-  });
-
-  if (finalAction === 'close') {
-    await closeIssue(githubClient, issueNumber);
-  } else if (finalAction === 'open') {
-    await openIssue(githubClient, issueNumber);
-  } else if (finalAction === '') {
-    core.info(
-      `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`
-    );
-  } else {
-    throw new Error(
-      `invalid value "${finalAction}" labels.${labelName}.${labelEvent}.${eventType}.action`
-    );
-  }
-
-  return;
 }
