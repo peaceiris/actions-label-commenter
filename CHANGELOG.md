@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.1.1...v1.1.2) (2020-03-08)
+
+
+### chore
+
+* Add test ([0e5de85](https://github.com/peaceiris/actions-label-commenter/commit/0e5de854caf927034f8b9decb87b6e96ef9d0781))
+
+### ci
+
+* fix workflow name [skip ci] ([35315b2](https://github.com/peaceiris/actions-label-commenter/commit/35315b29ec10dd1b016b7d008940b41f7ffc118f))
+
+### fix
+
+* error handling ([6ed2bad](https://github.com/peaceiris/actions-label-commenter/commit/6ed2bad8e4ee2b26cc767b21ac290169f30fc12a))
+
+
+
 ## [1.1.1](https://github.com/peaceiris/actions-label-commenter/compare/v1.1.0...v1.1.1) (2020-03-08)
 
 
