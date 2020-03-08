@@ -77,12 +77,14 @@ export async function run(): Promise<void> {
     });
 
     if (!isExistLabel) {
-      core.info(`[INFO] no configuration for ${labelName}`);
+      core.info(`[INFO] no configuration for labels.${labelName}`);
       return;
     }
 
     if (config.labels[labelIndex][`${labelEvent}`] === void 0) {
-      core.info(`[INFO] no configuration for ${labelName} ${labelEvent}`);
+      core.info(
+        `[INFO] no configuration for labels.${labelName}.${labelEvent}`
+      );
       return;
     }
 
@@ -131,6 +133,10 @@ export async function run(): Promise<void> {
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
+    } else {
+      core.info(
+        `[INFO] no configuration for labels.${labelName}.${labelEvent}.${eventType}.action`
+      );
     }
 
     return;

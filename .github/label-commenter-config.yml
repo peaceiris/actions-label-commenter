@@ -32,3 +32,7 @@ labels:
       issue:
         body: This issue or pull request already exists.
         action: close
+  - name: good first issue
+    labeled:
+      issue:
+        body: This issue is easy for contributing. Everyone can work on this.

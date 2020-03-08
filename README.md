@@ -49,7 +49,7 @@ jobs:
         uses: peaceiris/actions-label-commenter@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # config_file: .github/commenter.yml
+          # config_file: .github/label-commenter-config.yml
 ```
 
 ### Action Setting
@@ -91,6 +91,10 @@ labels:
       issue:
         body: This issue or pull request already exists.
         action: close
+  - name: good first issue
+    labeled:
+      issue:
+        body: This issue is easy for contributing. Everyone can work on this.
 ```
 
 

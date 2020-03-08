@@ -7,7 +7,7 @@ inputs:
     required: true
   config_file:
     description: 'Path to action setting file'
-    default: '.github/commenter.yml'
+    default: '.github/label-commenter-config.yml'
     required: false
 runs:
   using: 'node12'

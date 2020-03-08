@@ -31,16 +31,19 @@ describe('getInputs()', () => {
     const inps: Inputs = getInputs();
 
     expect(inps.GithubToken).toMatch('secret_token');
-    expect(inps.ConfigFilePath).toMatch('.github/commenter.yml');
+    expect(inps.ConfigFilePath).toMatch('.github/label-commenter-config.yml');
   });
 
   test('get spec inputs', () => {
     process.env['INPUT_GITHUB_TOKEN'] = 'secret_token';
-    process.env['INPUT_CONFIG_FILE'] = '.github/config/commenter.yml';
+    process.env['INPUT_CONFIG_FILE'] =
+      '.github/config/label-commenter-config.yml';
 
     const inps: Inputs = getInputs();
 
     expect(inps.GithubToken).toMatch('secret_token');
-    expect(inps.ConfigFilePath).toMatch('.github/config/commenter.yml');
+    expect(inps.ConfigFilePath).toMatch(
+      '.github/config/label-commenter-config.yml'
+    );
   });
 });
