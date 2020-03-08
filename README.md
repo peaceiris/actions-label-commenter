@@ -71,7 +71,7 @@ jobs:
         with:
           ref: master
 
-      - name: Commenter
+      - name: Label Commenter
         uses: peaceiris/actions-label-commenter@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
