@@ -77,14 +77,12 @@ export async function run(): Promise<void> {
     });
 
     if (!isExistLabel) {
-      core.info(`[INFO] no configuration for labels.${labelName}`);
+      core.info(`[INFO] no configuration labels.${labelName}`);
       return;
     }
 
     if (config.labels[labelIndex][`${labelEvent}`] === void 0) {
-      core.info(
-        `[INFO] no configuration for labels.${labelName}.${labelEvent}`
-      );
+      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}`);
       return;
     }
 
@@ -93,7 +91,7 @@ export async function run(): Promise<void> {
       config.labels[labelIndex][`${labelEvent}`].pr === void 0
     ) {
       throw new Error(
-        `not found any definition for labels.${labelName}.${labelEvent}`
+        `not found any definition labels.${labelName}.${labelEvent}`
       );
     }
 
@@ -133,9 +131,13 @@ export async function run(): Promise<void> {
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
-    } else {
+    } else if (finalAction === '') {
       core.info(
-        `[INFO] no configuration for labels.${labelName}.${labelEvent}.${eventType}.action`
+        `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`
+      );
+    } else {
+      throw new Error(
+        `invalid value "${finalAction}" labels.${labelName}.${labelEvent}.${eventType}.action`
       );
     }
 
