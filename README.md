@@ -23,7 +23,7 @@ Create your GitHub Actions workflow file and Label Commenter Action setting file
 ### Workflow Setting
 
 ```yaml
-# .github/workflows/commenter.yml
+# .github/workflows/label-commenter.yml
 
 name: Label Commenter
 
@@ -55,7 +55,7 @@ jobs:
 ### Action Setting
 
 ```yaml
-# .github/commenter.yml
+# label-commenter-config.yml
 
 labels:
   - name: invalid
