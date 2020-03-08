@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.1.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.0.2...v1.1.0) (2020-03-08)
+
+
+### chore
+
+* [ImgBot] Optimize images (#7) ([8857191](https://github.com/peaceiris/actions-label-commenter/commit/8857191545f5962eef1c31e7893982b5490ae1ee)), closes [#7](https://github.com/peaceiris/actions-label-commenter/issues/7)
+
+### docs
+
+* Add badges (#6) ([0ed65d1](https://github.com/peaceiris/actions-label-commenter/commit/0ed65d1b7e0dacf6802aecd95155f57adf17ca71)), closes [#6](https://github.com/peaceiris/actions-label-commenter/issues/6)
+* Add demo images [skip ci] ([07302ab](https://github.com/peaceiris/actions-label-commenter/commit/07302ab77ab6ef2fd985f567b26799654761e0bf))
+* Add link to GitHub Actions Hackathon ([97b68d8](https://github.com/peaceiris/actions-label-commenter/commit/97b68d8425481411bad23d23c61efcfdbf27992e))
+* fix image size ([ff965ac](https://github.com/peaceiris/actions-label-commenter/commit/ff965ac7b189c1fd296755e8b592bae4a56952bb))
+
+### feat
+
+* Change default config file name ([1dc6713](https://github.com/peaceiris/actions-label-commenter/commit/1dc67136b1e73c3992374bb4a3fe6ecdf98f0d4c))
+
+
+
 ## [1.0.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.0.1...v1.0.2) (2020-03-07)
 
 
