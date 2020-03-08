@@ -38,7 +38,7 @@ This Action was submitted to the [GitHub Actions Hackathon](https://github.blog/
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-*Table of Contents are generated with [DocToc](https://github.com/thlorenz/doctoc)*
+> Table of Contents are generated with [DocToc](https://github.com/thlorenz/doctoc)
 
 
 
