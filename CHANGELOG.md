@@ -311,9 +311,3 @@ All notable changes to this project will be documented in this file. See [standa
 ### feat
 
 * Start project for GitHub Hackathon ([359618a](https://github.com/peaceiris/actions-label-commenter/commit/359618aeb30abe750f82f5b035f26e83f29d12ba))
-
-
-
-# Changelog
-
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
