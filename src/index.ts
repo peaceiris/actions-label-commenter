@@ -1,9 +1,9 @@
 import * as core from '@actions/core';
-import * as main from './main';
+import {run} from './main';
 
 (async (): Promise<void> => {
   try {
-    await main.run();
+    await run();
   } catch (error) {
     core.setFailed(`Action failed with error "${error.message}"`);
   }
