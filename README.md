@@ -81,7 +81,7 @@ jobs:
 ### Action Setting
 
 ```yaml
-# label-commenter-config.yml
+# .github/label-commenter-config.yml
 
 labels:
   - name: invalid
