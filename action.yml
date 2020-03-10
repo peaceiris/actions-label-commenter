@@ -1,5 +1,5 @@
 name: 'Label Commenter'
-description: 'This action is one of label triggered GitHub Actions for posting a template message. After commenting, it can automatically close or reopen issues. Of course, it also can manage pull requests.'
+description: 'Label triggered GitHub Actions for posting a template message, automatically close or reopen issues or pull requests.'
 author: 'peaceiris'
 inputs:
   github_token:
