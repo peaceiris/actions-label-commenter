@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.2.1...v1.2.2) (2020-03-10)
+
+
+### chore
+
+* fix description ([fe1f141](https://github.com/peaceiris/actions-label-commenter/commit/fe1f141c26e8ab2a082fd9ce14c310ffa79d353f))
+
+
+
 ## [1.2.1](https://github.com/peaceiris/actions-label-commenter/compare/v1.2.0...v1.2.1) (2020-03-10)
 
 
