@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.1](https://github.com/peaceiris/actions-label-commenter/compare/v1.2.0...v1.2.1) (2020-03-10)
+
+
+### chore
+
+* add GitHub ID ([cc8eb05](https://github.com/peaceiris/actions-label-commenter/commit/cc8eb05bc43704175db702930fbbd0647b6841f6))
+* remove duplicate title ([6de664e](https://github.com/peaceiris/actions-label-commenter/commit/6de664ea927c5f3767bd474ba33743327607fc9f))
+* update description ([27195ce](https://github.com/peaceiris/actions-label-commenter/commit/27195ce10272618859f7c04584ca23d5bceb6f72))
+
+### deps
+
+* bump @typescript-eslint/eslint-plugin from 2.22.0 to 2.23.0 (#8) ([34aec5b](https://github.com/peaceiris/actions-label-commenter/commit/34aec5bad4ac7510acade6b8d188b1e48ac6b22f)), closes [#8](https://github.com/peaceiris/actions-label-commenter/issues/8)
+* bump @typescript-eslint/parser from 2.22.0 to 2.23.0 (#9) ([5e564bf](https://github.com/peaceiris/actions-label-commenter/commit/5e564bf12ae2228cd3b3050b945f28ffafab66ae)), closes [#9](https://github.com/peaceiris/actions-label-commenter/issues/9)
+
+### docs
+
+* fix config path ([ff56582](https://github.com/peaceiris/actions-label-commenter/commit/ff56582ab102f545340d0016d5cafa7c9916e7c3))
+* update description ([35d5b7a](https://github.com/peaceiris/actions-label-commenter/commit/35d5b7a13850c5cfe97aa60d92e43e4a13c70b31))
+
+
+
 # [1.2.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.1.5...v1.2.0) (2020-03-09)
 
 
