@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.3](https://github.com/peaceiris/actions-label-commenter/compare/v1.2.2...v1.2.3) (2020-03-13)
+
+
+### chore
+
+* fix job name ([ecdb615](https://github.com/peaceiris/actions-label-commenter/commit/ecdb6150b21f8cd257b93daa6c4ed74ab2e250d9))
+
+### deps
+
+* [security] bump acorn from 6.4.0 to 6.4.1 (#12) ([f8f8bc0](https://github.com/peaceiris/actions-label-commenter/commit/f8f8bc09c45387d7167b8181a4a473705fe93115)), closes [#12](https://github.com/peaceiris/actions-label-commenter/issues/12)
+* bump @types/node from 12.12.29 to 12.12.30 (#11) ([df2b919](https://github.com/peaceiris/actions-label-commenter/commit/df2b919d76f9dc3bd22a3ab2c647dc83ba3cd0c5)), closes [#11](https://github.com/peaceiris/actions-label-commenter/issues/11)
+
+### docs
+
+* fix job name [skip ci] ([a0c43f4](https://github.com/peaceiris/actions-label-commenter/commit/a0c43f48c01e7dbed5f7de7bfc4c50e7144bc883))
+* update demo_1 ([f546ea5](https://github.com/peaceiris/actions-label-commenter/commit/f546ea51cc75c6c0d701bceb9e6917db488c8684))
+
+
+
 ## [1.2.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.2.1...v1.2.2) (2020-03-10)
 
 
