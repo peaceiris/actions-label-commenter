@@ -115,7 +115,7 @@ labels:
   - name: duplicate
     labeled:
       issue:
-        body: This issue or pull request already exists.
+        body: This issue already exists.
         action: close
   - name: good first issue
     labeled:
