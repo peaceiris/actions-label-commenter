@@ -102,6 +102,7 @@ export async function run(): Promise<void> {
         core.info(
           `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`
         );
+        return;
       }
     } else if (eventName === 'pull_request') {
       eventType = 'pr';
@@ -109,6 +110,7 @@ export async function run(): Promise<void> {
         core.info(
           `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`
         );
+        return;
       }
     }
 
