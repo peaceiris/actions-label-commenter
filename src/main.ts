@@ -99,12 +99,16 @@ export async function run(): Promise<void> {
     if (eventName === 'issues') {
       eventType = 'issue';
       if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
-        eventType = 'pr';
+        core.info(
+          `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`
+        );
       }
     } else if (eventName === 'pull_request') {
       eventType = 'pr';
       if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
-        eventType = 'issue';
+        core.info(
+          `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`
+        );
       }
     }
 
