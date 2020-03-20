@@ -103,6 +103,7 @@ labels:
           Please ask questions about GitHub Actions at the following forum.
           https://github.community/t5/GitHub-Actions/bd-p/actions
         action: close
+      pr:  # Do nothing
   - name: wontfix
     labeled:
       issue:
