@@ -53,10 +53,10 @@ export async function run(): Promise<void> {
     }
 
     core.info(`\
-  [INFO] config_file: ${inps.ConfigFilePath}
-  [INFO] labelName: ${labelName}
-  [INFO] labelEvent: ${labelEvent}
-  [INFO] issueNumber: ${issueNumber}\
+[INFO] config_file: ${inps.ConfigFilePath}
+[INFO] labelName: ${labelName}
+[INFO] labelEvent: ${labelEvent}
+[INFO] issueNumber: ${issueNumber}\
   `);
 
     const configFilePath = inps.ConfigFilePath;
@@ -113,9 +113,15 @@ export async function run(): Promise<void> {
     const finalAction =
       config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
     core.info(`\
-  [INFO] commentBody: ${commentBody}
-  [INFO] finalAction: ${finalAction}\
+[INFO] commentBody: ${commentBody}
+[INFO] finalAction: ${finalAction}\
   `);
+
+    if (commentBody === '' || commentBody === void 0) {
+      core.info(
+        `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.body`
+      );
+    }
 
     const githubToken = inps.GithubToken;
     const githubClient = new GitHub(githubToken);
@@ -135,6 +141,7 @@ export async function run(): Promise<void> {
       core.info(
         `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`
       );
+      return;
     } else {
       throw new Error(
         `invalid value "${finalAction}" labels.${labelName}.${labelEvent}.${eventType}.action`
