@@ -131,7 +131,7 @@ export async function run(): Promise<void> {
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
-    } else if (finalAction === '') {
+    } else if (finalAction === '' || finalAction === void 0) {
       core.info(
         `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`
       );
