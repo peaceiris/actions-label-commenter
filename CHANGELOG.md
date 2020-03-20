@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.4](https://github.com/peaceiris/actions-label-commenter/compare/v1.2.3...v1.2.4) (2020-03-20)
+
+
+### ci
+
+* Add ncc --minify ([87979c8](https://github.com/peaceiris/actions-label-commenter/commit/87979c8e6dc876fc6ffb3cb9e5702092cc015acf))
+* set update_schedule live ([94bfa4f](https://github.com/peaceiris/actions-label-commenter/commit/94bfa4fc24a3eea80932014518ceb5a2fd8e13a3))
+
+### deps
+
+* bump @typescript-eslint/eslint-plugin from 2.23.0 to 2.24.0 (#13) ([eb37a3c](https://github.com/peaceiris/actions-label-commenter/commit/eb37a3c72b466401082586b27e99363a25379ac7)), closes [#13](https://github.com/peaceiris/actions-label-commenter/issues/13)
+* bump @typescript-eslint/parser from 2.23.0 to 2.24.0 (#14) ([509a5f8](https://github.com/peaceiris/actions-label-commenter/commit/509a5f86af422e21fbe67d28f45e3d5ae6f611ca)), closes [#14](https://github.com/peaceiris/actions-label-commenter/issues/14)
+* bump nock from 12.0.2 to 12.0.3 (#15) ([547c566](https://github.com/peaceiris/actions-label-commenter/commit/547c566e1705f7f1df682811f10672345406c49f)), closes [#15](https://github.com/peaceiris/actions-label-commenter/issues/15)
+
+
+
 ## [1.2.3](https://github.com/peaceiris/actions-label-commenter/compare/v1.2.2...v1.2.3) (2020-03-13)
 
 
