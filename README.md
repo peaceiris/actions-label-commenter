@@ -31,7 +31,7 @@ This Action was submitted to the [GitHub Actions Hackathon](https://github.blog/
   - [Comment and Close Wontfix Issue or Pull Request](#comment-and-close-wontfix-issue-or-pull-request)
   - [Comment and Close Duplicate Issue or Pull Request](#comment-and-close-duplicate-issue-or-pull-request)
   - [Comment Multiple Line](#comment-multiple-line)
-  - [Close Multiple Issues or Pull Requests](#close-multiple-issues-or-pull-requests)
+  - [Comment and Close Multiple Issues or Pull Requests](#comment-and-close-multiple-issues-or-pull-requests)
 - [Changelog](#changelog)
 - [License](#license)
 - [Maintainer](#maintainer)
@@ -153,7 +153,7 @@ labels:
 
 ![](images/demo_5.jpg)
 
-### Close Multiple Issues or Pull Requests
+### Comment and Close Multiple Issues or Pull Requests
 
 | Select Label | Labeled |
 |---|---|
