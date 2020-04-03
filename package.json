@@ -1,6 +1,6 @@
 {
   "name": "actions-label-commenter",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Label Commenter GitHub Action",
   "main": "lib/index.js",
   "engines": {

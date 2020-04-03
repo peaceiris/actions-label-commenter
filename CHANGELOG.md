@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.3](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.2...v1.3.3) (2020-04-03)
+
+
+### ci
+
+* Enhance [skip ci] log ([4000a6d](https://github.com/peaceiris/actions-label-commenter/commit/4000a6d19e6b68447a7fc48002d48de7fe3758a8))
+
+### deps
+
+* bump @types/jest from 25.1.4 to 25.1.5 (#49) ([a978e2a](https://github.com/peaceiris/actions-label-commenter/commit/a978e2abafc440b22ec15108fbfa5e4046e514b6)), closes [#49](https://github.com/peaceiris/actions-label-commenter/issues/49)
+* bump @types/js-yaml from 3.12.2 to 3.12.3 (#25) ([6dd5a3b](https://github.com/peaceiris/actions-label-commenter/commit/6dd5a3b07fafeea1e39a3a235ff90d803bb7d0fe)), closes [#25](https://github.com/peaceiris/actions-label-commenter/issues/25)
+* bump @types/node from 12.12.30 to 12.12.31 (#26) ([1b3a95e](https://github.com/peaceiris/actions-label-commenter/commit/1b3a95e2ee15a5809c3c8e5d28893b64669cf238)), closes [#26](https://github.com/peaceiris/actions-label-commenter/issues/26)
+* bump @types/node from 12.12.31 to 12.12.32 (#35) ([c13c26c](https://github.com/peaceiris/actions-label-commenter/commit/c13c26c52ea0d1d088e9c8f63713eeaa3a00be51)), closes [#35](https://github.com/peaceiris/actions-label-commenter/issues/35)
+* bump @types/node from 12.12.32 to 12.12.34 (#45) ([68efcfa](https://github.com/peaceiris/actions-label-commenter/commit/68efcfa46f1dc900aca4327db72111fd2fcb9275)), closes [#45](https://github.com/peaceiris/actions-label-commenter/issues/45)
+* bump @typescript-eslint/eslint-plugin from 2.24.0 to 2.25.0 (#20) ([cfbf232](https://github.com/peaceiris/actions-label-commenter/commit/cfbf23222cc9809cad4bcc552c2a593ad8c70908)), closes [#20](https://github.com/peaceiris/actions-label-commenter/issues/20)
+* bump @typescript-eslint/eslint-plugin from 2.25.0 to 2.26.0 (#43) ([feff87e](https://github.com/peaceiris/actions-label-commenter/commit/feff87e558832bdfa4125b137ae65ef8701e2668)), closes [#43](https://github.com/peaceiris/actions-label-commenter/issues/43)
+* bump @typescript-eslint/parser from 2.24.0 to 2.25.0 (#19) ([3ed75e2](https://github.com/peaceiris/actions-label-commenter/commit/3ed75e2580a3494396d2bbda3104871a12223953)), closes [#19](https://github.com/peaceiris/actions-label-commenter/issues/19)
+* bump @typescript-eslint/parser from 2.25.0 to 2.26.0 (#42) ([dfba570](https://github.com/peaceiris/actions-label-commenter/commit/dfba570ac4889b2dfcb638d347e14a30874f0a2c)), closes [#42](https://github.com/peaceiris/actions-label-commenter/issues/42)
+* bump @zeit/ncc from 0.21.1 to 0.22.0 (#21) ([e88d559](https://github.com/peaceiris/actions-label-commenter/commit/e88d559bfe13ebcb50dbb0b45ae8608bc9af46a6)), closes [#21](https://github.com/peaceiris/actions-label-commenter/issues/21)
+* bump jest from 25.1.0 to 25.2.0 (#28) ([cef8f88](https://github.com/peaceiris/actions-label-commenter/commit/cef8f886eb0e9c1e6c4412bde29294485fb8158a)), closes [#28](https://github.com/peaceiris/actions-label-commenter/issues/28)
+* bump jest from 25.2.0 to 25.2.1 (#29) ([24e50b5](https://github.com/peaceiris/actions-label-commenter/commit/24e50b563c73ec5e95ab692f189de38ffb84ec25)), closes [#29](https://github.com/peaceiris/actions-label-commenter/issues/29)
+* bump jest from 25.2.1 to 25.2.2 (#32) ([38ebc73](https://github.com/peaceiris/actions-label-commenter/commit/38ebc73621e281a7245923524b899346485441db)), closes [#32](https://github.com/peaceiris/actions-label-commenter/issues/32)
+* bump jest from 25.2.2 to 25.2.3 (#34) ([37ff0a2](https://github.com/peaceiris/actions-label-commenter/commit/37ff0a25823e1c24d9935f7f87d7393ba8ee7e8a)), closes [#34](https://github.com/peaceiris/actions-label-commenter/issues/34)
+* bump jest from 25.2.3 to 25.2.4 (#39) ([cb9c28b](https://github.com/peaceiris/actions-label-commenter/commit/cb9c28b62bab79facdf8f53bdb8ce062d3cd33f1)), closes [#39](https://github.com/peaceiris/actions-label-commenter/issues/39)
+* bump jest from 25.2.4 to 25.2.6 (#47) ([92aeca2](https://github.com/peaceiris/actions-label-commenter/commit/92aeca2c2a69f8e4577a9cd8a2077d5a045e9269)), closes [#47](https://github.com/peaceiris/actions-label-commenter/issues/47)
+* bump jest from 25.2.6 to 25.2.7 (#50) ([b1ae096](https://github.com/peaceiris/actions-label-commenter/commit/b1ae0967319751b7fbe000e7ecec164c34a13303)), closes [#50](https://github.com/peaceiris/actions-label-commenter/issues/50)
+* bump jest-circus from 25.1.0 to 25.2.0 (#27) ([57829d8](https://github.com/peaceiris/actions-label-commenter/commit/57829d8f62d3cc1676723d7f7ada98bcc7162b61)), closes [#27](https://github.com/peaceiris/actions-label-commenter/issues/27)
+* bump jest-circus from 25.2.0 to 25.2.1 (#30) ([7f01110](https://github.com/peaceiris/actions-label-commenter/commit/7f01110c82c91e5248faa645b43cdea86bb7e541)), closes [#30](https://github.com/peaceiris/actions-label-commenter/issues/30)
+* bump jest-circus from 25.2.1 to 25.2.2 (#31) ([0858549](https://github.com/peaceiris/actions-label-commenter/commit/0858549fbaf5996152ec15a8134ff25091f82068)), closes [#31](https://github.com/peaceiris/actions-label-commenter/issues/31)
+* bump jest-circus from 25.2.2 to 25.2.3 (#33) ([053f5a2](https://github.com/peaceiris/actions-label-commenter/commit/053f5a23ab8a8bfd5fb7ae86268a52bab820e801)), closes [#33](https://github.com/peaceiris/actions-label-commenter/issues/33)
+* bump jest-circus from 25.2.3 to 25.2.4 (#38) ([8a77199](https://github.com/peaceiris/actions-label-commenter/commit/8a7719991a0fbef65fac948892cba8ec81e4a759)), closes [#38](https://github.com/peaceiris/actions-label-commenter/issues/38)
+* bump jest-circus from 25.2.4 to 25.2.6 (#48) ([e6f6e66](https://github.com/peaceiris/actions-label-commenter/commit/e6f6e660e877c276293469745a90a98538dd6620)), closes [#48](https://github.com/peaceiris/actions-label-commenter/issues/48)
+* bump jest-circus from 25.2.6 to 25.2.7 (#51) ([b2f88fd](https://github.com/peaceiris/actions-label-commenter/commit/b2f88fd71adb9f973dc4a8dcb34c284e2d770ef8)), closes [#51](https://github.com/peaceiris/actions-label-commenter/issues/51)
+* bump lint-staged from 10.0.10 to 10.1.0 (#41) ([7c18c26](https://github.com/peaceiris/actions-label-commenter/commit/7c18c268567495c1c5b050458c1e9bc0534a039b)), closes [#41](https://github.com/peaceiris/actions-label-commenter/issues/41)
+* bump lint-staged from 10.0.8 to 10.0.9 (#23) ([31837ea](https://github.com/peaceiris/actions-label-commenter/commit/31837ea139f1832737ee7aedd17196a91d3eab20)), closes [#23](https://github.com/peaceiris/actions-label-commenter/issues/23)
+* bump lint-staged from 10.0.9 to 10.0.10 (#37) ([0bfc234](https://github.com/peaceiris/actions-label-commenter/commit/0bfc234d90ba5d14f3a66cd952c4329db0d4c903)), closes [#37](https://github.com/peaceiris/actions-label-commenter/issues/37)
+* bump lint-staged from 10.1.0 to 10.1.1 (#46) ([018b910](https://github.com/peaceiris/actions-label-commenter/commit/018b910645b51f2ac82480d65d5b6c89720af942)), closes [#46](https://github.com/peaceiris/actions-label-commenter/issues/46)
+* bump prettier from 1.19.1 to 2.0.1 (#18) ([59f0561](https://github.com/peaceiris/actions-label-commenter/commit/59f056126cf837faad32210b80bcd62af6c0fdfe)), closes [#18](https://github.com/peaceiris/actions-label-commenter/issues/18)
+* bump prettier from 2.0.1 to 2.0.2 (#22) ([9112169](https://github.com/peaceiris/actions-label-commenter/commit/9112169c80b1532cf751c6ef1c67b88c3cf44777)), closes [#22](https://github.com/peaceiris/actions-label-commenter/issues/22)
+* bump ts-jest from 25.2.1 to 25.3.0 (#40) ([0373018](https://github.com/peaceiris/actions-label-commenter/commit/0373018bcd56e77cf86dce5da8671fd02d1ffff8)), closes [#40](https://github.com/peaceiris/actions-label-commenter/issues/40)
+* bump ts-jest from 25.3.0 to 25.3.1 (#52) ([7d71df7](https://github.com/peaceiris/actions-label-commenter/commit/7d71df78db771938a183f134312347e6f3e72d28)), closes [#52](https://github.com/peaceiris/actions-label-commenter/issues/52)
+* npm audit fix ([3a6f963](https://github.com/peaceiris/actions-label-commenter/commit/3a6f963f0651025471317c332bda1fcac8bf6757))
+
+### docs
+
+* Add notes about pull_request on forks ([cf0e7e1](https://github.com/peaceiris/actions-label-commenter/commit/cf0e7e136b7fcdef52bad69e118e6cb07dd4e057))
+* enhance section name ([d3b4a3d](https://github.com/peaceiris/actions-label-commenter/commit/d3b4a3d5ad39fd320d58e51fdc3e511cf0a6a847))
+* update ([9c6f649](https://github.com/peaceiris/actions-label-commenter/commit/9c6f64975e49557bf19246ccdb4d8b0b1e7e7cf5))
+
+
+
 ## [1.3.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.1...v1.3.2) (2020-03-20)
 
 
