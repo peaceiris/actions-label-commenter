@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.5](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.4...v1.3.5) (2020-04-29)
+
+
+### ci
+
+* delete stale workflow ([99bcb4d](https://github.com/peaceiris/actions-label-commenter/commit/99bcb4da85a225f32bd2759164c8cd56f5a5d1f7))
+
+### deps
+
+* bump @types/node from 12.12.35 to 12.12.36 (#74) ([fe4c5e6](https://github.com/peaceiris/actions-label-commenter/commit/fe4c5e6601060a4782a596461237fefed61daec0)), closes [#74](https://github.com/peaceiris/actions-label-commenter/issues/74)
+* bump @types/node from 12.12.36 to 12.12.37 (#82) ([0fd3038](https://github.com/peaceiris/actions-label-commenter/commit/0fd30385498ead720f287b60138ee4c241dc6d8a)), closes [#82](https://github.com/peaceiris/actions-label-commenter/issues/82)
+* bump @typescript-eslint/eslint-plugin from 2.28.0 to 2.30.0 (#81) ([4493add](https://github.com/peaceiris/actions-label-commenter/commit/4493add969d1f6537fd19d22a32d62fd154acea8)), closes [#81](https://github.com/peaceiris/actions-label-commenter/issues/81)
+* bump @typescript-eslint/parser from 2.28.0 to 2.30.0 (#83) ([502e03e](https://github.com/peaceiris/actions-label-commenter/commit/502e03e754a0305bd8e52a4dc82f6a83b3fc3e9f)), closes [#83](https://github.com/peaceiris/actions-label-commenter/issues/83)
+* bump jest from 25.3.0 to 25.5.0 (#79) ([e79aa29](https://github.com/peaceiris/actions-label-commenter/commit/e79aa29533de6c715a658727725ef233aab954b6)), closes [#79](https://github.com/peaceiris/actions-label-commenter/issues/79)
+* bump jest-circus from 25.3.0 to 25.5.0 (#78) ([c7e7b17](https://github.com/peaceiris/actions-label-commenter/commit/c7e7b1796c15e0684f3ce7c33d97f0edfab881ae)), closes [#78](https://github.com/peaceiris/actions-label-commenter/issues/78)
+* bump lint-staged from 10.1.3 to 10.1.4 (#73) ([54e6a0d](https://github.com/peaceiris/actions-label-commenter/commit/54e6a0d053ab9ac445e128ea08a336a14e356752)), closes [#73](https://github.com/peaceiris/actions-label-commenter/issues/73)
+* bump lint-staged from 10.1.4 to 10.1.5 (#75) ([3821941](https://github.com/peaceiris/actions-label-commenter/commit/3821941a40cb9f0bcd27d4cb2464697c498a118b)), closes [#75](https://github.com/peaceiris/actions-label-commenter/issues/75)
+* bump lint-staged from 10.1.5 to 10.1.6 (#76) ([b5e4f70](https://github.com/peaceiris/actions-label-commenter/commit/b5e4f70ad17d591b7fe8c9b49fbeed28a8baa12a)), closes [#76](https://github.com/peaceiris/actions-label-commenter/issues/76)
+* bump lint-staged from 10.1.6 to 10.2.0 (#84) ([5b36266](https://github.com/peaceiris/actions-label-commenter/commit/5b362668237d14e1415977e3bd343d2611c431c0)), closes [#84](https://github.com/peaceiris/actions-label-commenter/issues/84)
+* bump prettier from 2.0.4 to 2.0.5 (#80) ([64dcaeb](https://github.com/peaceiris/actions-label-commenter/commit/64dcaeb5370a7699ea19edff23583b977259cb30)), closes [#80](https://github.com/peaceiris/actions-label-commenter/issues/80)
+* bump ts-jest from 25.3.1 to 25.4.0 (#72) ([fd1de98](https://github.com/peaceiris/actions-label-commenter/commit/fd1de98eee74c50bdbe2367b37d9e01f8a630ce4)), closes [#72](https://github.com/peaceiris/actions-label-commenter/issues/72)
+
+
+
 ## [1.3.4](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.3...v1.3.4) (2020-04-15)
 
 
