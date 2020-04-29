@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.6](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.5...v1.3.6) (2020-04-29)
+
+
+### deps
+
+* [security] bump @actions/http-client from 1.0.6 to 1.0.8 (#88) ([0f4d6d7](https://github.com/peaceiris/actions-label-commenter/commit/0f4d6d7af1073a4aed705a9aa2ce77ed7fb8ce0f)), closes [#88](https://github.com/peaceiris/actions-label-commenter/issues/88)
+* bump jest from 25.5.0 to 25.5.1 (#87) ([dc0614d](https://github.com/peaceiris/actions-label-commenter/commit/dc0614dcd4cc48bc26a958fa5e784869900402ca)), closes [#87](https://github.com/peaceiris/actions-label-commenter/issues/87)
+* bump jest-circus from 25.5.0 to 25.5.1 (#86) ([d8e1a2b](https://github.com/peaceiris/actions-label-commenter/commit/d8e1a2b8f226139c5be9c482d468acea875f45f7)), closes [#86](https://github.com/peaceiris/actions-label-commenter/issues/86)
+* bump node from 12.16.2 to 12.16.3 (#85) ([18a2661](https://github.com/peaceiris/actions-label-commenter/commit/18a266124615ab5fbe858678c16342916cfeb211)), closes [#85](https://github.com/peaceiris/actions-label-commenter/issues/85)
+
+
+
 ## [1.3.5](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.4...v1.3.5) (2020-04-29)
 
 
