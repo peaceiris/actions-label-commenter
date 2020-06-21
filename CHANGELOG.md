@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.4.0-2](https://github.com/peaceiris/actions-label-commenter/compare/v1.4.0-1...v1.4.0-2) (2020-06-21)
+
+
+### ci
+
+* bump label-commenter from 1.4.0-0 to 1.4.0-1 ([2728246](https://github.com/peaceiris/actions-label-commenter/commit/2728246139194ad406dd2768f4159e2e82a95283))
+
+### feat
+
+* Add issue.assignees (#160) ([2e5a65a](https://github.com/peaceiris/actions-label-commenter/commit/2e5a65a5d753248c363abd22a4e2773e340ba3a3)), closes [#160](https://github.com/peaceiris/actions-label-commenter/issues/160)
+
+
+
 # [1.4.0-1](https://github.com/peaceiris/actions-label-commenter/compare/v1.4.0-0...v1.4.0-1) (2020-06-21)
 
 
