@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.4.0-1](https://github.com/peaceiris/actions-label-commenter/compare/v1.4.0-0...v1.4.0-1) (2020-06-21)
+
+
+### chore
+
+* Add engines and doctoc hook ([1628494](https://github.com/peaceiris/actions-label-commenter/commit/1628494e213b3d4438a9140ae7469126c540ec84))
+
+### ci
+
+* bump label-commenter from 1.3.7 to 1.4.0-0 ([a180871](https://github.com/peaceiris/actions-label-commenter/commit/a180871787ba05f94c745396128aeec44faa7734))
+
+### feat
+
+* Fold logs (#159) ([51c2e3d](https://github.com/peaceiris/actions-label-commenter/commit/51c2e3d7c5eea7fabcb38b600614c3f31ebe95a8)), closes [#159](https://github.com/peaceiris/actions-label-commenter/issues/159)
+
+
+
 # [1.4.0-0](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.7...v1.4.0-0) (2020-06-21)
 
 
