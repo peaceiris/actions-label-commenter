@@ -41,4 +41,7 @@ labels:
       issue:
         body: |
           Thank you @{{ sender.login }} for suggesting this.
-          The maintainer will reply.
+          The maintainers will reply.
+          {{#issue.assignees}}
+          - @{{.}}
+          {{/issue.assignees}}
