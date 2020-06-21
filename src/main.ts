@@ -38,7 +38,9 @@ export async function run(): Promise<void> {
     const inps: Inputs = getInputs();
 
     if (core.isDebug()) {
+      core.startGroup('Dump GitHub context');
       console.log(context);
+      core.endGroup();
     }
 
     const eventName = context.eventName;
@@ -64,7 +66,9 @@ export async function run(): Promise<void> {
     const configFilePath = inps.ConfigFilePath;
     const config = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
     if (core.isDebug()) {
+      core.startGroup('Dump Config');
       console.log(config);
+      core.endGroup();
     }
 
     let isExistLabel = false;
@@ -122,6 +126,9 @@ export async function run(): Promise<void> {
     }
 
     // Render template
+    if (core.isDebug()) {
+      console.log((context.payload as any).issue.assignees); // eslint-disable-line @typescript-eslint/no-explicit-any
+    }
     const commentBodyView = {
       sender: {
         login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
