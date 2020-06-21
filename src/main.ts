@@ -1,31 +1,32 @@
 import * as core from '@actions/core';
-import {context, GitHub} from '@actions/github';
+import {context, getOctokit} from '@actions/github';
+import {GitHub} from '@actions/github/lib/utils';
 import {Inputs} from './interfaces';
 import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 
 async function closeIssue(
-  githubClient: GitHub,
+  githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
 ): Promise<void> {
   await githubClient.issues.update({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    issue_number: issueNumber, // eslint-disable-line @typescript-eslint/camelcase
+    issue_number: issueNumber,
     state: 'closed'
   });
   return;
 }
 
 async function openIssue(
-  githubClient: GitHub,
+  githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
 ): Promise<void> {
   await githubClient.issues.update({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    issue_number: issueNumber, // eslint-disable-line @typescript-eslint/camelcase
+    issue_number: issueNumber,
     state: 'open'
   });
   return;
@@ -130,9 +131,8 @@ export async function run(): Promise<void> {
     }
 
     const githubToken = inps.GithubToken;
-    const githubClient = new GitHub(githubToken);
+    const githubClient = getOctokit(githubToken);
     await githubClient.issues.createComment({
-      // eslint-disable-next-line @typescript-eslint/camelcase
       issue_number: context.issue.number,
       owner: context.repo.owner,
       repo: context.repo.repo,
