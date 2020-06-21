@@ -5,6 +5,7 @@ import {Inputs} from './interfaces';
 import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
+import Mustache from 'mustache';
 
 async function closeIssue(
   githubClient: InstanceType<typeof GitHub>,
@@ -91,44 +92,42 @@ export async function run(): Promise<void> {
       config.labels[labelIndex][`${labelEvent}`].issue === void 0 &&
       config.labels[labelIndex][`${labelEvent}`].pr === void 0
     ) {
-      throw new Error(
-        `not found any definition labels.${labelName}.${labelEvent}`
-      );
+      throw new Error(`not found any definition labels.${labelName}.${labelEvent}`);
     }
 
     let eventType = '';
     if (eventName === 'issues') {
       eventType = 'issue';
       if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
-        core.info(
-          `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`
-        );
+        core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
         return;
       }
     } else if (eventName === 'pull_request') {
       eventType = 'pr';
       if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
-        core.info(
-          `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`
-        );
+        core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
         return;
       }
     }
 
-    const commentBody =
-      config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
-    const finalAction =
-      config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
+    const commentBody = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
+    const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
     core.info(`\
 [INFO] commentBody: ${commentBody}
 [INFO] finalAction: ${finalAction}\
   `);
 
     if (commentBody === '' || commentBody === void 0) {
-      core.info(
-        `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.body`
-      );
+      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.body`);
     }
+
+    // Render template
+    const commentBodyView = {
+      sender: {
+        login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
+      }
+    };
+    const commentBodyRendered = Mustache.render(commentBody, commentBodyView);
 
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
@@ -136,7 +135,7 @@ export async function run(): Promise<void> {
       issue_number: context.issue.number,
       owner: context.repo.owner,
       repo: context.repo.repo,
-      body: commentBody
+      body: commentBodyRendered
     });
 
     if (finalAction === 'close') {
@@ -144,9 +143,7 @@ export async function run(): Promise<void> {
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
     } else if (finalAction === '' || finalAction === void 0) {
-      core.info(
-        `[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`
-      );
+      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`);
       return;
     } else {
       throw new Error(
