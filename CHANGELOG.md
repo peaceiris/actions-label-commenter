@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.4.0-0](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.7...v1.4.0-0) (2020-06-21)
+
+
+### chore
+
+* fix link to github.community ([dd06426](https://github.com/peaceiris/actions-label-commenter/commit/dd064261471d590d32980e1810aa944bb8e1fc6f))
+
+### ci
+
+* add nwtgck/actions-comment-run@v1.1 ([5501264](https://github.com/peaceiris/actions-label-commenter/commit/550126484fe33d821d83992250263318b0f1918f))
+* bump peaceiris/actions-label-commenter from v1.3.6 to v1.3.7 (#155) ([3152312](https://github.com/peaceiris/actions-label-commenter/commit/3152312e4d549c312b993401bade49131b6d9972)), closes [#155](https://github.com/peaceiris/actions-label-commenter/issues/155)
+* delete Comment Run ([a62c7e0](https://github.com/peaceiris/actions-label-commenter/commit/a62c7e0695338939734d32925ff2fbed92c8c83c))
+* fix github-token ([2f3137c](https://github.com/peaceiris/actions-label-commenter/commit/2f3137caadf2d8cb1e8ed52ae71b4b9d758684f5))
+
+### feat
+
+* Add placeholder feature (#157) ([d765018](https://github.com/peaceiris/actions-label-commenter/commit/d76501888f6604afcb880b61d7794453d0674afb)), closes [#157](https://github.com/peaceiris/actions-label-commenter/issues/157) [#152](https://github.com/peaceiris/actions-label-commenter/issues/152)
+
+
+
 ## [1.3.7](https://github.com/peaceiris/actions-label-commenter/compare/v1.3.6...v1.3.7) (2020-06-21)
 
 
