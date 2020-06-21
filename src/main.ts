@@ -6,6 +6,7 @@ import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
+import {stringify} from 'querystring';
 
 async function closeIssue(
   githubClient: InstanceType<typeof GitHub>,
@@ -126,16 +127,29 @@ export async function run(): Promise<void> {
     }
 
     // Render template
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const assignees = (context.payload as any).issue.assignees;
     if (core.isDebug()) {
-      console.log((context.payload as any).issue.assignees); // eslint-disable-line @typescript-eslint/no-explicit-any
+      console.log(assignees);
     }
     const commentBodyView = {
       sender: {
         login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
+      },
+      issue: {
+        assignees: function () {
+          const assigneesList: string[] = [];
+          Object.keys(assignees).forEach(assignee => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            assigneesList.push((assignee as any).login);
+          });
+          return assigneesList;
+        }
       }
     };
     const commentBodyRendered = Mustache.render(commentBody, commentBodyView);
 
+    // Post comment
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
     await githubClient.issues.createComment({
@@ -145,6 +159,7 @@ export async function run(): Promise<void> {
       body: commentBodyRendered
     });
 
+    // Close or Open issue
     if (finalAction === 'close') {
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
