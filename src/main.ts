@@ -6,7 +6,6 @@ import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
-import {stringify} from 'querystring';
 
 async function closeIssue(
   githubClient: InstanceType<typeof GitHub>,
