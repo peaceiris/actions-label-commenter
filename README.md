@@ -80,7 +80,9 @@ jobs:
           # config_file: .github/label-commenter-config.yml
 ```
 
-For the `pull_request` event from forks, we need to use a personal access token instead of `GITHUB_TOKEN`. The generated `GITHUB_TOKEN` on a fork has no write permission. See the official documentation for more details. [Authenticating with the GITHUB_TOKEN - GitHub Help](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token)
+Note that we cannot post a comment from the `pull_request` event on a forked repository. The generated `GITHUB_TOKEN` on a fork has no write permission. See the official documentation for more details. [Authenticating with the GITHUB_TOKEN - GitHub Help](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token)
+
+See also [Issue #63](https://github.com/peaceiris/actions-label-commenter/issues/63).
 
 ### Action Setting
 
