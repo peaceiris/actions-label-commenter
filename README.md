@@ -46,7 +46,7 @@ This Action was submitted to the [GitHub Actions Hackathon] and featured by GitH
 
 ## Getting Started
 
-Create your GitHub Actions workflow file and Label Commenter Action setting file. Commit those and push to the remote master branch.
+Create your GitHub Actions workflow file and Label Commenter Action setting file. Commit those and push to the remote default branch.
 
 ### Workflow Setting
 
@@ -71,7 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: master
+          ref: main
 
       - name: Label Commenter
         uses: peaceiris/actions-label-commenter@v1
