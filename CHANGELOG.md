@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.5.0-2](https://github.com/peaceiris/actions-label-commenter/compare/v1.5.0-1...v1.5.0-2) (2020-08-04)
+
+
+### fix
+
+* for pull_request_target ([44eb409](https://github.com/peaceiris/actions-label-commenter/commit/44eb4096ff50a9e19166740ac9be23e37248bd2b))
+
+
+
 # [1.5.0-1](https://github.com/peaceiris/actions-label-commenter/compare/v1.5.0-0...v1.5.0-1) (2020-08-04)
 
 
