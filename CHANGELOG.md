@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.5.0-1](https://github.com/peaceiris/actions-label-commenter/compare/v1.5.0-0...v1.5.0-1) (2020-08-04)
+
+
+### ci
+
+* Add pull_request_target ([1ff3fec](https://github.com/peaceiris/actions-label-commenter/commit/1ff3feca77d0de06513e8aa5239af3d6f0f6e2ec))
+* pin to v1.5.0-0 ([930d4f8](https://github.com/peaceiris/actions-label-commenter/commit/930d4f8b864505a43fb01c03371ad4092dd8f4ab))
+
+### feat
+
+* remove assignees (#223) ([40a91a6](https://github.com/peaceiris/actions-label-commenter/commit/40a91a6dadb8adae9ea005d657d7b42315458f00)), closes [#223](https://github.com/peaceiris/actions-label-commenter/issues/223)
+
+
+
 # [1.5.0-0](https://github.com/peaceiris/actions-label-commenter/compare/v1.4.0-2...v1.5.0-0) (2020-08-04)
 
 
