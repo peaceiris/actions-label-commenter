@@ -51,7 +51,7 @@ export async function run(): Promise<void> {
     if (eventName === 'issues') {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       issueNumber = (context.payload as any).issue.number;
-    } else if (eventName === 'pull_request') {
+    } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       issueNumber = (context.payload as any).number;
     }
