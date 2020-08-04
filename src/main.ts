@@ -106,7 +106,7 @@ export async function run(): Promise<void> {
         core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
         return;
       }
-    } else if (eventName === 'pull_request') {
+    } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
       eventType = 'pr';
       if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
         core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
@@ -127,7 +127,7 @@ export async function run(): Promise<void> {
 
     // Render template
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const assignees = (context.payload as any).issue.assignees;
+    const assignees = (context.payload as any)?.issue?.assignees ?? [];
     if (core.isDebug()) {
       console.log(assignees);
     }
