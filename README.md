@@ -61,7 +61,7 @@ on:
     types:
       - labeled
       - unlabeled
-  pull_request:
+  pull_request_target:
     types:
       - labeled
       - unlabeled
@@ -80,10 +80,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # config_file: .github/label-commenter-config.yml
 ```
-
-Note that we cannot post a comment from the `pull_request` event on a forked repository. The generated `GITHUB_TOKEN` on a fork has no write permission. See the official documentation for more details. [Authenticating with the GITHUB_TOKEN - GitHub Help](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token)
-
-See also [Issue #63](https://github.com/peaceiris/actions-label-commenter/issues/63).
 
 ### Action Setting
 
