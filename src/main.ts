@@ -126,24 +126,9 @@ export async function run(): Promise<void> {
     }
 
     // Render template
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const assignees = (context.payload as any)?.issue?.assignees ?? [];
-    if (core.isDebug()) {
-      console.log(assignees);
-    }
     const commentBodyView = {
       sender: {
         login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
-      },
-      issue: {
-        assignees: function () {
-          const assigneesList: string[] = [];
-          Object.keys(assignees).forEach(assignee => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            assigneesList.push((assignee as any).login);
-          });
-          return assigneesList;
-        }
       }
     };
     const commentBodyRendered = Mustache.render(commentBody, commentBodyView);
