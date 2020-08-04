@@ -127,7 +127,7 @@ export async function run(): Promise<void> {
 
     // Render template
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const assignees = (context.payload as any).issue.assignees;
+    const assignees = (context.payload as any)?.issue?.assignees ?? [];
     if (core.isDebug()) {
       console.log(assignees);
     }
