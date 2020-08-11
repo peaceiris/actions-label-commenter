@@ -68,7 +68,7 @@
     "eslint": "^7.6.0",
     "eslint-plugin-jest": "^23.20.0",
     "husky": "^4.2.5",
-    "jest": "^26.2.2",
+    "jest": "^26.3.0",
     "jest-circus": "^26.2.2",
     "lint-staged": "^10.2.11",
     "nock": "^13.0.3",
