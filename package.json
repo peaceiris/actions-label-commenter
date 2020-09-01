@@ -58,7 +58,7 @@
     "mustache": "^4.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.10",
+    "@types/jest": "^26.0.12",
     "@types/js-yaml": "^3.12.4",
     "@types/mustache": "^4.0.1",
     "@types/node": "~12",
