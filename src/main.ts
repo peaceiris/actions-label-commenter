@@ -64,7 +64,8 @@ export async function run(): Promise<void> {
   `);
 
     const configFilePath = inps.ConfigFilePath;
-    const config = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const config: any = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
     if (core.isDebug()) {
       core.startGroup('Dump Config');
       console.log(config);
