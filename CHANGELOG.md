@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.6.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.5.1-0...v1.6.0) (2020-09-12)
+
+
+### ci
+
+* pin to v1.6.0 ([2838121](https://github.com/peaceiris/actions-label-commenter/commit/28381216d96fc53a69c3a6fef6ac9940f9e4066b))
+
+### feat
+
+* Add issue.user.login (#272) ([7f5d590](https://github.com/peaceiris/actions-label-commenter/commit/7f5d5902eb612655c560b47ecb6cababcddd615e)), closes [#272](https://github.com/peaceiris/actions-label-commenter/issues/272)
+
+
+
 ## [1.5.1-0](https://github.com/peaceiris/actions-label-commenter/compare/v1.5.0...v1.5.1-0) (2020-09-12)
 
 
