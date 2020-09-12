@@ -104,7 +104,7 @@ labels:
       issue:
         body: |
           Please ask questions about GitHub Actions at the following forum.
-          https://github.community/t5/GitHub-Actions/bd-p/actions
+          https://github.community/c/github-actions
         action: close
   - name: wontfix
     labeled:
@@ -124,6 +124,11 @@ labels:
     labeled:
       issue:
         body: This issue is easy for contributing. Everyone can work on this.
+  - name: proposal
+    labeled:
+      issue:
+        body: |
+          Thank you @{{ issue.user.login }} for suggesting this.
 ```
 
 <div align="right">
