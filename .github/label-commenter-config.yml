@@ -40,8 +40,4 @@ labels:
     labeled:
       issue:
         body: |
-          Thank you @{{ sender.login }} for suggesting this.
-          The maintainers will reply.
-          {{#issue.assignees}}
-          - @{{.}}
-          {{/issue.assignees}}
+          Thank you @{{ user.login }} for suggesting this.
