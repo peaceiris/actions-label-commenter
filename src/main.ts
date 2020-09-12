@@ -128,8 +128,10 @@ export async function run(): Promise<void> {
 
     // Render template
     const commentBodyView = {
-      user: {
-        login: (context.payload as any).user.login // eslint-disable-line @typescript-eslint/no-explicit-any
+      issue: {
+        user: {
+          login: (context.payload as any).issue.user.login // eslint-disable-line @typescript-eslint/no-explicit-any
+        }
       },
       sender: {
         login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any

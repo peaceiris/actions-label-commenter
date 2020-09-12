@@ -40,4 +40,4 @@ labels:
     labeled:
       issue:
         body: |
-          Thank you @{{ user.login }} for suggesting this.
+          Thank you @{{ issue.user.login }} for suggesting this.
