@@ -93,7 +93,7 @@ labels:
         body: Please follow the issue templates.
         action: close
       pr:
-        body: Please follow the pull request templates.
+        body: Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.
         action: close
     unlabeled:
       issue:
@@ -127,8 +127,7 @@ labels:
   - name: proposal
     labeled:
       issue:
-        body: |
-          Thank you @{{ issue.user.login }} for suggesting this.
+        body: Thank you @{{ issue.user.login }} for suggesting this.
 ```
 
 <div align="right">
