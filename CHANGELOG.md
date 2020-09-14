@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.1](https://github.com/peaceiris/actions-label-commenter/compare/v1.6.0...v1.6.1) (2020-09-14)
+
+
+### deps
+
+* bump @types/node from 12.12.57 to 12.12.58 (#274) ([4927264](https://github.com/peaceiris/actions-label-commenter/commit/4927264e96fefa2d59787b8e920a641f8dc89cc7)), closes [#274](https://github.com/peaceiris/actions-label-commenter/issues/274)
+* bump eslint from 7.8.1 to 7.9.0 (#273) ([6f88721](https://github.com/peaceiris/actions-label-commenter/commit/6f88721aaaa852227f22e68ba6e53e9323d43cfb)), closes [#273](https://github.com/peaceiris/actions-label-commenter/issues/273)
+* bump eslint-plugin-jest from 24.0.0 to 24.0.1 (#275) ([29a200f](https://github.com/peaceiris/actions-label-commenter/commit/29a200fc22d6ff049cb89fa0ae47f3e616a38713)), closes [#275](https://github.com/peaceiris/actions-label-commenter/issues/275)
+
+### docs
+
+* Add issue.user.login ([8d388d0](https://github.com/peaceiris/actions-label-commenter/commit/8d388d07d1715d5205a485e42ea7b59df288e3ef))
+
+### feat
+
+* Add pull_request.user.login (#278) ([0cbed3c](https://github.com/peaceiris/actions-label-commenter/commit/0cbed3c512c3e58d4e6dd845de7458bebe0c4142)), closes [#278](https://github.com/peaceiris/actions-label-commenter/issues/278)
+
+
+
 # [1.6.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.5.1-0...v1.6.0) (2020-09-12)
 
 
