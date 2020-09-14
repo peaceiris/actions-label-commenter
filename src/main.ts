@@ -7,6 +7,8 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
 
+// test
+
 async function closeIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
