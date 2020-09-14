@@ -5,7 +5,7 @@ labels:
         body: Please follow the issue templates.
         action: close
       pr:
-        body: Thank you @{{ issue.user.login }} for suggesting this. Please follow the pull request templates.
+        body: Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.
         action: close
     unlabeled:
       issue:
