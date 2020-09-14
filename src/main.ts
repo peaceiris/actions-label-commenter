@@ -127,16 +127,33 @@ export async function run(): Promise<void> {
     }
 
     // Render template
-    const commentBodyView = {
-      issue: {
-        user: {
-          login: (context.payload as any).issue.user.login // eslint-disable-line @typescript-eslint/no-explicit-any
-        }
-      },
-      sender: {
-        login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
+    const commentBodyView = (() => {
+      if (eventName === 'issues') {
+        return {
+          issue: {
+            user: {
+              login: (context.payload as any).issue.user.login // eslint-disable-line @typescript-eslint/no-explicit-any
+            }
+          },
+          sender: {
+            login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
+          }
+        };
+      } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
+        return {
+          pull_request: {
+            user: {
+              login: (context.payload as any).pull_request.user.login // eslint-disable-line @typescript-eslint/no-explicit-any
+            }
+          },
+          sender: {
+            login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
+          }
+        };
+      } else {
+        return {};
       }
-    };
+    })();
     const commentBodyRendered = Mustache.render(commentBody, commentBodyView);
 
     // Post comment
