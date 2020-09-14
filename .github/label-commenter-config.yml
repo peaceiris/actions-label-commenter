@@ -5,7 +5,7 @@ labels:
         body: Please follow the issue templates.
         action: close
       pr:
-        body: Please follow the pull request templates.
+        body: Thank you @{{ issue.user.login }} for suggesting this. Please follow the pull request templates.
         action: close
     unlabeled:
       issue:
@@ -36,8 +36,9 @@ labels:
     labeled:
       issue:
         body: This issue is easy for contributing. Everyone can work on this.
+      pr:
+        body: Thank you @{{ issue.user.login }} for contributing this.
   - name: proposal
     labeled:
       issue:
-        body: |
-          Thank you @{{ issue.user.login }} for suggesting this.
+        body: Thank you @{{ issue.user.login }} for suggesting this.
