@@ -1,13 +1,15 @@
+<h2 align="center">
+Label Commenter Action
+</h2>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/peaceiris/actions-label-commenter/master/images/ogp.jpg" alt="Label Commenter Action thumbnail" width="500px">
+</div>
+
 [![license](https://img.shields.io/github/license/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/blob/master/LICENSE)
 [![release](https://img.shields.io/github/release/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/releases/latest)
 [![GitHub release date](https://img.shields.io/github/release-date/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/releases)
 [![Release Feed](https://img.shields.io/badge/release-feed-yellow)](https://github.com/peaceiris/actions-label-commenter/releases.atom)
-
-<img width="600" alt="Label Commenter GitHub Action" src="./images/ogp.jpg">
-
-
-
-## Label Commenter Action
 
 This action is one of label triggered GitHub Actions for posting a template message. After commenting, it can automatically close or reopen issues. Of course, it also can manage pull requests.
 
