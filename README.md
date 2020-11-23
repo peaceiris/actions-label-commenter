@@ -3,10 +3,10 @@ Label Commenter Action
 </h2>
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/peaceiris/actions-label-commenter/master/images/ogp.jpg" alt="Label Commenter Action thumbnail" width="500px">
+  <img src="https://raw.githubusercontent.com/peaceiris/actions-label-commenter/main/images/ogp.jpg" alt="Label Commenter Action thumbnail" width="500px">
 </div>
 
-[![license](https://img.shields.io/github/license/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/blob/main/LICENSE)
 [![release](https://img.shields.io/github/release/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/releases/latest)
 [![GitHub release date](https://img.shields.io/github/release-date/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/releases)
 [![Release Feed](https://img.shields.io/badge/release-feed-yellow)](https://github.com/peaceiris/actions-label-commenter/releases.atom)
@@ -198,7 +198,7 @@ Multiple issues will be closed.
 
 ## License
 
-- [MIT License - peaceiris/actions-label-commenter](https://github.com/peaceiris/actions-label-commenter/blob/master/LICENSE)
+- [MIT License - peaceiris/actions-label-commenter](https://github.com/peaceiris/actions-label-commenter/blob/main/LICENSE)
 
 
 

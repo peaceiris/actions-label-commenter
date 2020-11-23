@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: master
+          ref: main
 
       - name: Label Commenter
         uses: peaceiris/actions-label-commenter@v1.6.1
