@@ -1,0 +1,16 @@
+version: '3.2'
+
+services:
+  dev:
+    image: 'docker.pkg.github.com/peaceiris/actions-label-commenter/alc-dev:latest'
+    build:
+      context: .
+      cache_from:
+        - 'docker.pkg.github.com/peaceiris/actions-label-commenter/alc-dev:latest'
+    container_name: peaceiris_actions_label_commenter
+    volumes:
+      - ${PWD}:/repo
+    stdin_open: true
+    tty: true
+    command:
+      - bash

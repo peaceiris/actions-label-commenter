@@ -40,7 +40,7 @@ jobs:
           npm --version
           git --version
       - run: npm ci
-      - run: npm run format:check
+      - run: npm run fmt:check
       - run: npm run lint
       - run: npm run build
       - run: npm test
@@ -52,5 +52,3 @@ jobs:
           path: coverage
 
 #      - uses: codecov/codecov-action@v1
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
