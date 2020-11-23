@@ -4,7 +4,8 @@ author: 'peaceiris'
 inputs:
   github_token:
     description: 'Auth token used to manage issues or pull requests'
-    required: true
+    default: ${{ github.token }}
+    required: false
   config_file:
     description: 'Path to action setting file'
     default: '.github/label-commenter-config.yml'

@@ -78,8 +78,7 @@ jobs:
 
       - name: Label Commenter
         uses: peaceiris/actions-label-commenter@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        # with:
           # config_file: .github/label-commenter-config.yml
 ```
 
@@ -145,6 +144,13 @@ labels:
 > When you use the repository's `GITHUB_TOKEN` to perform tasks on behalf of the GitHub Actions app, events triggered by the `GITHUB_TOKEN` will not create a new workflow run. This prevents you from accidentally creating recursive workflow runs. For example, if a workflow run pushes code using the repository's `GITHUB_TOKEN`, a new workflow will not run even when the repository contains a workflow configured to run when push events occur.
 
 You need to provide a personal access token to an auto label GitHub Actions or GitHub Bot like `actions/labeler`.
+
+```yaml
+- name: Label Commenter
+  uses: peaceiris/actions-label-commenter@v1
+  with:
+    github_token: ${{ secrets.GH_PAT }}
+```
 
 <div align="right">
 <a href="#table-of-contents">Back to TOC ☝️</a>
