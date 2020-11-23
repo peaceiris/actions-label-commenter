@@ -13,8 +13,9 @@
     "test": "jest --coverage --verbose",
     "build": "ncc build ./src/index.ts -o lib --minify",
     "tsc": "tsc",
-    "format": "prettier --write **/*.ts",
-    "format:check": "prettier --check **/*.ts",
+    "fmt": "prettier --write **/*.ts",
+    "fmt:check": "prettier --check **/*.ts",
+    "all": "npm run fmt && npm run lint && npm test",
     "release": "standard-version",
     "update-deps": "(git diff 'HEAD@{1}' --name-only | grep 'package-lock.json' > /dev/null) && npm ci || :"
   },

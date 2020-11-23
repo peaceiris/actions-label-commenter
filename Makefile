@@ -1,23 +1,22 @@
-cmd := "bash"
-msg := ""
-IMAGE_NAME := actions_label_commenter_dev:latest
+IMAGE_NAME := docker.pkg.github.com/peaceiris/actions-label-commenter/alc-dev:latest
 NODE_VERSION := $(shell cat ./.nvmrc)
-DOCKER_BUILD := docker build . -t $(IMAGE_NAME) --build-arg NODE_VERSION=$(NODE_VERSION)
-DOCKER_RUN := docker run --rm -i -t -v ${PWD}:/repo -v ~/.gitconfig:/root/.gitconfig $(IMAGE_NAME)
-
 
 .PHONY: build
 build:
-	$(DOCKER_BUILD)
+	docker-compose build --build-arg NODE_VERSION=$(NODE_VERSION)
 
 .PHONY: run
 run:
-	$(DOCKER_RUN) $(cmd)
+	docker-compose run --rm dev bash
+
+.PHONY: ci
+ci:
+	docker-compose run --rm -T dev npm ci
 
 .PHONY: test
 test:
-	$(DOCKER_RUN) npm test
+	docker-compose run --rm -T dev npm test
 
-.PHONY: commit
-commit:
-	$(DOCKER_RUN) git commit -m "$(msg)"
+.PHONY: all
+all:
+	docker-compose run --rm -T dev npm run all
