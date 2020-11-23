@@ -35,6 +35,8 @@ async function openIssue(
 
 export async function run(): Promise<void> {
   try {
+    core.info('[INFO] Usage https://github.com/peaceiris/actions-label-commenter#readme');
+
     const inps: Inputs = getInputs();
 
     if (core.isDebug()) {
