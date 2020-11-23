@@ -5,10 +5,6 @@ on:
     types:
       - labeled
       - unlabeled
-#   pull_request:
-#     types:
-#       - labeled
-#       - unlabeled
   pull_request_target:
     types:
       - labeled
@@ -23,7 +19,7 @@ jobs:
           ref: main
 
       - name: Label Commenter
-        uses: peaceiris/actions-label-commenter@v1.6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        uses: peaceiris/actions-label-commenter@v1.7.0
+        # with:
+          # github_token: ${{ secrets.GITHUB_TOKEN }}
           # config_file: .github/label-commenter-config.yml
