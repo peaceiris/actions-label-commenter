@@ -1,38 +1,12 @@
 import * as core from '@actions/core';
 import {context, getOctokit} from '@actions/github';
-import {GitHub} from '@actions/github/lib/utils';
 import {EventPayloads} from '@octokit/webhooks';
 import {Inputs} from './interfaces';
 import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
-
-async function closeIssue(
-  githubClient: InstanceType<typeof GitHub>,
-  issueNumber: number
-): Promise<void> {
-  await githubClient.issues.update({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    issue_number: issueNumber,
-    state: 'closed'
-  });
-  return;
-}
-
-async function openIssue(
-  githubClient: InstanceType<typeof GitHub>,
-  issueNumber: number
-): Promise<void> {
-  await githubClient.issues.update({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    issue_number: issueNumber,
-    state: 'open'
-  });
-  return;
-}
+import {openIssue, closeIssue} from './issues-helper';
 
 export async function run(): Promise<void> {
   try {
