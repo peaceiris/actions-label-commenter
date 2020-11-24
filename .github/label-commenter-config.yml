@@ -58,7 +58,7 @@ labels:
 
           We appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.
         locking: lock
-        lock_reason: heated
+        lock_reason: too heated
     unlabeled:
       issue:
         body: |
