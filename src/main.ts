@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import {context, getOctokit} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
+import {EventPayloads} from '@octokit/webhooks';
 import {Inputs} from './interfaces';
 import {getInputs} from './get-inputs';
 import fs from 'fs';
@@ -45,18 +46,35 @@ export async function run(): Promise<void> {
       core.endGroup();
     }
 
-    const eventName = context.eventName;
-    const labelEvent = context.payload.action;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const labelName = (context.payload as any).label.name;
-    let issueNumber = 0;
-    if (eventName === 'issues') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      issueNumber = (context.payload as any).issue.number;
-    } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      issueNumber = (context.payload as any).number;
-    }
+    const eventName: string = context.eventName;
+    const payload = context.payload as
+      | EventPayloads.WebhookPayloadIssues
+      | EventPayloads.WebhookPayloadPullRequest;
+    const labelEvent: string = payload.action;
+
+    const labelName: string = (() => {
+      if (eventName === 'issues') {
+        const payloadIssuesLabel = (payload as EventPayloads.WebhookPayloadIssues)
+          .label as EventPayloads.WebhookPayloadIssuesLabel;
+        return payloadIssuesLabel.name;
+      } else {
+        // if (eventName === 'pull_request' || eventName === 'pull_request_target')
+        const payloadPullRequestLabel = (payload as EventPayloads.WebhookPayloadPullRequest)
+          .label as EventPayloads.WebhookPayloadPullRequestLabel;
+        return payloadPullRequestLabel.name;
+      }
+    })();
+
+    const issueNumber: number = (() => {
+      if (eventName === 'issues') {
+        const payloadIssuesIssue = (payload as EventPayloads.WebhookPayloadIssues)
+          .issue as EventPayloads.WebhookPayloadIssuesIssue;
+        return payloadIssuesIssue.number;
+      } else {
+        // if (eventName === 'pull_request' || eventName === 'pull_request_target')
+        return (payload as EventPayloads.WebhookPayloadPullRequest).number;
+      }
+    })();
 
     core.info(`\
 [INFO] config_file: ${inps.ConfigFilePath}
@@ -134,22 +152,22 @@ export async function run(): Promise<void> {
         return {
           issue: {
             user: {
-              login: (context.payload as any).issue.user.login // eslint-disable-line @typescript-eslint/no-explicit-any
+              login: (payload as EventPayloads.WebhookPayloadIssues).issue.user.login
             }
           },
           sender: {
-            login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
+            login: (payload as EventPayloads.WebhookPayloadIssues).sender.login
           }
         };
       } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
         return {
           pull_request: {
             user: {
-              login: (context.payload as any).pull_request.user.login // eslint-disable-line @typescript-eslint/no-explicit-any
+              login: (payload as EventPayloads.WebhookPayloadPullRequest).pull_request.user.login
             }
           },
           sender: {
-            login: (context.payload as any).sender.login // eslint-disable-line @typescript-eslint/no-explicit-any
+            login: (payload as EventPayloads.WebhookPayloadPullRequest).sender.login
           }
         };
       } else {
