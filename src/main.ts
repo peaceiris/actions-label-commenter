@@ -179,15 +179,28 @@ export async function run(): Promise<void> {
     consoleDebug('Unlock issue', unlockResult);
 
     // Post comment
-    const issuesCreateCommentResponse: OctokitResponse<IssuesCreateCommentResponseData> = await githubClient.issues.createComment(
-      {
-        issue_number: context.issue.number,
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        body: commentBodyRendered
+    const locked: boolean = (() => {
+      if (eventName === 'issues') {
+        const payloadIssuesIssue = (payload as EventPayloads.WebhookPayloadIssues)
+          .issue as EventPayloads.WebhookPayloadIssuesIssue;
+        return payloadIssuesIssue.locked;
+      } else {
+        // if (eventName === 'pull_request' || eventName === 'pull_request_target')
+        return (payload as EventPayloads.WebhookPayloadPullRequest).pull_request.locked;
       }
-    );
-    consoleDebug('issuesCreateCommentResponse', issuesCreateCommentResponse);
+    })();
+
+    if (!locked) {
+      const issuesCreateCommentResponse: OctokitResponse<IssuesCreateCommentResponseData> = await githubClient.issues.createComment(
+        {
+          issue_number: context.issue.number,
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          body: commentBodyRendered
+        }
+      );
+      consoleDebug('issuesCreateCommentResponse', issuesCreateCommentResponse);
+    }
 
     // Close or Open an issue
     if (finalAction === 'close') {
