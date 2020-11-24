@@ -164,9 +164,21 @@ export async function run(): Promise<void> {
     })();
     const commentBodyRendered = Mustache.render(commentBody, commentBodyView);
 
-    // Post comment
+    // Create octokit client
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
+
+    // Unlock an issue
+    const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
+    const unlockResult = await lockHandler(
+      `labels.${labelName}.${labelEvent}.${eventType}`,
+      githubClient,
+      issueNumber,
+      locking
+    );
+    consoleDebug('Unlock issue', unlockResult);
+
+    // Post comment
     const issuesCreateCommentResponse: OctokitResponse<IssuesCreateCommentResponseData> = await githubClient.issues.createComment(
       {
         issue_number: context.issue.number,
@@ -190,8 +202,7 @@ export async function run(): Promise<void> {
       );
     }
 
-    // lock or unlock an issue
-    const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
+    // Lock an issue
     const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
     const lockResult = await lockHandler(
       `labels.${labelName}.${labelEvent}.${eventType}`,
