@@ -135,7 +135,15 @@ export async function run(): Promise<void> {
       }
     }
 
-    const commentBody = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
+    const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
+    const commentBody =
+      config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body +
+      `\n<div align="right">` +
+      `<a href="${logURL}">Log</a>` +
+      ` | ` +
+      `<a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a>` +
+      `</div>\n` +
+      '\n<!-- peaceiris/actions-label-commenter -->\n';
     const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
     core.info(`\
 [INFO] commentBody: ${commentBody}
