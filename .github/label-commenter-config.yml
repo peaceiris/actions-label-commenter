@@ -43,7 +43,7 @@ labels:
   - name: locked (spam)
     labeled:
       issue:
-        body: |-
+        body: |
           This issue has been **LOCKED** because of spam!
 
           Please do not spam messages and/or issues on the issue tracker. You may get blocked from this repository for doing so.
@@ -53,7 +53,7 @@ labels:
   - name: locked (heated)
     labeled:
       issue:
-        body: |-
+        body: |
           This issue has been **LOCKED** because of heated conversation!
 
           We appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.
@@ -61,13 +61,13 @@ labels:
         lock_reason: heated
     unlabeled:
       issue:
-        body: |-
+        body: |
           This issue has been unlocked now.
         locking: unlock
   - name: locked (off-topic)
     labeled:
       issue:
-        body: |-
+        body: |
           This issue has been **LOCKED** because of off-topic conversations!
 
           Please use our other means of communication for casual chats.
@@ -77,7 +77,7 @@ labels:
   - name: locked (resolved)
     labeled:
       issue:
-        body: |-
+        body: |
           This issue has been **LOCKED** because of it being resolved!
 
           The issue has been fixed and is therefore considered resolved.
