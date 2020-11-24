@@ -188,7 +188,9 @@ export async function run(): Promise<void> {
 
     // Post comment
     const locked: boolean = (() => {
-      if (eventName === 'issues') {
+      if (locking === 'unlock') {
+        return false;
+      } else if (eventName === 'issues') {
         const payloadIssuesIssue = (payload as EventPayloads.WebhookPayloadIssues)
           .issue as EventPayloads.WebhookPayloadIssuesIssue;
         return payloadIssuesIssue.locked;
