@@ -6,7 +6,17 @@ import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
-import {openIssue, closeIssue} from './issues-helper';
+import {openIssue, closeIssue, lockHandler} from './issues-helper';
+import {IssuesCreateCommentResponseData, OctokitResponse} from '@octokit/types';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function consoleDebug(groupTitle: string, body: any): void {
+  if (core.isDebug()) {
+    core.startGroup(groupTitle);
+    console.log(body);
+    core.endGroup();
+  }
+}
 
 export async function run(): Promise<void> {
   try {
@@ -14,11 +24,7 @@ export async function run(): Promise<void> {
 
     const inps: Inputs = getInputs();
 
-    if (core.isDebug()) {
-      core.startGroup('Dump GitHub context');
-      console.log(context);
-      core.endGroup();
-    }
+    consoleDebug('Dump GitHub context', context);
 
     const eventName: string = context.eventName;
     const payload = context.payload as
@@ -161,26 +167,40 @@ export async function run(): Promise<void> {
     // Post comment
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
-    await githubClient.issues.createComment({
-      issue_number: context.issue.number,
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      body: commentBodyRendered
-    });
+    const issuesCreateCommentResponse: OctokitResponse<IssuesCreateCommentResponseData> = await githubClient.issues.createComment(
+      {
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: commentBodyRendered
+      }
+    );
+    consoleDebug('issuesCreateCommentResponse', issuesCreateCommentResponse);
 
-    // Close or Open issue
+    // Close or Open an issue
     if (finalAction === 'close') {
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
     } else if (finalAction === '' || finalAction === void 0) {
       core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`);
-      return;
     } else {
       throw new Error(
         `invalid value "${finalAction}" labels.${labelName}.${labelEvent}.${eventType}.action`
       );
     }
+
+    // lock or unlock an issue
+    const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
+    const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
+    const lockResult = await lockHandler(
+      `labels.${labelName}.${labelEvent}.${eventType}`,
+      githubClient,
+      issueNumber,
+      locking,
+      lockReason
+    );
+    consoleDebug('Lock issue', lockResult);
 
     return;
   } catch (error) {
