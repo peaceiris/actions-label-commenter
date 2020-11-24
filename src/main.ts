@@ -6,7 +6,7 @@ import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
-import {openIssue, closeIssue, lockHandler} from './issues-helper';
+import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
 import {IssuesCreateCommentResponseData, OctokitResponse} from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -115,6 +115,8 @@ export async function run(): Promise<void> {
       }
     }
 
+    const parentFieldName = `labels.${labelName}.${labelEvent}.${eventType}`;
+
     const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
     const commentBody =
       config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body +
@@ -131,7 +133,7 @@ export async function run(): Promise<void> {
   `);
 
     if (commentBody === '' || commentBody === void 0) {
-      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.body`);
+      core.info(`[INFO] no configuration ${parentFieldName}.body`);
     }
 
     // Render template
@@ -168,15 +170,21 @@ export async function run(): Promise<void> {
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
 
-    // Unlock an issue
+    // Get locking config
     const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
-    const unlockResult = await lockHandler(
-      `labels.${labelName}.${labelEvent}.${eventType}`,
-      githubClient,
-      issueNumber,
-      locking
-    );
-    consoleDebug('Unlock issue', unlockResult);
+    if (locking === 'lock' || locking === 'unlock') {
+      core.info(`[INFO] ${parentFieldName}.locking is ${locking}`);
+    } else if (locking === '' || locking === void 0) {
+      core.info(`[INFO] no configuration ${parentFieldName}.locking`);
+    } else {
+      throw new Error(`invalid value "${locking}" ${parentFieldName}.locking`);
+    }
+
+    // Unlock an issue
+    if (locking === 'unlock') {
+      const unlockResult = await unlockIssue(githubClient, issueNumber);
+      consoleDebug('Unlock issue', unlockResult);
+    }
 
     // Post comment
     const locked: boolean = (() => {
@@ -208,23 +216,17 @@ export async function run(): Promise<void> {
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
     } else if (finalAction === '' || finalAction === void 0) {
-      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`);
+      core.info(`[INFO] no configuration ${parentFieldName}.action`);
     } else {
-      throw new Error(
-        `invalid value "${finalAction}" labels.${labelName}.${labelEvent}.${eventType}.action`
-      );
+      throw new Error(`invalid value "${finalAction}" ${parentFieldName}.action`);
     }
 
     // Lock an issue
-    const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
-    const lockResult = await lockHandler(
-      `labels.${labelName}.${labelEvent}.${eventType}`,
-      githubClient,
-      issueNumber,
-      locking,
-      lockReason
-    );
-    consoleDebug('Lock issue', lockResult);
+    if (locking === 'lock') {
+      const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
+      const lockResult = await lockIssue(githubClient, issueNumber, lockReason);
+      consoleDebug('Lock issue', lockResult);
+    }
 
     return;
   } catch (error) {
