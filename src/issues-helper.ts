@@ -35,12 +35,27 @@ export async function lockHandler(
   lockReason?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
+  const reason = (() => {
+    switch (lockReason) {
+      case 'off-topic':
+        return 'off-topic';
+      case 'too heated':
+        return 'too heated';
+      case 'resolved':
+        return 'resolved';
+      case 'spam':
+        return 'spam';
+      default:
+        return 'resolved';
+    }
+  })();
+
   if (locking === 'lock') {
     return await githubClient.issues.lock({
       owner: context.repo.owner,
       repo: context.repo.repo,
       issue_number: issueNumber,
-      lock_reason: lockReason
+      lock_reason: reason
     });
   } else if (locking === 'unlock') {
     return await githubClient.issues.unlock({
