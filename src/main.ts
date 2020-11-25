@@ -115,21 +115,25 @@ export async function run(): Promise<void> {
     }
 
     const parentFieldName = `labels.${labelName}.${labelEvent}.${eventType}`;
-
     const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
-    const commentBody =
-      config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body +
-      `\n\n<div align="right">` +
+
+    // Merge comment body
+    const commentMain = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body + '\n\n';
+    const commentHeader = config.comment.header + '\n\n';
+    const commentFooter = config.comment.footer + '\n\n';
+    const commentFooterLinks =
+      `<div align="right">` +
       `<a href="${logURL}">Log</a>` +
       ` | ` +
       `<a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a>` +
       `</div>\n` +
       '\n<!-- peaceiris/actions-label-commenter -->\n';
+    const rawCommentBody = commentHeader + commentMain + commentFooter + commentFooterLinks;
 
-    if (commentBody === '' || commentBody === void 0) {
+    if (commentMain === '' || commentMain === void 0) {
       core.info(`[INFO] no configuration ${parentFieldName}.body`);
     } else {
-      groupConsoleLog('commentBody', commentBody, core.isDebug());
+      groupConsoleLog('rawCommentBody', rawCommentBody, core.isDebug());
     }
 
     const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
@@ -163,7 +167,7 @@ export async function run(): Promise<void> {
         return {};
       }
     })();
-    const commentBodyRendered = Mustache.render(commentBody, commentBodyView);
+    const commentBodyRendered = Mustache.render(rawCommentBody, commentBodyView);
     groupConsoleLog('commentBodyRendered', commentBodyRendered, core.isDebug());
 
     // Create octokit client
