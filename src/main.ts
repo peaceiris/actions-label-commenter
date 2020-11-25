@@ -119,8 +119,8 @@ export async function run(): Promise<void> {
 
     // Merge comment body
     const commentMain = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body + '\n\n';
-    const commentHeader = config.comment.header + '\n\n';
-    const commentFooter = config.comment.footer + '\n\n';
+    const commentHeader = config.comment?.header + '\n\n';
+    const commentFooter = config.comment?.footer + '\n\n';
     const commentFooterLinks =
       `<div align="right">` +
       `<a href="${logURL}">Log</a>` +
