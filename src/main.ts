@@ -1,37 +1,21 @@
 import * as core from '@actions/core';
 import {context, getOctokit} from '@actions/github';
-import {GitHub} from '@actions/github/lib/utils';
 import {EventPayloads} from '@octokit/webhooks';
 import {Inputs} from './interfaces';
 import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
+import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
+import {IssuesCreateCommentResponseData, OctokitResponse} from '@octokit/types';
 
-async function closeIssue(
-  githubClient: InstanceType<typeof GitHub>,
-  issueNumber: number
-): Promise<void> {
-  await githubClient.issues.update({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    issue_number: issueNumber,
-    state: 'closed'
-  });
-  return;
-}
-
-async function openIssue(
-  githubClient: InstanceType<typeof GitHub>,
-  issueNumber: number
-): Promise<void> {
-  await githubClient.issues.update({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    issue_number: issueNumber,
-    state: 'open'
-  });
-  return;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function consoleDebug(groupTitle: string, body: any): void {
+  if (core.isDebug()) {
+    core.startGroup(groupTitle);
+    console.log(body);
+    core.endGroup();
+  }
 }
 
 export async function run(): Promise<void> {
@@ -40,11 +24,7 @@ export async function run(): Promise<void> {
 
     const inps: Inputs = getInputs();
 
-    if (core.isDebug()) {
-      core.startGroup('Dump GitHub context');
-      console.log(context);
-      core.endGroup();
-    }
+    consoleDebug('Dump GitHub context', context);
 
     const eventName: string = context.eventName;
     const payload = context.payload as
@@ -135,6 +115,8 @@ export async function run(): Promise<void> {
       }
     }
 
+    const parentFieldName = `labels.${labelName}.${labelEvent}.${eventType}`;
+
     const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
     const commentBody =
       config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body +
@@ -151,7 +133,7 @@ export async function run(): Promise<void> {
   `);
 
     if (commentBody === '' || commentBody === void 0) {
-      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.body`);
+      core.info(`[INFO] no configuration ${parentFieldName}.body`);
     }
 
     // Render template
@@ -184,28 +166,68 @@ export async function run(): Promise<void> {
     })();
     const commentBodyRendered = Mustache.render(commentBody, commentBodyView);
 
-    // Post comment
+    // Create octokit client
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
-    await githubClient.issues.createComment({
-      issue_number: context.issue.number,
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      body: commentBodyRendered
-    });
 
-    // Close or Open issue
+    // Get locking config
+    const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
+    if (locking === 'lock' || locking === 'unlock') {
+      core.info(`[INFO] ${parentFieldName}.locking is ${locking}`);
+    } else if (locking === '' || locking === void 0) {
+      core.info(`[INFO] no configuration ${parentFieldName}.locking`);
+    } else {
+      throw new Error(`invalid value "${locking}" ${parentFieldName}.locking`);
+    }
+
+    // Unlock an issue
+    if (locking === 'unlock') {
+      const unlockResult = await unlockIssue(githubClient, issueNumber);
+      consoleDebug('Unlock issue', unlockResult);
+    }
+
+    // Post comment
+    const locked: boolean = (() => {
+      if (locking === 'unlock') {
+        return false;
+      } else if (eventName === 'issues') {
+        const payloadIssuesIssue = (payload as EventPayloads.WebhookPayloadIssues)
+          .issue as EventPayloads.WebhookPayloadIssuesIssue;
+        return payloadIssuesIssue.locked;
+      } else {
+        // if (eventName === 'pull_request' || eventName === 'pull_request_target')
+        return (payload as EventPayloads.WebhookPayloadPullRequest).pull_request.locked;
+      }
+    })();
+
+    if (!locked) {
+      const issuesCreateCommentResponse: OctokitResponse<IssuesCreateCommentResponseData> = await githubClient.issues.createComment(
+        {
+          issue_number: context.issue.number,
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          body: commentBodyRendered
+        }
+      );
+      consoleDebug('issuesCreateCommentResponse', issuesCreateCommentResponse);
+    }
+
+    // Close or Open an issue
     if (finalAction === 'close') {
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
     } else if (finalAction === '' || finalAction === void 0) {
-      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}.action`);
-      return;
+      core.info(`[INFO] no configuration ${parentFieldName}.action`);
     } else {
-      throw new Error(
-        `invalid value "${finalAction}" labels.${labelName}.${labelEvent}.${eventType}.action`
-      );
+      throw new Error(`invalid value "${finalAction}" ${parentFieldName}.action`);
+    }
+
+    // Lock an issue
+    if (locking === 'lock') {
+      const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
+      const lockResult = await lockIssue(githubClient, issueNumber, lockReason);
+      consoleDebug('Lock issue', lockResult);
     }
 
     return;
