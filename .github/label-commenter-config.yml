@@ -1,8 +1,14 @@
-# comment:
-#   header: Hi, there.
-#   footer: >-
-#     > This is an automated comment created by the [peaceiris/actions-label-commenter](https://github.com/peaceiris/actions-label-commenter).
-#     Responding to the bot or mentioning it won't have any effect.
+comment:
+  header: Hi, there.
+  footer: "\
+    > This is an automated comment created by the [peaceiris/actions-label-commenter]. \
+    Responding to the bot or mentioning it won't have any effect.
+    > [bot setting file], [GitHub Actions workflow file]
+
+    [peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
+    [bot setting file]: https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml
+    [GitHub Actions workflow file]: https://github.com/peaceiris/actions-label-commenter/blob/main/.github/workflows/label-commenter.yml
+    "
 
 labels:
   - name: invalid
