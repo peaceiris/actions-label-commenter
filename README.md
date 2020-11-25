@@ -87,6 +87,16 @@ jobs:
 ```yaml
 # .github/label-commenter-config.yml
 
+comment:
+  header: Hi, there.
+  footer: |
+    > This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have
+    > [bot setting file], [GitHub Actions workflow file]
+
+    [peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
+    [bot setting file]: https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml
+    [GitHub Actions workflow file]: https://github.com/peaceiris/actions-label-commenter/blob/main/.github/workflows/label-commenter.yml
+
 labels:
   - name: invalid
     labeled:
@@ -129,6 +139,70 @@ labels:
     labeled:
       issue:
         body: Thank you @{{ issue.user.login }} for suggesting this.
+  - name: locked (spam)
+    labeled:
+      issue:
+        body: |
+          This issue has been **LOCKED** because of spam!
+
+          Please do not spam messages and/or issues on the issue tracker. You may get blocked from this repository for doing so.
+        action: close
+        locking: lock
+        lock_reason: spam
+      pr:
+        body: |
+          This pull-request has been **LOCKED** because of spam!
+
+          Please do not spam messages and/or pull-requests on this project. You may get blocked from this repository for doing so.
+        action: close
+        locking: lock
+        lock_reason: spam
+  - name: locked (heated)
+    labeled:
+      issue:
+        body: |
+          This issue has been **LOCKED** because of heated conversation!
+
+          We appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.
+        locking: lock
+        lock_reason: too heated
+      pr:
+        body: |
+          This pull-request has been **LOCKED** because of heated conversation!
+
+          We appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.
+        locking: lock
+        lock_reason: too heated
+    unlabeled:
+      issue:
+        body: |
+          This issue has been unlocked now.
+        locking: unlock
+      pr:
+        body: |
+          This pull-request has been unlocked now.
+        locking: unlock
+  - name: locked (off-topic)
+    labeled:
+      issue:
+        body: |
+          This issue has been **LOCKED** because of off-topic conversations!
+
+          Please use our other means of communication for casual chats.
+        action: close
+        locking: lock
+        lock_reason: off-topic
+  - name: locked (resolved)
+    labeled:
+      issue:
+        body: |
+          This issue has been **LOCKED** because of it being resolved!
+
+          The issue has been fixed and is therefore considered resolved.
+          If you still encounter this or it has changed, open a new issue instead of responding to solved ones.
+        action: close
+        locking: lock
+        lock_reason: resolved
 ```
 
 <div align="right">
