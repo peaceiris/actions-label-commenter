@@ -145,13 +145,6 @@ labels:
 
 You need to provide a personal access token to an auto label GitHub Actions or GitHub Bot like `actions/labeler`.
 
-```yaml
-- name: Label Commenter
-  uses: peaceiris/actions-label-commenter@v1
-  with:
-    github_token: ${{ secrets.GH_PAT }}
-```
-
 <div align="right">
 <a href="#table-of-contents">Back to TOC ☝️</a>
 </div>
