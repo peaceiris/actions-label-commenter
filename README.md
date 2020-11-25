@@ -2,6 +2,8 @@
 Label Commenter Action
 </h2>
 
+test
+
 <div align="center">
   <img src="https://raw.githubusercontent.com/peaceiris/actions-label-commenter/main/images/ogp.jpg" alt="Label Commenter Action thumbnail" width="500px">
 </div>
