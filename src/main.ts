@@ -118,11 +118,11 @@ export async function run(): Promise<void> {
     const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
 
     // Merge comment body
-    const commentMain = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
-    const commentHeader = config.comment.header;
-    const commentFooter = config.comment.footer;
+    const commentMain = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body + '\n\n';
+    const commentHeader = config.comment.header + '\n\n';
+    const commentFooter = config.comment.footer + '\n\n';
     const commentFooterLinks =
-      `\n\n<div align="right">` +
+      `<div align="right">` +
       `<a href="${logURL}">Log</a>` +
       ` | ` +
       `<a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a>` +
