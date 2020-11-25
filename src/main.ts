@@ -10,12 +10,11 @@ import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
 import {IssuesCreateCommentResponseData, OctokitResponse} from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function consoleDebug(groupTitle: string, body: any): void {
-  if (core.isDebug()) {
-    core.startGroup(groupTitle);
-    console.log(body);
-    core.endGroup();
-  }
+function groupConsoleLog(groupTitle: string, body: any, debug: boolean): void {
+  if (!debug) return;
+  core.startGroup(groupTitle);
+  console.log(body);
+  core.endGroup();
 }
 
 export async function run(): Promise<void> {
@@ -24,7 +23,7 @@ export async function run(): Promise<void> {
 
     const inps: Inputs = getInputs();
 
-    consoleDebug('Dump GitHub context', context);
+    groupConsoleLog('Dump GitHub context', context, core.isDebug());
 
     const eventName: string = context.eventName;
     const payload = context.payload as
@@ -120,21 +119,21 @@ export async function run(): Promise<void> {
     const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
     const commentBody =
       config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body +
-      `\n<div align="right">` +
+      `\n\n<div align="right">` +
       `<a href="${logURL}">Log</a>` +
       ` | ` +
       `<a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a>` +
       `</div>\n` +
       '\n<!-- peaceiris/actions-label-commenter -->\n';
-    const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
-    core.info(`\
-[INFO] commentBody: ${commentBody}
-[INFO] finalAction: ${finalAction}\
-  `);
 
     if (commentBody === '' || commentBody === void 0) {
       core.info(`[INFO] no configuration ${parentFieldName}.body`);
+    } else {
+      groupConsoleLog('commentBody', commentBody, core.isDebug());
     }
+
+    const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
+    core.info(`[INFO] finalAction: ${finalAction}`);
 
     // Render template
     const commentBodyView = (() => {
@@ -165,6 +164,7 @@ export async function run(): Promise<void> {
       }
     })();
     const commentBodyRendered = Mustache.render(commentBody, commentBodyView);
+    groupConsoleLog('commentBodyRendered', commentBodyRendered, core.isDebug());
 
     // Create octokit client
     const githubToken = inps.GithubToken;
@@ -183,10 +183,10 @@ export async function run(): Promise<void> {
     // Unlock an issue
     if (locking === 'unlock') {
       const unlockResult = await unlockIssue(githubClient, issueNumber);
-      consoleDebug('Unlock issue', unlockResult);
+      groupConsoleLog('Unlock issue', unlockResult, core.isDebug());
     }
 
-    // Post comment
+    // Get locked status
     const locked: boolean = (() => {
       if (locking === 'unlock') {
         return false;
@@ -200,6 +200,7 @@ export async function run(): Promise<void> {
       }
     })();
 
+    // Post comment
     if (!locked) {
       const issuesCreateCommentResponse: OctokitResponse<IssuesCreateCommentResponseData> = await githubClient.issues.createComment(
         {
@@ -209,7 +210,7 @@ export async function run(): Promise<void> {
           body: commentBodyRendered
         }
       );
-      consoleDebug('issuesCreateCommentResponse', issuesCreateCommentResponse);
+      groupConsoleLog('issuesCreateCommentResponse', issuesCreateCommentResponse, core.isDebug());
     }
 
     // Close or Open an issue
@@ -227,7 +228,7 @@ export async function run(): Promise<void> {
     if (locking === 'lock') {
       const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
       const lockResult = await lockIssue(githubClient, issueNumber, lockReason);
-      consoleDebug('Lock issue', lockResult);
+      groupConsoleLog('Lock issue', lockResult, core.isDebug());
     }
 
     return;
