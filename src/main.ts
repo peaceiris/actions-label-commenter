@@ -118,9 +118,9 @@ export async function run(): Promise<void> {
     const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
 
     // Merge comment body
-    const commentMain = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body + '\n\n';
-    const commentHeader = config.comment.header + '\n\n';
-    const commentFooter = config.comment.footer + '\n\n';
+    const commentMain = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
+    const commentHeader = config.comment?.header ?? '';
+    const commentFooter = config.comment?.footer ?? '';
     const commentFooterLinks =
       `<div align="right">` +
       `<a href="${logURL}">Log</a>` +
@@ -128,11 +128,15 @@ export async function run(): Promise<void> {
       `<a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a>` +
       `</div>\n` +
       '\n<!-- peaceiris/actions-label-commenter -->\n';
-    const rawCommentBody = commentHeader + commentMain + commentFooter + commentFooterLinks;
+    const rawCommentBody = `${commentHeader}\n\n${commentMain}\n\n${commentFooter}\n\n${commentFooterLinks}`;
 
     if (commentMain === '' || commentMain === void 0) {
       core.info(`[INFO] no configuration ${parentFieldName}.body`);
     } else {
+      groupConsoleLog('commentMain', commentMain, core.isDebug());
+      groupConsoleLog('commentHeader', commentHeader, core.isDebug());
+      groupConsoleLog('commentFooter', commentFooter, core.isDebug());
+      groupConsoleLog('commentFooterLinks', commentFooterLinks, core.isDebug());
       groupConsoleLog('rawCommentBody', rawCommentBody, core.isDebug());
     }
 
