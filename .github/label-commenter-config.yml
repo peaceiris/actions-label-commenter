@@ -50,6 +50,14 @@ labels:
         action: close
         locking: lock
         lock_reason: spam
+      pr:
+        body: |
+          This pull-request has been **LOCKED** because of spam!
+
+          Please do not spam messages and/or pull-requests on this project. You may get blocked from this repository for doing so.
+        action: close
+        locking: lock
+        lock_reason: spam
   - name: locked (heated)
     labeled:
       issue:
@@ -59,10 +67,21 @@ labels:
           We appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.
         locking: lock
         lock_reason: too heated
+      pr:
+        body: |
+          This pull-request has been **LOCKED** because of heated conversation!
+
+          We appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.
+        locking: lock
+        lock_reason: too heated
     unlabeled:
       issue:
         body: |
           This issue has been unlocked now.
+        locking: unlock
+      pr:
+        body: |
+          This pull-request has been unlocked now.
         locking: unlock
   - name: locked (off-topic)
     labeled:
