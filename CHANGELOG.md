@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.8.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.7.0...v1.8.0) (2020-11-25)
+
+
+### ci
+
+* 02b4dd5 #317 [skip ci] ([2421c8b](https://github.com/peaceiris/actions-label-commenter/commit/2421c8b360157420acd4c31a5c11017a9e54ecab)), closes [#317](https://github.com/peaceiris/actions-label-commenter/issues/317)
+* 27857ab #327 [skip ci] ([39ed4e9](https://github.com/peaceiris/actions-label-commenter/commit/39ed4e9e5c0ccf235cab3058321db040b47ae21f)), closes [#327](https://github.com/peaceiris/actions-label-commenter/issues/327)
+* 686598e #327 [skip ci] ([bec9171](https://github.com/peaceiris/actions-label-commenter/commit/bec917165760ddfb8ee60a9194ecf0e67fa3b911)), closes [#327](https://github.com/peaceiris/actions-label-commenter/issues/327)
+* 7277885 #317 [skip ci] ([4cadad0](https://github.com/peaceiris/actions-label-commenter/commit/4cadad0c98b51f61e57eafcb29bf1f2017591204)), closes [#317](https://github.com/peaceiris/actions-label-commenter/issues/317)
+* a11ee2d #328 [skip ci] ([83a5f44](https://github.com/peaceiris/actions-label-commenter/commit/83a5f44c510a717466259ed15b8616f5df0061f5)), closes [#328](https://github.com/peaceiris/actions-label-commenter/issues/328)
+* add config for pull-request [skip ci] ([af3f941](https://github.com/peaceiris/actions-label-commenter/commit/af3f941302c1fed03f878c8129300dd9df3f1923))
+* add links to yaml files [skip ci] ([90d2a8b](https://github.com/peaceiris/actions-label-commenter/commit/90d2a8b0947e57278332604240b073310097f8ff))
+* add locked labels for #317 ([edc66d6](https://github.com/peaceiris/actions-label-commenter/commit/edc66d6ca90072f91edddd531b0b72580acfcf19)), closes [#317](https://github.com/peaceiris/actions-label-commenter/issues/317)
+* add newline to end ([598292d](https://github.com/peaceiris/actions-label-commenter/commit/598292dde8cb9a8d08ccbd6867b99c862d3bc2f3))
+* bump actions-label-commenter from 1.6.1 to 1.7.0 ([5616270](https://github.com/peaceiris/actions-label-commenter/commit/561627026810d640b0291a1a309b5631ac26fecf))
+* ce3f8df #328 [skip ci] ([2038089](https://github.com/peaceiris/actions-label-commenter/commit/20380892812d4d67dafccf9fdaa0fae9e348b16e)), closes [#328](https://github.com/peaceiris/actions-label-commenter/issues/328)
+* comment out header and footer [skip ci] ([fa5f5b2](https://github.com/peaceiris/actions-label-commenter/commit/fa5f5b23dbb4dc6b1f6a22964aa04f4a36311d5f))
+* fa5a02a #328 [skip ci] ([20c5fe4](https://github.com/peaceiris/actions-label-commenter/commit/20c5fe427ca6163a66e399ec48f34d44fcc99c9e)), closes [#328](https://github.com/peaceiris/actions-label-commenter/issues/328)
+* feb519c #317 [skip ci] ([77b9624](https://github.com/peaceiris/actions-label-commenter/commit/77b9624243e92c44570d4131ad52c1de2a70007f)), closes [#317](https://github.com/peaceiris/actions-label-commenter/issues/317)
+* fix footer [skip ci] ([2eb507a](https://github.com/peaceiris/actions-label-commenter/commit/2eb507a18bdb3f0ca376ae336b184e57e1259d0b))
+* fix lock_reason too heated [skip ci] ([ef42809](https://github.com/peaceiris/actions-label-commenter/commit/ef4280972bb19332e0a131227caf9485d32e2b4e))
+* improve workflows and Docker image (#314) ([c81148b](https://github.com/peaceiris/actions-label-commenter/commit/c81148bfcf0761a28b9029e21fb5bfb7847dd6dd)), closes [#314](https://github.com/peaceiris/actions-label-commenter/issues/314)
+* test f1acb7d #317 ([67e96e4](https://github.com/peaceiris/actions-label-commenter/commit/67e96e40fb16dc0a510ae6dec4cc4b43f5e8d5d9)), closes [#317](https://github.com/peaceiris/actions-label-commenter/issues/317)
+
+### feat
+
+* Add footer links to log and usage (#316) ([e46339b](https://github.com/peaceiris/actions-label-commenter/commit/e46339b6f1ec0a410c9bdbc91332c9591b089047)), closes [#316](https://github.com/peaceiris/actions-label-commenter/issues/316)
+* add link to readme in actions log (#313) ([29ce8d9](https://github.com/peaceiris/actions-label-commenter/commit/29ce8d96b1a8a6282bdc0a9801defdbc1aeb5739)), closes [#313](https://github.com/peaceiris/actions-label-commenter/issues/313)
+* improve log group (#320) ([bd43808](https://github.com/peaceiris/actions-label-commenter/commit/bd438087cb881aa9b092f38c0f38df5c423481bd)), closes [#320](https://github.com/peaceiris/actions-label-commenter/issues/320)
+* lock or unlock issue or pull-request (#317) ([9412d86](https://github.com/peaceiris/actions-label-commenter/commit/9412d86b7209b4647125f2350ff49137c39795c5)), closes [#317](https://github.com/peaceiris/actions-label-commenter/issues/317) [#308](https://github.com/peaceiris/actions-label-commenter/issues/308)
+* Support comment header and footer (#327) ([1d49a01](https://github.com/peaceiris/actions-label-commenter/commit/1d49a01e7c7ef698905278d2895425182d53e6c9)), closes [#327](https://github.com/peaceiris/actions-label-commenter/issues/327) [#318](https://github.com/peaceiris/actions-label-commenter/issues/318)
+* use octokit/webhooks (#315) ([ec45978](https://github.com/peaceiris/actions-label-commenter/commit/ec459785736a345a5e41b0ac664d55ac79d94a2c)), closes [#315](https://github.com/peaceiris/actions-label-commenter/issues/315)
+
+### fix
+
+* Cannot read property header or footer (#328) ([1106b2a](https://github.com/peaceiris/actions-label-commenter/commit/1106b2a3f0eb5745782a02f8d45684092bad8ea0)), closes [#328](https://github.com/peaceiris/actions-label-commenter/issues/328) [#327](https://github.com/peaceiris/actions-label-commenter/issues/327)
+
+
+
 # [1.7.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.6.1...v1.7.0) (2020-11-23)
 
 
