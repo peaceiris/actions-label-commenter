@@ -19,7 +19,7 @@ jobs:
           ref: main
 
       - name: Label Commenter
-        uses: peaceiris/actions-label-commenter@fa5a02a
+        uses: peaceiris/actions-label-commenter@a11ee2d
         # with:
           # github_token: ${{ secrets.GITHUB_TOKEN }}
           # config_file: .github/label-commenter-config.yml
