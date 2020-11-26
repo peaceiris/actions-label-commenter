@@ -33,6 +33,7 @@ This Action was submitted to the [GitHub Actions Hackathon] and featured by GitH
   - [Set a Path to Action Setting File](#set-a-path-to-action-setting-file)
   - [Set a Personal Access Token](#set-a-personal-access-token)
   - [Enable Debug Mode](#enable-debug-mode)
+- [Work with Issue Template](#work-with-issue-template)
 - [Work with Other Auto Label Actions](#work-with-other-auto-label-actions)
 - [Examples](#examples)
   - [Comment and Close Invalid Format Issue or Pull Request](#comment-and-close-invalid-format-issue-or-pull-request)
@@ -247,6 +248,33 @@ Default is `${{ github.token }}`
   env:
     RUNNER_DEBUG: 1
 ```
+
+<div align="right">
+<a href="#table-of-contents">Back to TOC ☝️</a>
+</div>
+
+
+
+## Work with Issue Template
+
+Here is a proposal issue template: [.github/ISSUE_TEMPLATE/proposal.md](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/ISSUE_TEMPLATE/proposal.md)
+
+```yaml
+---
+name: Proposal
+about: Suggest an idea for this project
+title: 'proposal: This is a sample title'
+labels: proposal
+assignees: peaceiris
+---
+
+Issue body here...
+```
+
+Scenario:
+
+1. When a user opens an issue with the proposal template, the proposal label will be added automatically.
+1. This action can detect that `labeled` event and create a template comment of proposal.
 
 <div align="right">
 <a href="#table-of-contents">Back to TOC ☝️</a>
