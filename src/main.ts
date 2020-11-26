@@ -140,9 +140,6 @@ export async function run(): Promise<void> {
       groupConsoleLog('rawCommentBody', rawCommentBody, core.isDebug());
     }
 
-    const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
-    core.info(`[INFO] finalAction: ${finalAction}`);
-
     // Render template
     const commentBodyView = (() => {
       if (eventName === 'issues') {
@@ -222,6 +219,7 @@ export async function run(): Promise<void> {
     }
 
     // Close or Open an issue
+    const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
     if (finalAction === 'close') {
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
