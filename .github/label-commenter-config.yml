@@ -113,3 +113,15 @@ labels:
         action: close
         locking: lock
         lock_reason: resolved
+  - name: documentation
+    labeled:
+      issue:
+        body: |
+          Thank you for suggesting documentation improvement.
+      pr:
+        body: |
+          Thank you for suggesting documentation improvement.
+          When you add a new section, do not forget to update the Table of Contents.
+          ```sh
+          npx doctoc@1.4.0 --github README.md
+          ```
