@@ -1,6 +1,8 @@
 comment:
   header: Hi, there.
   footer: |
+    ---
+
     > This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
     > [bot setting file], [GitHub Actions workflow file]
 
