@@ -254,6 +254,33 @@ Default is `${{ github.token }}`
 
 
 
+## Work with Issue Template
+
+Here is a proposal issue template: [.github/ISSUE_TEMPLATE/proposal.md](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/ISSUE_TEMPLATE/proposal.md)
+
+```yaml
+---
+name: Proposal
+about: Suggest an idea for this project
+title: 'proposal: This is a sample title'
+labels: proposal
+assignees: peaceiris
+---
+
+Issue body here...
+```
+
+Scenario:
+
+1. When a user opens an issue with the proposal template, the proposal label will be added automatically.
+1. This action can detect that `labeled` event and create a template comment of proposal.
+
+<div align="right">
+<a href="#table-of-contents">Back to TOC ☝️</a>
+</div>
+
+
+
 ## Work with Other Auto Label Actions
 
 > [Authenticating with the GITHUB_TOKEN - GitHub Docs](https://docs.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#using-the-github_token-in-a-workflow)
