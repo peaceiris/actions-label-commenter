@@ -29,6 +29,10 @@ This Action was submitted to the [GitHub Actions Hackathon] and featured by GitH
 - [Getting Started](#getting-started)
   - [Workflow Setting](#workflow-setting)
   - [Action Setting](#action-setting)
+- [Options](#options)
+  - [Set a Path to Action Setting File](#set-a-path-to-action-setting-file)
+  - [Set a Personal Access Token](#set-a-personal-access-token)
+  - [Enable Debug Mode](#enable-debug-mode)
 - [Work with Other Auto Label Actions](#work-with-other-auto-label-actions)
 - [Examples](#examples)
   - [Comment and Close Invalid Format Issue or Pull Request](#comment-and-close-invalid-format-issue-or-pull-request)
@@ -204,6 +208,45 @@ labels:
         action: close
         locking: lock
         lock_reason: resolved
+```
+
+<div align="right">
+<a href="#table-of-contents">Back to TOC ☝️</a>
+</div>
+
+
+
+## Options
+
+### Set a Path to Action Setting File
+
+Default is `.github/label-commenter-config.yml`
+
+```yaml
+- name: Label Commenter
+  uses: peaceiris/actions-label-commenter@v1
+  with:
+    config_file: ./path_to/your_config.yml
+```
+
+### Set a Personal Access Token
+
+Default is `${{ github.token }}`
+
+```yaml
+- name: Label Commenter
+  uses: peaceiris/actions-label-commenter@v1
+  with:
+    github_token: ${{ secrets.GH_PAT }}
+```
+
+### Enable Debug Mode
+
+```yaml
+- name: Label Commenter
+  uses: peaceiris/actions-label-commenter@v1
+  env:
+    RUNNER_DEBUG: 1
 ```
 
 <div align="right">
