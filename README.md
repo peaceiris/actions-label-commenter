@@ -37,6 +37,7 @@ This Action was submitted to the [GitHub Actions Hackathon] and featured by GitH
   - [Comment and Close Duplicate Issue or Pull Request](#comment-and-close-duplicate-issue-or-pull-request)
   - [Comment Multiple Line](#comment-multiple-line)
   - [Comment and Close Multiple Issues or Pull Requests](#comment-and-close-multiple-issues-or-pull-requests)
+  - [Lock or Unlock issue or Pull Request](#lock-or-unlock-issue-or-pull-request)
 - [Changelog](#changelog)
 - [License](#license)
 - [Maintainer](#maintainer)
@@ -229,33 +230,37 @@ You need to provide a personal access token to an auto label GitHub Actions or G
 
 ### Comment and Close Invalid Format Issue or Pull Request
 
-![](images/demo_1.jpg)
+![Comment and Close Invalid Format Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_1.jpg)
 
 ### Reopen Issue or Pull Request
 
-![](images/demo_2.jpg)
+![Reopen Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_2.jpg)
 
 ### Comment and Close Wontfix Issue or Pull Request
 
-![](images/demo_3.jpg)
+![Comment and Close Wontfix Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_3.jpg)
 
 ### Comment and Close Duplicate Issue or Pull Request
 
-![](images/demo_4.jpg)
+![Comment and Close Duplicate Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_4.jpg)
 
 ### Comment Multiple Line
 
-![](images/demo_5.jpg)
+![Comment Multiple Line - peaceiris/actions-label-commenter GitHub Action](images/demo_5.jpg)
 
 ### Comment and Close Multiple Issues or Pull Requests
 
 | Select Label | Labeled |
 |---|---|
-| ![](images/demo_6_1.jpg) | ![](images/demo_6_2.jpg) |
+| ![Comment and Close Multiple Issues or Pull Requests - peaceiris/actions-label-commenter GitHub Action](images/demo_6_1.jpg) | ![Comment and Close Multiple Issues or Pull Requests - peaceiris/actions-label-commenter GitHub Action](images/demo_6_2.jpg) |
 
 Multiple issues will be closed.
 
 ![](images/demo_6_3.jpg)
+
+### Lock or Unlock issue or Pull Request
+
+![Lock or Unlock issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_7.jpg)
 
 <div align="right">
 <a href="#table-of-contents">Back to TOC ☝️</a>
