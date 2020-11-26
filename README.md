@@ -306,6 +306,12 @@ jobs:
         repo-token: "${{ secrets.GH_PAT }}"
 ```
 
+Scenario:
+
+- Someone updates the README.md and opens a pull-request.
+- actions/labeler adds the documentation label automatically.
+- peaceiris/actions-label-commenter creates the template comment automatically.
+
 <div align="right">
 <a href="#table-of-contents">Back to TOC ☝️</a>
 </div>
