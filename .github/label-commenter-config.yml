@@ -119,9 +119,12 @@ labels:
         body: |
           Thank you for suggesting documentation improvement.
       pr:
-        body: |
-          Thank you for suggesting documentation improvement.
-          When you add a new section, do not forget to update the Table of Contents.
-          ```sh
-          npx doctoc@1.4.0 --github README.md
-          ```
+        body: "\
+          [The documentation label] was added.\n
+          Thank you for suggesting documentation improvement. \
+          When you add a new section, do not forget to update the Table of Contents.\n
+          ```sh\n
+          npx doctoc --github README.md\n
+          ```\n\n
+          [The documentation label]: https://github.com/peaceiris/actions-label-commenter/issues?q=label%3Adocumentation\n
+          "
