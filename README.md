@@ -33,6 +33,7 @@ This Action was submitted to the [GitHub Actions Hackathon] and featured by GitH
   - [Set a Path to Action Setting File](#set-a-path-to-action-setting-file)
   - [Set a Personal Access Token](#set-a-personal-access-token)
   - [Enable Debug Mode](#enable-debug-mode)
+- [Work with Issue Template](#work-with-issue-template)
 - [Work with Other Auto Label Actions](#work-with-other-auto-label-actions)
 - [Examples](#examples)
   - [Comment and Close Invalid Format Issue or Pull Request](#comment-and-close-invalid-format-issue-or-pull-request)
