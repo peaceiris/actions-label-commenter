@@ -308,9 +308,9 @@ jobs:
 
 Scenario:
 
-- Someone updates the README.md and opens a pull-request.
-- actions/labeler adds the documentation label automatically.
-- peaceiris/actions-label-commenter creates the template comment automatically.
+1. Someone updates the README.md and opens a pull-request.
+1. actions/labeler adds the documentation label automatically.
+1. peaceiris/actions-label-commenter creates the template comment automatically.
 
 <div align="right">
 <a href="#table-of-contents">Back to TOC ☝️</a>
