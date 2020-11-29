@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.1](https://github.com/peaceiris/actions-label-commenter/compare/v1.8.0...v1.8.1) (2020-11-29)
+
+
+### chore
+
+* update ISSUE_TEMPLATE ([96a6783](https://github.com/peaceiris/actions-label-commenter/commit/96a6783c755b27aa4031fb4bc1bbe9eb8b4757e0))
+
+### ci
+
+* Add actions/labeler (#330) ([3abbcfb](https://github.com/peaceiris/actions-label-commenter/commit/3abbcfba491fe626c444514dc586bcfca4c71fd8)), closes [#330](https://github.com/peaceiris/actions-label-commenter/issues/330) [#326](https://github.com/peaceiris/actions-label-commenter/issues/326)
+* add documentation [skip ci] ([291ff12](https://github.com/peaceiris/actions-label-commenter/commit/291ff1231c8081a92cc4984dc24ca68e6e32df14))
+* add line [skip ci] ([5dbbf0a](https://github.com/peaceiris/actions-label-commenter/commit/5dbbf0a5e15e2f0b572ac474449ba3b62161ad68))
+* add newlines [skip ci] ([972e427](https://github.com/peaceiris/actions-label-commenter/commit/972e42794ddbf817beddff92d26f7dfc9d9d889a))
+* add RUNNER_DEBUG 1 [skip ci] ([c8d25ed](https://github.com/peaceiris/actions-label-commenter/commit/c8d25ed1743e03abd9cb1cefe5bbcd80efd2cea4))
+* comment out RUNNER_DEBUG [skip ci] ([2c252a3](https://github.com/peaceiris/actions-label-commenter/commit/2c252a33c6c459e00cb2c4745aa4a7b48e7d4a14))
+* pin to v1.8.0 ([8f80787](https://github.com/peaceiris/actions-label-commenter/commit/8f807872436a617e13601b38316abc7759fbaad9))
+* remove package.json package-lock.json ([18d9014](https://github.com/peaceiris/actions-label-commenter/commit/18d90149a63c7ca8dee853a3e2ed43ac9451f0b9))
+* update comment.footer [skip ci] ([e8ce994](https://github.com/peaceiris/actions-label-commenter/commit/e8ce994ee4599a2d6b9ad61bb00417214a7af7a4))
+* update documentation.labeled.pr ([9a5d08a](https://github.com/peaceiris/actions-label-commenter/commit/9a5d08a5f87436d2509c303575f4369614ac915e))
+
+### deps
+
+* update devDependencies (#329) ([276af72](https://github.com/peaceiris/actions-label-commenter/commit/276af722f9c3bd39d21e5d8b87c842d0779f7287)), closes [#329](https://github.com/peaceiris/actions-label-commenter/issues/329)
+
+### docs
+
+* Add example of actions/labeler (#331) ([6918ee4](https://github.com/peaceiris/actions-label-commenter/commit/6918ee4ac68100af6cec9cf4bd62341be9d1a80f)), closes [#331](https://github.com/peaceiris/actions-label-commenter/issues/331) [#326](https://github.com/peaceiris/actions-label-commenter/issues/326)
+* Add header, footer, and locking examples ([7d27a86](https://github.com/peaceiris/actions-label-commenter/commit/7d27a86e3e494b458dc02606fa5180c7b33f1734))
+* add Lock or Unlock issue or Pull Request ([34a8a0c](https://github.com/peaceiris/actions-label-commenter/commit/34a8a0c00960637dd0e0647063221ca28a44cda8))
+* add options ([c86a189](https://github.com/peaceiris/actions-label-commenter/commit/c86a189ce465a8db9d362b159038e2481f8a93a9)), closes [#326](https://github.com/peaceiris/actions-label-commenter/issues/326)
+* add Scenario ([6966144](https://github.com/peaceiris/actions-label-commenter/commit/69661444408e76047772dbfda558f9de741038ac))
+* add scope of pat ([9c73d94](https://github.com/peaceiris/actions-label-commenter/commit/9c73d94a50f05dd3c45f96d585c968e81211bdc1))
+* add Work with Issue Template (#332) ([4a69ff0](https://github.com/peaceiris/actions-label-commenter/commit/4a69ff0356f3f19053340a978958f190ecdc8f09)), closes [#332](https://github.com/peaceiris/actions-label-commenter/issues/332) [#326](https://github.com/peaceiris/actions-label-commenter/issues/326)
+* change to ordered list ([594dc64](https://github.com/peaceiris/actions-label-commenter/commit/594dc6444849ac3fd5f6ee10f5dda2d0be1857db))
+* remove unneeded yaml example ([f969ecb](https://github.com/peaceiris/actions-label-commenter/commit/f969ecb797c2d4ea7c7bf3806fa133236206809a))
+* update comment.footer ([404451c](https://github.com/peaceiris/actions-label-commenter/commit/404451cb7e3310c6158658c5f72ae0e6fe90ce57))
+
+### feat
+
+* Validate config file location (#335) ([9102f64](https://github.com/peaceiris/actions-label-commenter/commit/9102f641d83c82dbb287529364edf1ec7da270f3)), closes [#335](https://github.com/peaceiris/actions-label-commenter/issues/335)
+
+### refactor
+
+* enable noUncheckedIndexedAccess (#334) ([0f11bde](https://github.com/peaceiris/actions-label-commenter/commit/0f11bde06ff2c4f92879fead1f63f311ff45ae78)), closes [#334](https://github.com/peaceiris/actions-label-commenter/issues/334)
+* remove extra log of finalAction ([06d05e4](https://github.com/peaceiris/actions-label-commenter/commit/06d05e4f954a9f0f86f1df018b339258d372557c))
+
+
+
 # [1.8.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.7.0...v1.8.0) (2020-11-25)
 
 
