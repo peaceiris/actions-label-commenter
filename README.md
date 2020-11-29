@@ -288,7 +288,7 @@ Scenario:
 >
 > When you use the repository's `GITHUB_TOKEN` to perform tasks on behalf of the GitHub Actions app, events triggered by the `GITHUB_TOKEN` will not create a new workflow run. This prevents you from accidentally creating recursive workflow runs. For example, if a workflow run pushes code using the repository's `GITHUB_TOKEN`, a new workflow will not run even when the repository contains a workflow configured to run when push events occur.
 
-You need to provide a personal access token to an auto label GitHub Actions or GitHub Bot like [actions/labeler](https://github.com/actions/labeler).
+You need to provide a personal access token (with `public_repo` for a public repository, `repo` for a private repository) to an auto label GitHub Actions or GitHub Bot like [actions/labeler](https://github.com/actions/labeler).
 
 ```yaml
 # .github/workflows/labeler.yml
