@@ -63,6 +63,10 @@ export async function run(): Promise<void> {
   `);
 
     const configFilePath = inps.ConfigFilePath;
+    // Validate config file location
+    if (!fs.existsSync(configFilePath)) {
+      throw new Error(`not found ${configFilePath}`);
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const config: any = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
     if (core.isDebug()) {
