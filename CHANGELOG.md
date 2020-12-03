@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.8.1...v1.8.2) (2020-12-03)
+
+
+### ci
+
+* bump peaceiris/actions-label-commenter from v1.8.0 to v1.8.1 (#336) ([c1474fe](https://github.com/peaceiris/actions-label-commenter/commit/c1474fe48426460019704099f572f7fe61f82570)), closes [#336](https://github.com/peaceiris/actions-label-commenter/issues/336)
+
+### deps
+
+* bump @octokit/types from 5.5.0 to 6.0.3 (#340) ([8f0e413](https://github.com/peaceiris/actions-label-commenter/commit/8f0e413ebfc478039481389e225deb88f81559a3)), closes [#340](https://github.com/peaceiris/actions-label-commenter/issues/340)
+* bump node from 12.19.1 to 12.20.0 (#339) ([510990b](https://github.com/peaceiris/actions-label-commenter/commit/510990b2c4d246a3e0a8fde69b50c6f6b0033814)), closes [#339](https://github.com/peaceiris/actions-label-commenter/issues/339)
+
+
+
 ## [1.8.1](https://github.com/peaceiris/actions-label-commenter/compare/v1.8.0...v1.8.1) (2020-11-29)
 
 
