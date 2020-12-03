@@ -7,7 +7,7 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
 import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
-import {IssuesCreateCommentResponseData, OctokitResponse} from '@octokit/types';
+import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function groupConsoleLog(groupTitle: string, body: any, debug: boolean): void {
@@ -178,6 +178,9 @@ export async function run(): Promise<void> {
     // Create octokit client
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
+    type IssuesCreateCommentResponse = GetResponseTypeFromEndpointMethod<
+      typeof githubClient.issues.createComment
+    >;
 
     // Get locking config
     const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
@@ -211,7 +214,7 @@ export async function run(): Promise<void> {
 
     // Post comment
     if (!locked) {
-      const issuesCreateCommentResponse: OctokitResponse<IssuesCreateCommentResponseData> = await githubClient.issues.createComment(
+      const issuesCreateCommentResponse: IssuesCreateCommentResponse = await githubClient.issues.createComment(
         {
           issue_number: context.issue.number,
           owner: context.repo.owner,
