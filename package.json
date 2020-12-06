@@ -33,7 +33,7 @@
       "jest --bail --findRelatedTests"
     ],
     "README.md": [
-      "npx doctoc@1.4.0 --github"
+      "npx doctoc@2.0.0 --github"
     ]
   },
   "repository": {
