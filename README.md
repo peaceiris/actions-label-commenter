@@ -80,7 +80,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: main
+          ref: main # Set your default branch
 
       - name: Label Commenter
         uses: peaceiris/actions-label-commenter@v1
