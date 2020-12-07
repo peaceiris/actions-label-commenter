@@ -66,10 +66,10 @@ export async function run(): Promise<void> {
     })();
 
     core.info(`\
-[INFO] config_file: ${inps.ConfigFilePath}
-[INFO] labelName: ${labelName}
-[INFO] labelEvent: ${labelEvent}
-[INFO] issueNumber: ${issueNumber}\
+[INFO] config file path: ${inps.ConfigFilePath}
+[INFO] label name: ${labelName}
+[INFO] label event: ${labelEvent}
+[INFO] issue number: ${issueNumber}\
   `);
 
     const configFilePath = inps.ConfigFilePath;
@@ -80,7 +80,7 @@ export async function run(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const config: any = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
     if (core.isDebug()) {
-      core.startGroup('Dump Config');
+      core.startGroup('Dump config');
       console.log(config);
       core.endGroup();
     }
