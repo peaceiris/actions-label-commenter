@@ -58,7 +58,7 @@
     "@octokit/types": "^6.1.0",
     "@octokit/webhooks": "^7.18.1",
     "js-yaml": "^3.14.0",
-    "mustache": "^4.0.1"
+    "mustache": "^4.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
