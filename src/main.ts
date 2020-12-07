@@ -26,6 +26,16 @@ export async function run(): Promise<void> {
     groupConsoleLog('Dump GitHub context', context, core.isDebug());
 
     const eventName: string = context.eventName;
+    core.info(`[INFO] event name: ${eventName}`);
+    if (
+      eventName !== 'issues' &&
+      eventName !== 'pull_request' &&
+      eventName !== 'pull_request_target'
+    ) {
+      core.info(`[INFO] unsupported event: ${eventName}`);
+      return;
+    }
+
     const payload = context.payload as
       | EventPayloads.WebhookPayloadIssues
       | EventPayloads.WebhookPayloadPullRequest;
