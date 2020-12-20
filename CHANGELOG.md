@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.9.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.8.2...v1.9.0) (2020-12-20)
+
+
+### ci
+
+* bump actions/setup-node from v2.1.2 to v2.1.3 (#349) ([c5e4532](https://github.com/peaceiris/actions-label-commenter/commit/c5e4532e8ea1d6ef141d8334cf0b1dfb3ab18fc2)), closes [#349](https://github.com/peaceiris/actions-label-commenter/issues/349)
+* bump actions/setup-node from v2.1.3 to v2.1.4 (#353) ([f1f9d98](https://github.com/peaceiris/actions-label-commenter/commit/f1f9d9805474e9ee0bc0552ce89368b605980054)), closes [#353](https://github.com/peaceiris/actions-label-commenter/issues/353)
+* bump peaceiris/actions-label-commenter from v1.8.1 to v1.8.2 (#341) ([7fc64d6](https://github.com/peaceiris/actions-label-commenter/commit/7fc64d68d2264b71282cfde04c4e85b552ca7d35)), closes [#341](https://github.com/peaceiris/actions-label-commenter/issues/341)
+
+### deps
+
+* bump @octokit/types from 6.0.3 to 6.1.0 (#342) ([066dc17](https://github.com/peaceiris/actions-label-commenter/commit/066dc173a5d1a07e9d3bfd88b2c39bb43975f7d1)), closes [#342](https://github.com/peaceiris/actions-label-commenter/issues/342)
+* bump @octokit/types from 6.1.0 to 6.1.1 (#345) ([d3209d9](https://github.com/peaceiris/actions-label-commenter/commit/d3209d96d9adc5309bdc2f2d260b12c00f447a2a)), closes [#345](https://github.com/peaceiris/actions-label-commenter/issues/345)
+* bump @octokit/webhooks from 7.15.1 to 7.16.0 (#343) ([210bd47](https://github.com/peaceiris/actions-label-commenter/commit/210bd4774dfb2a5723c36425b776db8a7555aa1d)), closes [#343](https://github.com/peaceiris/actions-label-commenter/issues/343)
+* bump @octokit/webhooks from 7.16.0 to 7.18.1 (#344) ([e49ebb0](https://github.com/peaceiris/actions-label-commenter/commit/e49ebb0cd9ef5a3930b7206d33a2006cefd13318)), closes [#344](https://github.com/peaceiris/actions-label-commenter/issues/344)
+* bump @octokit/webhooks from 7.18.1 to 7.20.0 (#351) ([855b71b](https://github.com/peaceiris/actions-label-commenter/commit/855b71b0ca16e085994c63cdbc8c808654d84902)), closes [#351](https://github.com/peaceiris/actions-label-commenter/issues/351)
+* bump @octokit/webhooks from 7.20.0 to 7.21.0 (#354) ([c9af86b](https://github.com/peaceiris/actions-label-commenter/commit/c9af86b34f965822ad7af89ec83cba81db317a2d)), closes [#354](https://github.com/peaceiris/actions-label-commenter/issues/354)
+* bump ini from 1.3.5 to 1.3.8 (#350) ([004b798](https://github.com/peaceiris/actions-label-commenter/commit/004b798a6aef0b9183788cb27af9befd19e5bf19)), closes [#350](https://github.com/peaceiris/actions-label-commenter/issues/350)
+* bump js-yaml from 3.14.0 to 3.14.1 (#348) ([4edb953](https://github.com/peaceiris/actions-label-commenter/commit/4edb953b0e5ab2d9345b4207e5ef5c7952fdb28e)), closes [#348](https://github.com/peaceiris/actions-label-commenter/issues/348)
+* bump mustache from 4.0.1 to 4.1.0 (#346) ([c7039c8](https://github.com/peaceiris/actions-label-commenter/commit/c7039c8390e9a20ba478ecb09b8df70fc2fec095)), closes [#346](https://github.com/peaceiris/actions-label-commenter/issues/346)
+* update devDependencies (#355) ([cf651f3](https://github.com/peaceiris/actions-label-commenter/commit/cf651f34bf171e72bf22234c8e8061bb442a1276)), closes [#355](https://github.com/peaceiris/actions-label-commenter/issues/355)
+
+### feat
+
+* Improve log messages ([e999702](https://github.com/peaceiris/actions-label-commenter/commit/e99970266accccd4a715e938e5ba945cfd666587))
+* Show footer links if isDebug (#356) ([a2dda1e](https://github.com/peaceiris/actions-label-commenter/commit/a2dda1efefe75a6be0d3f505321f55756f8282e7)), closes [#356](https://github.com/peaceiris/actions-label-commenter/issues/356)
+* Validate event (#347) ([9288798](https://github.com/peaceiris/actions-label-commenter/commit/928879815d0b8feb3d2a9b39b92902a7157cb543)), closes [#347](https://github.com/peaceiris/actions-label-commenter/issues/347)
+
+
+
 ## [1.8.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.8.1...v1.8.2) (2020-12-03)
 
 
