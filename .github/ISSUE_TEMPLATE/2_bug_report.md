@@ -12,6 +12,15 @@ assignees: peaceiris
 
 **To Reproduce**
 
+Set `RUNNER_DEBUG: 1` as follows:
+
+```yaml
+- name: Label Commenter
+  uses: peaceiris/actions-label-commenter@v1
+  env:
+    RUNNER_DEBUG: 1
+```
+
 Steps to reproduce the behavior:
 
 1. Go to '...'
