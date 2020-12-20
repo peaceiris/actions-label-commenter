@@ -238,6 +238,7 @@ export async function run(): Promise<void> {
         }
       );
       groupConsoleLog('issuesCreateCommentResponse', issuesCreateCommentResponse, core.isDebug());
+      core.info(`[INFO] comment URL: ${issuesCreateCommentResponse.data.html_url}`);
     }
 
     // Close or Open an issue
