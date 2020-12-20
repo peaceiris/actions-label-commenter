@@ -142,7 +142,12 @@ export async function run(): Promise<void> {
       `<a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a>` +
       `</div>\n` +
       '\n<!-- peaceiris/actions-label-commenter -->\n';
-    const rawCommentBody = `${commentHeader}\n\n${commentMain}\n\n${commentFooter}\n\n${commentFooterLinks}`;
+    const rawCommentBody = (() => {
+      if (core.isDebug()) {
+        return `${commentHeader}\n\n${commentMain}\n\n${commentFooter}\n\n${commentFooterLinks}`;
+      }
+      return `${commentHeader}\n\n${commentMain}\n\n${commentFooter}`;
+    })();
 
     if (commentMain === '' || commentMain === void 0) {
       core.info(`[INFO] no configuration ${parentFieldName}.body`);
