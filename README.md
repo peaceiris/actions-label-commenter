@@ -49,8 +49,6 @@ This Action was submitted to the [GitHub Actions Hackathon] and featured by GitH
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-> Table of Contents are generated with [DocToc](https://github.com/thlorenz/doctoc)
-
 
 
 ## Getting Started
@@ -59,9 +57,9 @@ Create your GitHub Actions workflow file and Label Commenter Action setting file
 
 ### Workflow Setting
 
-```yaml
-# .github/workflows/label-commenter.yml
+Create your workflow file `.github/workflows/label-commenter.yml` as follows.
 
+```yaml
 name: Label Commenter
 
 on:
@@ -84,15 +82,13 @@ jobs:
 
       - name: Label Commenter
         uses: peaceiris/actions-label-commenter@v1
-        # with:
-          # config_file: .github/label-commenter-config.yml
 ```
 
 ### Action Setting
 
-```yaml
-# .github/label-commenter-config.yml
+Create your action configuration file `.github/label-commenter-config.yml` as follows.
 
+```yaml
 comment:
   header: Hi, there.
   footer: "\
