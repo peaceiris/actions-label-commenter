@@ -78,7 +78,7 @@ export async function run(): Promise<void> {
       throw new Error(`not found ${configFilePath}`);
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const config: any = yaml.safeLoad(fs.readFileSync(configFilePath, 'utf8'));
+    const config: any = yaml.load(fs.readFileSync(configFilePath, 'utf8'));
     if (core.isDebug()) {
       core.startGroup('Dump config');
       console.log(config);
