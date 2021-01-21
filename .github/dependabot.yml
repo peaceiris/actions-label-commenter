@@ -7,8 +7,6 @@ updates:
     interval: daily
     time: '11:00'
     timezone: Japan
-  labels:
-  - 'dependencies'
   allow:
   - dependency-type: "production"
   commit-message:
@@ -20,7 +18,5 @@ updates:
     interval: "daily"
     time: '11:00'
     timezone: Japan
-  labels:
-  - "CI/CD"
   commit-message:
     prefix: ci

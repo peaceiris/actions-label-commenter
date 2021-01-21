@@ -3,6 +3,8 @@ CI/CD:
 
 dependencies:
   - .nvmrc
+  - package.json
+  - package-lock.json
 
 documentation:
   - README.md
