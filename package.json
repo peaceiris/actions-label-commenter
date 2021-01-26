@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.19",
-    "@types/js-yaml": "^3.12.5",
+    "@types/js-yaml": "^4.0.0",
     "@types/mustache": "^4.1.0",
     "@types/node": "~12",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
