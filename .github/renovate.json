@@ -1,4 +1,11 @@
 {
-  "enabledManagers": ["nvm"],
-  "supportPolicy": ["lts"]
+  "nvm": {
+    "enabledManagers": ["nvm"],
+    "packageRules": [
+      {
+        "updateTypes": ["minor", "patch"],
+        "automerge": false
+      }
+    ]
+  }
 }
