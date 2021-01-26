@@ -39,6 +39,7 @@ jobs:
           node -v
           npm --version
           git --version
+      - run: npx --package renovate -c 'renovate-config-validator'
       - run: npm ci
       - run: npm run fmt:check
       - run: npm run lint
