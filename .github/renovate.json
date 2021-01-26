@@ -1,0 +1,4 @@
+{
+  "enabledManagers": ["nvm"],
+  "supportPolicy": ["lts"]
+}
