@@ -56,7 +56,7 @@
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
     "@octokit/types": "^6.7.1",
-    "@octokit/webhooks": "^7.21.0",
+    "@octokit/webhooks": "^7.23.0",
     "js-yaml": "^4.0.0",
     "mustache": "^4.1.0"
   },
