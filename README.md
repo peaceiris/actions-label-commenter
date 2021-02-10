@@ -317,22 +317,27 @@ Scenario:
 ## Examples
 
 ### Comment and Close Invalid Format Issue or Pull Request
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L11-L22)
 
 ![Comment and Close Invalid Format Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_1.jpg)
 
 ### Reopen Issue or Pull Request
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L11-L22)
 
 ![Reopen Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_2.jpg)
 
 ### Comment and Close Wontfix Issue or Pull Request
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L30-L38)
 
 ![Comment and Close Wontfix Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_3.jpg)
 
 ### Comment and Close Duplicate Issue or Pull Request
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L39-L43)
 
 ![Comment and Close Duplicate Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_4.jpg)
 
 ### Comment Multiple Line
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L23-L29)
 
 ![Comment Multiple Line - peaceiris/actions-label-commenter GitHub Action](images/demo_5.jpg)
 
@@ -347,6 +352,7 @@ Multiple issues will be closed.
 ![](images/demo_6_3.jpg)
 
 ### Lock or Unlock issue or Pull Request
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L70-L94)
 
 ![Lock or Unlock issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_7.jpg)
 
