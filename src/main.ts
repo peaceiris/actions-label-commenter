@@ -1,6 +1,11 @@
 import * as core from '@actions/core';
 import {context, getOctokit} from '@actions/github';
-import {EventPayloads} from '@octokit/webhooks';
+import {
+  IssuesEvent,
+  PullRequestEvent,
+  IssuesLabeledEvent,
+  PullRequestLabeledEvent
+} from '@octokit/webhooks-definitions/schema';
 import {Inputs} from './interfaces';
 import {getInputs} from './get-inputs';
 import fs from 'fs';
@@ -36,32 +41,24 @@ export async function run(): Promise<void> {
       return;
     }
 
-    const payload = context.payload as
-      | EventPayloads.WebhookPayloadIssues
-      | EventPayloads.WebhookPayloadPullRequest;
+    const payload = context.payload as IssuesEvent | PullRequestEvent;
     const labelEvent: string = payload.action;
 
-    const labelName: string = (() => {
+    const labelName: string | undefined = (() => {
       if (eventName === 'issues') {
-        const payloadIssuesLabel = (payload as EventPayloads.WebhookPayloadIssues)
-          .label as EventPayloads.WebhookPayloadIssuesLabel;
-        return payloadIssuesLabel.name;
+        return (payload as IssuesLabeledEvent).label?.name;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
-        const payloadPullRequestLabel = (payload as EventPayloads.WebhookPayloadPullRequest)
-          .label as EventPayloads.WebhookPayloadPullRequestLabel;
-        return payloadPullRequestLabel.name;
+        return (payload as PullRequestLabeledEvent).label?.name;
       }
     })();
 
     const issueNumber: number = (() => {
       if (eventName === 'issues') {
-        const payloadIssuesIssue = (payload as EventPayloads.WebhookPayloadIssues)
-          .issue as EventPayloads.WebhookPayloadIssuesIssue;
-        return payloadIssuesIssue.number;
+        return (payload as IssuesEvent).issue.number;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
-        return (payload as EventPayloads.WebhookPayloadPullRequest).number;
+        return (payload as PullRequestEvent).number;
       }
     })();
 
@@ -165,22 +162,22 @@ export async function run(): Promise<void> {
         return {
           issue: {
             user: {
-              login: (payload as EventPayloads.WebhookPayloadIssues).issue.user.login
+              login: (payload as IssuesEvent).issue.user.login
             }
           },
           sender: {
-            login: (payload as EventPayloads.WebhookPayloadIssues).sender.login
+            login: (payload as IssuesEvent).sender.login
           }
         };
       } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
         return {
           pull_request: {
             user: {
-              login: (payload as EventPayloads.WebhookPayloadPullRequest).pull_request.user.login
+              login: (payload as PullRequestEvent).pull_request.user.login
             }
           },
           sender: {
-            login: (payload as EventPayloads.WebhookPayloadPullRequest).sender.login
+            login: (payload as PullRequestEvent).sender.login
           }
         };
       } else {
@@ -214,16 +211,14 @@ export async function run(): Promise<void> {
     }
 
     // Get locked status
-    const locked: boolean = (() => {
+    const locked: boolean | undefined = (() => {
       if (locking === 'unlock') {
         return false;
       } else if (eventName === 'issues') {
-        const payloadIssuesIssue = (payload as EventPayloads.WebhookPayloadIssues)
-          .issue as EventPayloads.WebhookPayloadIssuesIssue;
-        return payloadIssuesIssue.locked;
+        return (payload as IssuesEvent).issue.locked;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
-        return (payload as EventPayloads.WebhookPayloadPullRequest).pull_request.locked;
+        return (payload as PullRequestEvent).pull_request.locked;
       }
     })();
 
