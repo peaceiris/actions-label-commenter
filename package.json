@@ -48,7 +48,7 @@
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
     "@octokit/types": "^6.10.0",
-    "@octokit/webhooks-definitions": "^3.61.0",
+    "@octokit/webhooks-definitions": "^3.61.1",
     "js-yaml": "^4.0.0",
     "mustache": "^4.1.0"
   },
