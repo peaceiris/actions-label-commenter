@@ -72,6 +72,11 @@ on:
       - labeled
       - unlabeled
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   comment:
     runs-on: ubuntu-18.04
