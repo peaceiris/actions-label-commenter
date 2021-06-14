@@ -47,7 +47,7 @@
   "homepage": "https://github.com/peaceiris/actions-label-commenter#readme",
   "dependencies": {
     "@actions/core": "^1.2.7",
-    "@actions/github": "^4.0.0",
+    "@actions/github": "^5.0.0",
     "@octokit/types": "^6.16.4",
     "@octokit/webhooks-definitions": "^3.67.3",
     "js-yaml": "^4.1.0",
