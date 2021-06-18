@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.9.1...v1.9.2) (2021-06-18)
+
+
+### chore
+
+* Add postinstall for husky install ([182aef3](https://github.com/peaceiris/actions-label-commenter/commit/182aef3577522e3d756b6def464486188778ba60))
+
+### ci
+
+* Add permissions (#428) ([338d786](https://github.com/peaceiris/actions-label-commenter/commit/338d786fd4e663a1894f432c2f761b8439008ef3)), closes [#428](https://github.com/peaceiris/actions-label-commenter/issues/428)
+* bump actions/checkout from 2 to 2.3.4 (#434) ([a425bf7](https://github.com/peaceiris/actions-label-commenter/commit/a425bf7ab71ac794a2e1a3d5dc5a67fdf7aae54f)), closes [#434](https://github.com/peaceiris/actions-label-commenter/issues/434)
+* bump actions/setup-node from v2.1.4 to v2.1.5 (#396) ([934d09f](https://github.com/peaceiris/actions-label-commenter/commit/934d09f1dd9a1d35d56af87594148617d0e9d438)), closes [#396](https://github.com/peaceiris/actions-label-commenter/issues/396)
+* bump peaceiris/actions-label-commenter from v1.9.0 to v1.9.1 (#389) ([73f622a](https://github.com/peaceiris/actions-label-commenter/commit/73f622af353bf3b9038bde45ba440c6fe711af4e)), closes [#389](https://github.com/peaceiris/actions-label-commenter/issues/389)
+
+### deps
+
+* bump @actions/core from 1.2.6 to 1.2.7 (#423) ([1259e83](https://github.com/peaceiris/actions-label-commenter/commit/1259e8333d8afe0387300db0d67f367aea832efd)), closes [#423](https://github.com/peaceiris/actions-label-commenter/issues/423)
+* bump @octokit/types from 6.10.0 to 6.10.1 (#397) ([9fa186b](https://github.com/peaceiris/actions-label-commenter/commit/9fa186b78d027815334856485325ac464cb88e66)), closes [#397](https://github.com/peaceiris/actions-label-commenter/issues/397)
+* bump @octokit/types from 6.10.1 to 6.11.2 (#402) ([138e129](https://github.com/peaceiris/actions-label-commenter/commit/138e12966aa4230beeded1980507862f96cb8f68)), closes [#402](https://github.com/peaceiris/actions-label-commenter/issues/402)
+* bump @octokit/types from 6.11.2 to 6.12.0 (#404) ([3568a99](https://github.com/peaceiris/actions-label-commenter/commit/3568a995ffdf2bbf46f539935cb94958014baed3)), closes [#404](https://github.com/peaceiris/actions-label-commenter/issues/404)
+* bump @octokit/types from 6.12.0 to 6.12.1 (#405) ([ea1e8d0](https://github.com/peaceiris/actions-label-commenter/commit/ea1e8d0c33a9dc990c207309360726052d469f44)), closes [#405](https://github.com/peaceiris/actions-label-commenter/issues/405)
+* bump @octokit/types from 6.12.1 to 6.12.2 (#406) ([e48546b](https://github.com/peaceiris/actions-label-commenter/commit/e48546bf73e2a743a3580b8b2dacb6bf9cd8860c)), closes [#406](https://github.com/peaceiris/actions-label-commenter/issues/406)
+* bump @octokit/types from 6.12.2 to 6.13.0 (#413) ([5fd4811](https://github.com/peaceiris/actions-label-commenter/commit/5fd4811aca35dcd63f752ad78bf56453959075db)), closes [#413](https://github.com/peaceiris/actions-label-commenter/issues/413)
+* bump @octokit/types from 6.13.0 to 6.13.1 (#427) ([535ff71](https://github.com/peaceiris/actions-label-commenter/commit/535ff71e4f7b416215054cb7840d48a8c9209d49)), closes [#427](https://github.com/peaceiris/actions-label-commenter/issues/427)
+* bump @octokit/types from 6.13.1 to 6.13.2 (#430) ([a883a7c](https://github.com/peaceiris/actions-label-commenter/commit/a883a7c3f6f479642436378d0aff049de63d1610)), closes [#430](https://github.com/peaceiris/actions-label-commenter/issues/430)
+* bump @octokit/types from 6.13.2 to 6.14.0 (#431) ([5c7f161](https://github.com/peaceiris/actions-label-commenter/commit/5c7f161788c4be404592e18442cc57974777220b)), closes [#431](https://github.com/peaceiris/actions-label-commenter/issues/431)
+* bump @octokit/types from 6.14.0 to 6.14.1 (#432) ([52823d6](https://github.com/peaceiris/actions-label-commenter/commit/52823d6d9db66624cbac1dcd8c01e1f2090607c1)), closes [#432](https://github.com/peaceiris/actions-label-commenter/issues/432)
+* bump @octokit/types from 6.14.1 to 6.14.2 (#433) ([aa748c3](https://github.com/peaceiris/actions-label-commenter/commit/aa748c3e5cf5b8cd77d21285f4f0320ba5fb947e)), closes [#433](https://github.com/peaceiris/actions-label-commenter/issues/433)
+* bump @octokit/types from 6.14.2 to 6.16.1 (#440) ([c2a5947](https://github.com/peaceiris/actions-label-commenter/commit/c2a5947531ea10b768b73a8948fce13737e05871)), closes [#440](https://github.com/peaceiris/actions-label-commenter/issues/440)
+* bump @octokit/types from 6.16.1 to 6.16.2 (#441) ([c03ff11](https://github.com/peaceiris/actions-label-commenter/commit/c03ff111e4f51ecd302ac3a7e562aa6ef8f616ad)), closes [#441](https://github.com/peaceiris/actions-label-commenter/issues/441)
+* bump @octokit/types from 6.16.2 to 6.16.4 (#443) ([d96fdec](https://github.com/peaceiris/actions-label-commenter/commit/d96fdec2821b9d2428fa9972dd227b2b1f200a76)), closes [#443](https://github.com/peaceiris/actions-label-commenter/issues/443)
+* bump @octokit/types from 6.8.2 to 6.8.3 (#390) ([d1ea286](https://github.com/peaceiris/actions-label-commenter/commit/d1ea2862a0ab3a96eaddcaaf1d3c4122a4b4cadc)), closes [#390](https://github.com/peaceiris/actions-label-commenter/issues/390)
+* bump @octokit/types from 6.8.3 to 6.9.0 (#393) ([cca1021](https://github.com/peaceiris/actions-label-commenter/commit/cca102162c6791c99615b5925936554b1f5ec7a1)), closes [#393](https://github.com/peaceiris/actions-label-commenter/issues/393)
+* bump @octokit/types from 6.9.0 to 6.10.0 (#394) ([1d4d794](https://github.com/peaceiris/actions-label-commenter/commit/1d4d794ae29289cc6561faf5bace92647f174c07)), closes [#394](https://github.com/peaceiris/actions-label-commenter/issues/394)
+* bump @octokit/webhooks-definitions from 3.59.1 to 3.61.0 (#392) ([21d6be1](https://github.com/peaceiris/actions-label-commenter/commit/21d6be17d1bfcb822295b65682d408a5b28f715e)), closes [#392](https://github.com/peaceiris/actions-label-commenter/issues/392)
+* bump @octokit/webhooks-definitions from 3.61.0 to 3.61.1 (#395) ([cefa962](https://github.com/peaceiris/actions-label-commenter/commit/cefa962324d9e47b97181a2190073e090bfd3c4e)), closes [#395](https://github.com/peaceiris/actions-label-commenter/issues/395)
+* bump @octokit/webhooks-definitions from 3.61.1 to 3.62.2 (#398) ([28596af](https://github.com/peaceiris/actions-label-commenter/commit/28596af6db17572f54f63ff0bd58514d9dee7045)), closes [#398](https://github.com/peaceiris/actions-label-commenter/issues/398)
+* bump @octokit/webhooks-definitions from 3.62.2 to 3.62.3 (#399) ([7b21d14](https://github.com/peaceiris/actions-label-commenter/commit/7b21d14dd2ab3b4d284a30ed557c831469f06059)), closes [#399](https://github.com/peaceiris/actions-label-commenter/issues/399)
+* bump @octokit/webhooks-definitions from 3.62.3 to 3.62.5 (#403) ([599b336](https://github.com/peaceiris/actions-label-commenter/commit/599b336c2cf88d177de3c698c2f8a4c1db6a819e)), closes [#403](https://github.com/peaceiris/actions-label-commenter/issues/403)
+* bump @octokit/webhooks-definitions from 3.62.5 to 3.62.6 (#408) ([64396c1](https://github.com/peaceiris/actions-label-commenter/commit/64396c1074baae8f86691934702510c9b51e807a)), closes [#408](https://github.com/peaceiris/actions-label-commenter/issues/408)
+* bump @octokit/webhooks-definitions from 3.62.6 to 3.63.1 (#409) ([2a77f87](https://github.com/peaceiris/actions-label-commenter/commit/2a77f8769e86670b9a4f63ce25f7f4fff131b261)), closes [#409](https://github.com/peaceiris/actions-label-commenter/issues/409)
+* bump @octokit/webhooks-definitions from 3.63.1 to 3.65.0 (#410) ([2f6c7f9](https://github.com/peaceiris/actions-label-commenter/commit/2f6c7f9478e8a6b056e3fd0542a2d807500287ae)), closes [#410](https://github.com/peaceiris/actions-label-commenter/issues/410)
+* bump @octokit/webhooks-definitions from 3.65.0 to 3.65.1 (#411) ([f756bac](https://github.com/peaceiris/actions-label-commenter/commit/f756bacdb6528cbcdd47c7cc99dbca22a6bde223)), closes [#411](https://github.com/peaceiris/actions-label-commenter/issues/411)
+* bump @octokit/webhooks-definitions from 3.65.1 to 3.65.2 (#412) ([95f75bf](https://github.com/peaceiris/actions-label-commenter/commit/95f75bf10de5664e633a3ab48a5e53278b328f7f)), closes [#412](https://github.com/peaceiris/actions-label-commenter/issues/412)
+* bump @octokit/webhooks-definitions from 3.65.2 to 3.65.3 (#415) ([2a75726](https://github.com/peaceiris/actions-label-commenter/commit/2a75726363d3490fa95103fae9dcc25bb60ac4fa)), closes [#415](https://github.com/peaceiris/actions-label-commenter/issues/415)
+* bump @octokit/webhooks-definitions from 3.65.3 to 3.65.5 (#416) ([7596d56](https://github.com/peaceiris/actions-label-commenter/commit/7596d5636bd35e62544f4e0527d9a61251de7b10)), closes [#416](https://github.com/peaceiris/actions-label-commenter/issues/416)
+* bump @octokit/webhooks-definitions from 3.65.5 to 3.65.6 (#418) ([abb4b13](https://github.com/peaceiris/actions-label-commenter/commit/abb4b1373d88e94138815394ce072af3c9c458af)), closes [#418](https://github.com/peaceiris/actions-label-commenter/issues/418)
+* bump @octokit/webhooks-definitions from 3.65.6 to 3.66.0 (#420) ([a1075a6](https://github.com/peaceiris/actions-label-commenter/commit/a1075a6bf0d528f0b47367827f34d967c1854594)), closes [#420](https://github.com/peaceiris/actions-label-commenter/issues/420)
+* bump @octokit/webhooks-definitions from 3.66.0 to 3.67.0 (#421) ([d8062a6](https://github.com/peaceiris/actions-label-commenter/commit/d8062a674008965642c326cb4f29db97eccd7bc4)), closes [#421](https://github.com/peaceiris/actions-label-commenter/issues/421)
+* bump @octokit/webhooks-definitions from 3.67.0 to 3.67.2 (#422) ([4c290d8](https://github.com/peaceiris/actions-label-commenter/commit/4c290d89c0cf19739f671646765ab7857bd46a00)), closes [#422](https://github.com/peaceiris/actions-label-commenter/issues/422)
+* bump @octokit/webhooks-definitions from 3.67.2 to 3.67.3 (#424) ([7c08d65](https://github.com/peaceiris/actions-label-commenter/commit/7c08d65d15a958cce1413f1bae5b276332c3f3d3)), closes [#424](https://github.com/peaceiris/actions-label-commenter/issues/424)
+* bump js-yaml from 4.0.0 to 4.1.0 (#425) ([b0b0e19](https://github.com/peaceiris/actions-label-commenter/commit/b0b0e191bc476b6346e1962bb9c00997c3c500a5)), closes [#425](https://github.com/peaceiris/actions-label-commenter/issues/425)
+* bump mustache from 4.1.0 to 4.2.0 (#414) ([ff0866e](https://github.com/peaceiris/actions-label-commenter/commit/ff0866ed6d87646e24142c4c46ae6b3956696409)), closes [#414](https://github.com/peaceiris/actions-label-commenter/issues/414)
+* bump node from 12.20.1 to 12.21.0 (#407) ([172a352](https://github.com/peaceiris/actions-label-commenter/commit/172a352c3552bf9a63eba747a5d39128069b8d7b)), closes [#407](https://github.com/peaceiris/actions-label-commenter/issues/407)
+* Bump node from 12.21.0 to 12.22.0 (#419) ([da42cba](https://github.com/peaceiris/actions-label-commenter/commit/da42cbac6819caefdc10970f524f6d57baf994df)), closes [#419](https://github.com/peaceiris/actions-label-commenter/issues/419)
+* Bump node from 12.22.0 to 12.22.1 (#426) ([85e80b2](https://github.com/peaceiris/actions-label-commenter/commit/85e80b2f6df29b179d8ad804db55b5c0832d14a5)), closes [#426](https://github.com/peaceiris/actions-label-commenter/issues/426)
+* npm audit fix (#417) ([59aec55](https://github.com/peaceiris/actions-label-commenter/commit/59aec55d6ce4f2f9d960efd61174a756273cc4c7)), closes [#417](https://github.com/peaceiris/actions-label-commenter/issues/417)
+* update dependencies devDependencies (#437) ([4cc689b](https://github.com/peaceiris/actions-label-commenter/commit/4cc689b58d97b56f46fddd642c4d5185d0e7081b)), closes [#437](https://github.com/peaceiris/actions-label-commenter/issues/437) [#442](https://github.com/peaceiris/actions-label-commenter/issues/442) [#435](https://github.com/peaceiris/actions-label-commenter/issues/435)
+
+### docs
+
+* Add link to code-examples (#388) ([92cdaf5](https://github.com/peaceiris/actions-label-commenter/commit/92cdaf5f2d396ea475606c9f5fe513e1011bbefa)), closes [#388](https://github.com/peaceiris/actions-label-commenter/issues/388)
+* Add permissions (#429) ([9570e11](https://github.com/peaceiris/actions-label-commenter/commit/9570e118dd413f10e41723637b33d0d67c016516)), closes [#429](https://github.com/peaceiris/actions-label-commenter/issues/429) [#428](https://github.com/peaceiris/actions-label-commenter/issues/428)
+
+
+
 ## [1.9.1](https://github.com/peaceiris/actions-label-commenter/compare/v1.9.0...v1.9.1) (2021-02-10)
 
 
