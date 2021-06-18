@@ -5,7 +5,7 @@ export async function closeIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
 ): Promise<void> {
-  await githubClient.issues.update({
+  await githubClient.rest.issues.update({
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: issueNumber,
@@ -18,7 +18,7 @@ export async function openIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
 ): Promise<void> {
-  await githubClient.issues.update({
+  await githubClient.rest.issues.update({
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: issueNumber,
@@ -48,7 +48,7 @@ export async function lockIssue(
     }
   })();
 
-  return await githubClient.issues.lock({
+  return await githubClient.rest.issues.lock({
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: issueNumber,
@@ -61,7 +61,7 @@ export async function unlockIssue(
   issueNumber: number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  return await githubClient.issues.unlock({
+  return await githubClient.rest.issues.unlock({
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: issueNumber
