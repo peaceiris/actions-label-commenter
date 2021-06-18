@@ -2,7 +2,7 @@ name: Update major tag
 
 on:
   release:
-    types: [published]
+    types: [released]
 
 jobs:
   update:
