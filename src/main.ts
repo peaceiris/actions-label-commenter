@@ -191,7 +191,7 @@ export async function run(): Promise<void> {
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
     type IssuesCreateCommentResponse = GetResponseTypeFromEndpointMethod<
-      typeof githubClient.issues.createComment
+      typeof githubClient.rest.issues.createComment
     >;
 
     // Get locking config
@@ -224,14 +224,13 @@ export async function run(): Promise<void> {
 
     // Post comment
     if (!locked) {
-      const issuesCreateCommentResponse: IssuesCreateCommentResponse = await githubClient.issues.createComment(
-        {
+      const issuesCreateCommentResponse: IssuesCreateCommentResponse =
+        await githubClient.rest.issues.createComment({
           issue_number: context.issue.number,
           owner: context.repo.owner,
           repo: context.repo.repo,
           body: commentBodyRendered
-        }
-      );
+        });
       groupConsoleLog('issuesCreateCommentResponse', issuesCreateCommentResponse, core.isDebug());
       core.info(`[INFO] comment URL: ${issuesCreateCommentResponse.data.html_url}`);
     }
