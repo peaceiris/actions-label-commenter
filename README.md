@@ -3,7 +3,7 @@ Label Commenter Action
 </h2>
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/peaceiris/actions-label-commenter/main/images/ogp.jpg" alt="Label Commenter Action thumbnail" width="500px">
+  <img src="https://user-images.githubusercontent.com/30958501/125202658-75e49180-e2af-11eb-8825-153e34fb235f.jpg" alt="Label Commenter Action thumbnail" width="500px">
 </div>
 
 [![license](https://img.shields.io/github/license/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/blob/main/LICENSE)
@@ -325,42 +325,42 @@ Scenario:
 ### Comment and Close Invalid Format Issue or Pull Request
 [Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L11-L22)
 
-![Comment and Close Invalid Format Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_1.jpg)
+![Comment and Close Invalid Format Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action]([images/demo_1.jpg](https://user-images.githubusercontent.com/30958501/125202643-711fdd80-e2af-11eb-9277-3f58be5fb0b7.jpg))
 
 ### Reopen Issue or Pull Request
 [Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L11-L22)
 
-![Reopen Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_2.jpg)
+![Reopen Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202646-73823780-e2af-11eb-9487-e7ab68d7e2dd.jpg)
 
 ### Comment and Close Wontfix Issue or Pull Request
 [Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L30-L38)
 
-![Comment and Close Wontfix Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_3.jpg)
+![Comment and Close Wontfix Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202647-73823780-e2af-11eb-96ba-3977c08ea8a7.jpg)
 
 ### Comment and Close Duplicate Issue or Pull Request
 [Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L39-L43)
 
-![Comment and Close Duplicate Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_4.jpg)
+![Comment and Close Duplicate Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202649-741ace00-e2af-11eb-9176-a35af80491b1.jpg)
 
 ### Comment Multiple Line
 [Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L23-L29)
 
-![Comment Multiple Line - peaceiris/actions-label-commenter GitHub Action](images/demo_5.jpg)
+![Comment Multiple Line - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202650-74b36480-e2af-11eb-9e21-e9014087eed2.jpg)
 
 ### Comment and Close Multiple Issues or Pull Requests
 
 | Select Label | Labeled |
 |---|---|
-| ![Comment and Close Multiple Issues or Pull Requests - peaceiris/actions-label-commenter GitHub Action](images/demo_6_1.jpg) | ![Comment and Close Multiple Issues or Pull Requests - peaceiris/actions-label-commenter GitHub Action](images/demo_6_2.jpg) |
+| ![Comment and Close Multiple Issues or Pull Requests - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202653-74b36480-e2af-11eb-9395-422657cce37a.jpg) | ![Comment and Close Multiple Issues or Pull Requests - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202654-754bfb00-e2af-11eb-9d70-61dcc7096dd5.jpg) |
 
 Multiple issues will be closed.
 
-![](images/demo_6_3.jpg)
+![Comment and Close Multiple Issues or Pull Requests - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202656-754bfb00-e2af-11eb-98e8-526e7a235fe0.jpg)
 
 ### Lock or Unlock issue or Pull Request
 [Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L70-L94)
 
-![Lock or Unlock issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](images/demo_7.jpg)
+![Lock or Unlock issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202657-75e49180-e2af-11eb-8358-64aa65459a8d.jpg)
 
 <div align="right">
 <a href="#table-of-contents">Back to TOC ☝️</a>
