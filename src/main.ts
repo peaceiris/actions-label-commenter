@@ -6,6 +6,7 @@ import {
   IssuesLabeledEvent,
   PullRequestLabeledEvent
 } from '@octokit/webhooks-definitions/schema';
+import {DiscussionEvent, DiscussionLabeledEvent} from '@octokit/webhooks-types';
 import {Inputs} from './interfaces';
 import {getInputs} from './get-inputs';
 import fs from 'fs';
@@ -42,12 +43,14 @@ export async function run(): Promise<void> {
       return;
     }
 
-    const payload = context.payload as IssuesEvent | PullRequestEvent;
+    const payload = context.payload as IssuesEvent | PullRequestEvent | DiscussionEvent;
     const labelEvent: string = payload.action;
 
     const labelName: string | undefined = (() => {
-      if (eventName === 'issues' || eventName === 'discussion') {
+      if (eventName === 'issues') {
         return (payload as IssuesLabeledEvent).label?.name;
+      } else if (eventName === 'discussion') {
+        return (payload as DiscussionLabeledEvent).label.name;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
         return (payload as PullRequestLabeledEvent).label?.name;
@@ -55,8 +58,10 @@ export async function run(): Promise<void> {
     })();
 
     const issueNumber: number = (() => {
-      if (eventName === 'issues' || eventName === 'discussion') {
+      if (eventName === 'issues') {
         return (payload as IssuesEvent).issue.number;
+      } else if (eventName === 'discussion') {
+        return (payload as DiscussionEvent).discussion.number;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
         return (payload as PullRequestEvent).number;
@@ -112,13 +117,20 @@ export async function run(): Promise<void> {
     }
 
     let eventType = '';
-    if (eventName === 'issues' || eventName === 'discussion') {
+    if (eventName === 'issues') {
       eventType = 'issue';
       if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
         core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
         return;
       }
-    } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
+    } else if (eventName === 'discussion') {
+      eventType = 'discussion';
+      if (config.labels[labelIndex][`${labelEvent}`].discussion === void 0) {
+        core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
+        return;
+      }
+    } else {
+      // if (eventName === 'pull_request' || eventName === 'pull_request_target')
       eventType = 'pr';
       if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
         core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
@@ -159,7 +171,7 @@ export async function run(): Promise<void> {
 
     // Render template
     const commentBodyView = (() => {
-      if (eventName === 'issues' || eventName === 'discussion') {
+      if (eventName === 'issues') {
         return {
           issue: {
             user: {
@@ -170,7 +182,19 @@ export async function run(): Promise<void> {
             login: (payload as IssuesEvent).sender.login
           }
         };
-      } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
+      } else if (eventName === 'discussion') {
+        return {
+          discussion: {
+            user: {
+              login: (payload as DiscussionEvent).discussion.user.login
+            }
+          },
+          sender: {
+            login: (payload as DiscussionEvent).sender.login
+          }
+        };
+      } else {
+        // if (eventName === 'pull_request' || eventName === 'pull_request_target')
         return {
           pull_request: {
             user: {
@@ -181,8 +205,6 @@ export async function run(): Promise<void> {
             login: (payload as PullRequestEvent).sender.login
           }
         };
-      } else {
-        return {};
       }
     })();
     const commentBodyRendered = Mustache.render(rawCommentBody, commentBodyView);
@@ -215,8 +237,10 @@ export async function run(): Promise<void> {
     const locked: boolean | undefined = (() => {
       if (locking === 'unlock') {
         return false;
-      } else if (eventName === 'issues' || eventName === 'discussion') {
+      } else if (eventName === 'issues') {
         return (payload as IssuesEvent).issue.locked;
+      } else if (eventName === 'discussion') {
+        return (payload as DiscussionEvent).discussion.locked;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
         return (payload as PullRequestEvent).pull_request.locked;
