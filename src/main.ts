@@ -11,7 +11,7 @@ import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
-import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
+import {openIssue, closeIssue, unlockIssue, lockIssue, toggleDraftState} from './issues-helper';
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -241,6 +241,11 @@ export async function run(): Promise<void> {
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
+    } else if (finalAction === 'draft') {
+      await toggleDraftState(githubClient, issueNumber, true);
+    } else if (finalAction === 'ready') {
+      await openIssue(githubClient, issueNumber);
+      await toggleDraftState(githubClient, issueNumber, false);
     } else if (finalAction === '' || finalAction === void 0) {
       core.info(`[INFO] no configuration ${parentFieldName}.action`);
     } else {

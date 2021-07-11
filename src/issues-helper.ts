@@ -67,3 +67,17 @@ export async function unlockIssue(
     issue_number: issueNumber
   });
 }
+
+export async function toggleDraftState(
+  githubClient: InstanceType<typeof GitHub>,
+  issueNumber: number,
+  draft: boolean
+): Promise<void> {
+  await githubClient.rest.pulls.update({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    pull_number: issueNumber,
+    draft: draft
+  });
+  return;
+}
