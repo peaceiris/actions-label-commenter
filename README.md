@@ -25,7 +25,6 @@ This Action was submitted to the [GitHub Actions Hackathon] and featured by GitH
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Getting Started](#getting-started)
   - [Workflow Setting](#workflow-setting)
   - [Action Setting](#action-setting)
@@ -79,7 +78,7 @@ permissions:
 
 jobs:
   comment:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -300,7 +299,7 @@ on:
 
 jobs:
   triage:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/labeler@v3
       with:
