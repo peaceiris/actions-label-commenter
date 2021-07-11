@@ -6,9 +6,16 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+  security-events: write
+
 jobs:
   CodeQL-Build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v2.3.4
 
