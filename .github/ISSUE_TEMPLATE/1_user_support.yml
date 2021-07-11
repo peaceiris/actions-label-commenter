@@ -6,11 +6,13 @@ assignees: peaceiris
 body:
   - type: markdown
     attributes:
-      value: |
+      label: Please read this first
+      value:
         Please note we will close your issue without comment if you do not fill out the issue checklist below and provide ALL the requested information.
         If you repeatedly fail to use the issue template, we will block you from ever submitting issues to this repository again.
   - type: checkboxes
     attributes:
+      label: Checklist
       description: Checklist before creating an issue.
       options:
         - label: "I am using the latest version of this aciton."
@@ -23,31 +25,30 @@ body:
     attributes:
       label: Describe your question
       description: A clear and concise description of what the question is.
-      render: markdown
     validations:
-      required: false
+      required: true
   - type: textarea
     attributes:
       label: Relevant links
-      description: Links to your public repository, YAML config file, and YAML workflow file.
+      description:
+        Links to your public repository, YAML config file, and YAML workflow file.
+        Please use [a permanent link](https://docs.github.com/en/github/managing-files-in-a-repository/managing-files-on-github/getting-permanent-links-to-files), not a default branch.
       render: markdown
       value: |
         Public repository:
         YAML config:
         YAML workflow:
     validations:
-      required: false
+      required: true
   - type: textarea
     attributes:
       label: Relevant log output
-      description: Copy and paste any relevant log output here. This will be automatically formatted into code, so no need for backticks.
-      render: txt
+      description: Copy and paste any relevant log output here.
     validations:
-      required: false
+      required: true
   - type: textarea
     attributes:
       label: Additional context.
       description: Write any other context about the question here.
-      render: markdown
     validations:
-      required: false
+      required: true
