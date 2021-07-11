@@ -297,13 +297,17 @@ name: "Pull Request Labeler"
 on:
   - pull_request_target
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   triage:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/labeler@v3
-      with:
-        repo-token: "${{ secrets.GH_PAT }}"
+      - uses: actions/labeler@v3
+        with:
+          repo-token: "${{ secrets.GH_PAT }}"
 ```
 
 Scenario:
