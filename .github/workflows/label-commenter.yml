@@ -29,7 +29,7 @@ jobs:
           ref: main
 
       - name: Label Commenter
-        uses: peaceiris/actions-label-commenter@v1
+        uses: peaceiris/actions-label-commenter@56b937653b0be58ea790a4dffc02fee8e4d6d8bc
         env:
           RUNNER_DEBUG: 1
         # with:
