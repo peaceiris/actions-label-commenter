@@ -4,5 +4,5 @@ contact_links:
     url: https://github.community/c/code-to-cloud/github-actions/41
     about: Please ask questions about GitHub Actions here.
   - name: GitHub Actions Documentation
-    url: https://docs.github.com/en/free-pro-team@latest/actions
+    url: https://docs.github.com/en/actions
     about: GitHub Actions official documentation here.
