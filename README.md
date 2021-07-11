@@ -10,6 +10,7 @@ Label Commenter Action
 [![release](https://img.shields.io/github/release/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/releases/latest)
 [![GitHub release date](https://img.shields.io/github/release-date/peaceiris/actions-label-commenter.svg)](https://github.com/peaceiris/actions-label-commenter/releases)
 [![Release Feed](https://img.shields.io/badge/release-feed-yellow)](https://github.com/peaceiris/actions-label-commenter/releases.atom)
+[![codecov](https://codecov.io/gh/peaceiris/actions-label-commenter/branch/master/graph/badge.svg?token=WKTNMOY3SM)](https://codecov.io/gh/peaceiris/actions-label-commenter)
 
 This action is one of label triggered GitHub Actions for posting a template message. After commenting, it can automatically close or reopen issues. Of course, it also can manage pull requests.
 
