@@ -18,5 +18,7 @@ updates:
     interval: "daily"
     time: '11:00'
     timezone: Japan
+  labels:
+  - "CI/CD"
   commit-message:
     prefix: ci
