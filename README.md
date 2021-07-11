@@ -325,7 +325,7 @@ Scenario:
 ### Comment and Close Invalid Format Issue or Pull Request
 [Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L11-L22)
 
-![Comment and Close Invalid Format Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action]([images/demo_1.jpg](https://user-images.githubusercontent.com/30958501/125202643-711fdd80-e2af-11eb-9277-3f58be5fb0b7.jpg))
+![Comment and Close Invalid Format Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202643-711fdd80-e2af-11eb-9277-3f58be5fb0b7.jpg)
 
 ### Reopen Issue or Pull Request
 [Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L11-L22)
