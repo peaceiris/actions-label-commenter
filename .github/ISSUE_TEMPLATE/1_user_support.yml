@@ -6,7 +6,6 @@ assignees: peaceiris
 body:
   - type: markdown
     attributes:
-      label: Please read this first
       value:
         Please note we will close your issue without comment if you do not fill out the issue checklist below and provide ALL the requested information.
         If you repeatedly fail to use the issue template, we will block you from ever submitting issues to this repository again.
