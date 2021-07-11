@@ -257,18 +257,16 @@ Default is `${{ github.token }}`
 
 ## Work with Issue Template
 
-Here is a proposal issue template: [.github/ISSUE_TEMPLATE/proposal.md](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/ISSUE_TEMPLATE/proposal.md)
+Here is a proposal issue template: [.github/ISSUE_TEMPLATE/3_proposal.yml](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/ISSUE_TEMPLATE/3_proposal.yml)
 
 ```yaml
----
 name: Proposal
-about: Suggest an idea for this project
-title: 'proposal: This is a sample title'
+description: Suggest an idea for this project
+title: ''
 labels: proposal
 assignees: peaceiris
----
-
-Issue body here...
+body:
+  ...
 ```
 
 Scenario:
