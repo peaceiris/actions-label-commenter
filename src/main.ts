@@ -35,7 +35,8 @@ export async function run(): Promise<void> {
     if (
       eventName !== 'issues' &&
       eventName !== 'pull_request' &&
-      eventName !== 'pull_request_target'
+      eventName !== 'pull_request_target' &&
+      eventName !== 'discussion'
     ) {
       core.info(`[INFO] unsupported event: ${eventName}`);
       return;
@@ -45,7 +46,7 @@ export async function run(): Promise<void> {
     const labelEvent: string = payload.action;
 
     const labelName: string | undefined = (() => {
-      if (eventName === 'issues') {
+      if (eventName === 'issues' || eventName === 'discussion') {
         return (payload as IssuesLabeledEvent).label?.name;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
@@ -54,7 +55,7 @@ export async function run(): Promise<void> {
     })();
 
     const issueNumber: number = (() => {
-      if (eventName === 'issues') {
+      if (eventName === 'issues' || eventName === 'discussion') {
         return (payload as IssuesEvent).issue.number;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
@@ -111,7 +112,7 @@ export async function run(): Promise<void> {
     }
 
     let eventType = '';
-    if (eventName === 'issues') {
+    if (eventName === 'issues' || eventName === 'discussion') {
       eventType = 'issue';
       if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
         core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
@@ -158,7 +159,7 @@ export async function run(): Promise<void> {
 
     // Render template
     const commentBodyView = (() => {
-      if (eventName === 'issues') {
+      if (eventName === 'issues' || eventName === 'discussion') {
         return {
           issue: {
             user: {
@@ -214,7 +215,7 @@ export async function run(): Promise<void> {
     const locked: boolean | undefined = (() => {
       if (locking === 'unlock') {
         return false;
-      } else if (eventName === 'issues') {
+      } else if (eventName === 'issues' || eventName === 'discussion') {
         return (payload as IssuesEvent).issue.locked;
       } else {
         // if (eventName === 'pull_request' || eventName === 'pull_request_target')
