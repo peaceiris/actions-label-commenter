@@ -30,6 +30,10 @@ permissions:
 jobs:
   dev-image-test:
     runs-on: ubuntu-20.04
+    timeout-minutes: 4
+    env:
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      DOCKER_BUILDKIT: 1
     steps:
       - uses: actions/checkout@v2.3.4
       - name: Login to Packages
