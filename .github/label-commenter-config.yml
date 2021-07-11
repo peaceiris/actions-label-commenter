@@ -13,6 +13,8 @@ labels:
       issue:
         body: Please follow the issue templates.
         action: close
+      discussion:
+        body: Helle @{{ discussion.user.login }}!
       pr:
         body: Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.
         action: draft
@@ -20,6 +22,8 @@ labels:
       issue:
         body: Thank you for following the template. The repository owner will reply.
         action: open
+      discussion:
+        body: Thanks @{{ discussion.user.login }}!
       pr:
         body: Thank you for following the template. The repository owner will review this.
         action: ready
