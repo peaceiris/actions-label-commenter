@@ -13,8 +13,6 @@ labels:
       issue:
         body: Please follow the issue templates.
         action: close
-      discussion:
-        body: Helle @{{ discussion.user.login }}!
       pr:
         body: Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.
         action: draft
@@ -22,8 +20,6 @@ labels:
       issue:
         body: Thank you for following the template. The repository owner will reply.
         action: open
-      discussion:
-        body: Thanks @{{ discussion.user.login }}!
       pr:
         body: Thank you for following the template. The repository owner will review this.
         action: ready
@@ -120,6 +116,17 @@ labels:
         action: close
         locking: lock
         lock_reason: resolved
+      discussion:
+        body: |
+          This discussion has been **LOCKED** because of it being resolved!
+          Thank you @{{ discussion.user.login }}!
+        locking: lock
+        lock_reason: resolved
+    unlabeled:
+      discussion:
+        body: |
+          This discussion has been unlocked now.
+        locking: unlock
   - name: documentation
     labeled:
       issue:
