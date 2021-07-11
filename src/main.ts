@@ -2,10 +2,10 @@ import * as core from '@actions/core';
 import {context, getOctokit} from '@actions/github';
 import {
   IssuesEvent,
-  PullRequestEvent,
   IssuesLabeledEvent,
+  PullRequestEvent,
   PullRequestLabeledEvent
-} from '@octokit/webhooks-definitions/schema';
+} from '@octokit/webhooks-types';
 import {Inputs} from './interfaces';
 import {getInputs} from './get-inputs';
 import fs from 'fs';
