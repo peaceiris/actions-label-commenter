@@ -21,12 +21,14 @@ body:
           required: true
   - type: textarea
     attributes:
+      label: Describe your question
       description: A clear and concise description of what the question is.
       render: markdown
     validations:
       required: false
   - type: textarea
     attributes:
+      label: Relevant links
       description: Links to your public repository, YAML config file, and YAML workflow file.
       render: markdown
       value: |
@@ -37,15 +39,15 @@ body:
       required: false
   - type: textarea
     attributes:
-      description: Relevant log output.
-      placeholder: Copy and paste any relevant log output here. This will be automatically formatted into code, so no need for backticks.
+      label: Relevant log output
+      description: Copy and paste any relevant log output here. This will be automatically formatted into code, so no need for backticks.
       render: txt
     validations:
       required: false
   - type: textarea
     attributes:
-      description: Additional context.
-      placeholder: Write any other context about the question here.
+      label: Additional context.
+      description: Write any other context about the question here.
       render: markdown
     validations:
       required: false
