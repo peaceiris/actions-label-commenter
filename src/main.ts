@@ -11,7 +11,7 @@ import {getInputs} from './get-inputs';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
-import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
+import {openIssue, closeIssue, unlockIssue, lockIssue, toggleDraftState} from './issues-helper';
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -237,10 +237,20 @@ export async function run(): Promise<void> {
 
     // Close or Open an issue
     const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
+    core.info(`[INFO] action: ${finalAction}`);
     if (finalAction === 'close') {
+      core.info(`[INFO] close issue`);
       await closeIssue(githubClient, issueNumber);
     } else if (finalAction === 'open') {
+      core.info(`[INFO] open issue`);
       await openIssue(githubClient, issueNumber);
+    } else if (finalAction === 'draft') {
+      core.info(`[INFO] make pull-request draft`);
+      await toggleDraftState(githubClient, issueNumber, true);
+    } else if (finalAction === 'ready') {
+      core.info(`[INFO] make pull-request ready for review`);
+      await openIssue(githubClient, issueNumber);
+      await toggleDraftState(githubClient, issueNumber, false);
     } else if (finalAction === '' || finalAction === void 0) {
       core.info(`[INFO] no configuration ${parentFieldName}.action`);
     } else {
@@ -250,6 +260,7 @@ export async function run(): Promise<void> {
     // Lock an issue
     if (locking === 'lock') {
       const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
+      core.info(`[INFO] lock issue with lock_reason ${lockReason}`);
       const lockResult = await lockIssue(githubClient, issueNumber, lockReason);
       groupConsoleLog('Lock issue', lockResult, core.isDebug());
     }
