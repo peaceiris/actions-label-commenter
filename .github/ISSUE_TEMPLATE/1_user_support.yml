@@ -1,6 +1,6 @@
 name: User Support
 description: Questions about this action
-title: 'sample_title'
+title: ''
 labels: support
 assignees: peaceiris
 body:
@@ -8,7 +8,6 @@ body:
     attributes:
       value:
         Please note we will close your issue without comment if you do not fill out the issue checklist below and provide ALL the requested information.
-        If you repeatedly fail to use the issue template, we will block you from ever submitting issues to this repository again.
   - type: checkboxes
     attributes:
       label: Checklist
