@@ -13,7 +13,7 @@ Label Commenter Action
 
 </div>
 
-This action is one of label triggered GitHub Actions for posting a template message. After commenting, it can automatically close or reopen issues. Of course, it also can manage pull requests.
+This action is one of label triggered GitHub Actions for posting a template message. After commenting, it can automatically open/close/lock/unlock issues or pull-requests.
 
 This Action was submitted to the [GitHub Actions Hackathon] and featured by GitHub. ([Featured actions from the GitHub Actions Hackathon - The GitHub Blog])
 
