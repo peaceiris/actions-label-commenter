@@ -1,7 +1,7 @@
 import {context} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
 
-export async function closeIssue(
+async function closeIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
 ): Promise<void> {
@@ -14,7 +14,7 @@ export async function closeIssue(
   return;
 }
 
-export async function openIssue(
+async function openIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
 ): Promise<void> {
@@ -27,7 +27,7 @@ export async function openIssue(
   return;
 }
 
-export async function lockIssue(
+async function lockIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number,
   lockReason?: string
@@ -56,7 +56,7 @@ export async function lockIssue(
   });
 }
 
-export async function unlockIssue(
+async function unlockIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -67,3 +67,5 @@ export async function unlockIssue(
     issue_number: issueNumber
   });
 }
+
+export {closeIssue, openIssue, lockIssue, unlockIssue};

@@ -1,43 +1,43 @@
-import * as core from '@actions/core';
+import fs from 'fs';
+import {startGroup, endGroup, info, isDebug} from '@actions/core';
 import {context, getOctokit} from '@actions/github';
+import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 import {
   IssuesEvent,
   IssuesLabeledEvent,
   PullRequestEvent,
   PullRequestLabeledEvent
 } from '@octokit/webhooks-types';
-import {Inputs} from './interfaces';
-import {getInputs} from './get-inputs';
-import fs from 'fs';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
+import {getInputs} from './get-inputs';
+import {Inputs} from './interfaces';
 import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
-import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function groupConsoleLog(groupTitle: string, body: any, debug: boolean): void {
   if (!debug) return;
-  core.startGroup(groupTitle);
+  startGroup(groupTitle);
   console.log(body);
-  core.endGroup();
+  endGroup();
 }
 
 export async function run(): Promise<void> {
   try {
-    core.info('[INFO] Usage https://github.com/peaceiris/actions-label-commenter#readme');
+    info('[INFO] Usage https://github.com/peaceiris/actions-label-commenter#readme');
 
     const inps: Inputs = getInputs();
 
-    groupConsoleLog('Dump GitHub context', context, core.isDebug());
+    groupConsoleLog('Dump GitHub context', context, isDebug());
 
     const eventName: string = context.eventName;
-    core.info(`[INFO] event name: ${eventName}`);
+    info(`[INFO] event name: ${eventName}`);
     if (
       eventName !== 'issues' &&
       eventName !== 'pull_request' &&
       eventName !== 'pull_request_target'
     ) {
-      core.info(`[INFO] unsupported event: ${eventName}`);
+      info(`[INFO] unsupported event: ${eventName}`);
       return;
     }
 
@@ -62,7 +62,7 @@ export async function run(): Promise<void> {
       }
     })();
 
-    core.info(`\
+    info(`\
 [INFO] config file path: ${inps.ConfigFilePath}
 [INFO] label name: ${labelName}
 [INFO] label event: ${labelEvent}
@@ -76,10 +76,10 @@ export async function run(): Promise<void> {
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const config: any = yaml.load(fs.readFileSync(configFilePath, 'utf8'));
-    if (core.isDebug()) {
-      core.startGroup('Dump config');
+    if (isDebug()) {
+      startGroup('Dump config');
       console.log(config);
-      core.endGroup();
+      endGroup();
     }
 
     let isExistLabel = false;
@@ -94,12 +94,12 @@ export async function run(): Promise<void> {
     });
 
     if (!isExistLabel) {
-      core.info(`[INFO] no configuration labels.${labelName}`);
+      info(`[INFO] no configuration labels.${labelName}`);
       return;
     }
 
     if (config.labels[labelIndex][`${labelEvent}`] === void 0) {
-      core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}`);
+      info(`[INFO] no configuration labels.${labelName}.${labelEvent}`);
       return;
     }
 
@@ -114,13 +114,13 @@ export async function run(): Promise<void> {
     if (eventName === 'issues') {
       eventType = 'issue';
       if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
-        core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
+        info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
         return;
       }
     } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
       eventType = 'pr';
       if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
-        core.info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
+        info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
         return;
       }
     }
@@ -140,20 +140,20 @@ export async function run(): Promise<void> {
       `</div>\n` +
       '\n<!-- peaceiris/actions-label-commenter -->\n';
     const rawCommentBody = (() => {
-      if (core.isDebug()) {
+      if (isDebug()) {
         return `${commentHeader}\n\n${commentMain}\n\n${commentFooter}\n\n${commentFooterLinks}`;
       }
       return `${commentHeader}\n\n${commentMain}\n\n${commentFooter}`;
     })();
 
     if (commentMain === '' || commentMain === void 0) {
-      core.info(`[INFO] no configuration ${parentFieldName}.body`);
+      info(`[INFO] no configuration ${parentFieldName}.body`);
     } else {
-      groupConsoleLog('commentMain', commentMain, core.isDebug());
-      groupConsoleLog('commentHeader', commentHeader, core.isDebug());
-      groupConsoleLog('commentFooter', commentFooter, core.isDebug());
-      groupConsoleLog('commentFooterLinks', commentFooterLinks, core.isDebug());
-      groupConsoleLog('rawCommentBody', rawCommentBody, core.isDebug());
+      groupConsoleLog('commentMain', commentMain, isDebug());
+      groupConsoleLog('commentHeader', commentHeader, isDebug());
+      groupConsoleLog('commentFooter', commentFooter, isDebug());
+      groupConsoleLog('commentFooterLinks', commentFooterLinks, isDebug());
+      groupConsoleLog('rawCommentBody', rawCommentBody, isDebug());
     }
 
     // Render template
@@ -185,7 +185,7 @@ export async function run(): Promise<void> {
       }
     })();
     const commentBodyRendered = Mustache.render(rawCommentBody, commentBodyView);
-    groupConsoleLog('commentBodyRendered', commentBodyRendered, core.isDebug());
+    groupConsoleLog('commentBodyRendered', commentBodyRendered, isDebug());
 
     // Create octokit client
     const githubToken = inps.GithubToken;
@@ -197,9 +197,9 @@ export async function run(): Promise<void> {
     // Get locking config
     const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
     if (locking === 'lock' || locking === 'unlock') {
-      core.info(`[INFO] ${parentFieldName}.locking is ${locking}`);
+      info(`[INFO] ${parentFieldName}.locking is ${locking}`);
     } else if (locking === '' || locking === void 0) {
-      core.info(`[INFO] no configuration ${parentFieldName}.locking`);
+      info(`[INFO] no configuration ${parentFieldName}.locking`);
     } else {
       throw new Error(`invalid value "${locking}" ${parentFieldName}.locking`);
     }
@@ -207,7 +207,7 @@ export async function run(): Promise<void> {
     // Unlock an issue
     if (locking === 'unlock') {
       const unlockResult = await unlockIssue(githubClient, issueNumber);
-      groupConsoleLog('Unlock issue', unlockResult, core.isDebug());
+      groupConsoleLog('Unlock issue', unlockResult, isDebug());
     }
 
     // Get locked status
@@ -231,8 +231,8 @@ export async function run(): Promise<void> {
           repo: context.repo.repo,
           body: commentBodyRendered
         });
-      groupConsoleLog('issuesCreateCommentResponse', issuesCreateCommentResponse, core.isDebug());
-      core.info(`[INFO] comment URL: ${issuesCreateCommentResponse.data.html_url}`);
+      groupConsoleLog('issuesCreateCommentResponse', issuesCreateCommentResponse, isDebug());
+      info(`[INFO] comment URL: ${issuesCreateCommentResponse.data.html_url}`);
     }
 
     // Close or Open an issue
@@ -242,7 +242,7 @@ export async function run(): Promise<void> {
     } else if (finalAction === 'open') {
       await openIssue(githubClient, issueNumber);
     } else if (finalAction === '' || finalAction === void 0) {
-      core.info(`[INFO] no configuration ${parentFieldName}.action`);
+      info(`[INFO] no configuration ${parentFieldName}.action`);
     } else {
       throw new Error(`invalid value "${finalAction}" ${parentFieldName}.action`);
     }
@@ -251,7 +251,7 @@ export async function run(): Promise<void> {
     if (locking === 'lock') {
       const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
       const lockResult = await lockIssue(githubClient, issueNumber, lockReason);
-      groupConsoleLog('Lock issue', lockResult, core.isDebug());
+      groupConsoleLog('Lock issue', lockResult, isDebug());
     }
 
     return;
