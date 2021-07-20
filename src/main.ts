@@ -1,4 +1,5 @@
 import fs from 'fs';
+
 import {startGroup, endGroup, info, isDebug} from '@actions/core';
 import {context, getOctokit} from '@actions/github';
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
@@ -10,6 +11,7 @@ import {
 } from '@octokit/webhooks-types';
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
+
 import {getInputs} from './get-inputs';
 import {Inputs} from './interfaces';
 import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';

@@ -1,4 +1,5 @@
 import {getInput} from '@actions/core';
+
 import {Inputs} from './interfaces';
 
 export function getInputs(): Inputs {

@@ -1,4 +1,5 @@
 import {setFailed} from '@actions/core';
+
 import {run} from './main';
 
 (async (): Promise<void> => {
