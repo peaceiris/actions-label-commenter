@@ -1,7 +1,9 @@
-import {Inputs} from '../src/interfaces';
-import {getInputs} from '../src/get-inputs';
 import fs from 'fs';
+
 import yaml from 'js-yaml';
+
+import {getInputs} from '../src/get-inputs';
+import {Inputs} from '../src/interfaces';
 
 beforeEach(() => {
   jest.resetModules();
