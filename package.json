@@ -48,7 +48,7 @@
   "dependencies": {
     "@actions/core": "^1.4.0",
     "@actions/github": "^5.0.0",
-    "@octokit/types": "^6.19.0",
+    "@octokit/types": "^6.19.1",
     "@octokit/webhooks-types": "^4.2.0",
     "js-yaml": "^4.1.0",
     "mustache": "^4.2.0"
