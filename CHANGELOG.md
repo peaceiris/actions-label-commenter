@@ -2,6 +2,84 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.10.0](https://github.com/peaceiris/actions-label-commenter/compare/v1.9.2...v1.10.0) (2021-07-22)
+
+
+### build
+
+* Set target es2019 ([9027217](https://github.com/peaceiris/actions-label-commenter/commit/90272172c1d20a87b072f056e10c38eebf645020))
+
+### chore
+
+* Add discussion ([feeed63](https://github.com/peaceiris/actions-label-commenter/commit/feeed639eaec7cb5f1d855a45772c7db9a1b67de)), closes [#455](https://github.com/peaceiris/actions-label-commenter/issues/455)
+* Add discussion for testing #455 ([e63f380](https://github.com/peaceiris/actions-label-commenter/commit/e63f3803d456c9a11dfd278a45dab07cac5f8225)), closes [#455](https://github.com/peaceiris/actions-label-commenter/issues/455)
+* Add label ([e101d1c](https://github.com/peaceiris/actions-label-commenter/commit/e101d1c1291790231b2527758606204513f58805))
+* Change about to description ([ed9fd93](https://github.com/peaceiris/actions-label-commenter/commit/ed9fd93d3f807d3913ad60bf531f1615412be955))
+* Convert to YAML issue form ([104658a](https://github.com/peaceiris/actions-label-commenter/commit/104658a59e755c06a78f864d76c7b4da7b34fd23))
+* Convert to YAML issue form ([d6c7b76](https://github.com/peaceiris/actions-label-commenter/commit/d6c7b760cf1bc68c8de6accddadabbdd7674f648))
+* Convert to YAML issue form ([96e712f](https://github.com/peaceiris/actions-label-commenter/commit/96e712fad200714736326a2606b9fc31bae71935))
+* Enable editor.codeActionsOnSave ([e231f1c](https://github.com/peaceiris/actions-label-commenter/commit/e231f1c300e5d1d8de742ea4edb3e80c78b40e8d))
+* fix ([86d7b0e](https://github.com/peaceiris/actions-label-commenter/commit/86d7b0e5e8961db582172c111ad53667d6417267))
+* fix badge style ([16b1aa9](https://github.com/peaceiris/actions-label-commenter/commit/16b1aa96bb5c380ac889c7267d9a3ff34e923d92))
+* fix codecov ([6afa91e](https://github.com/peaceiris/actions-label-commenter/commit/6afa91e7c204b16c42912cd544479216ca5fb33b))
+* fix title ([bf0cafd](https://github.com/peaceiris/actions-label-commenter/commit/bf0cafd2a02337149b31dcb3f0624bd2366879a3))
+* Improve templates ([4643c43](https://github.com/peaceiris/actions-label-commenter/commit/4643c4334d5a1d30109dce991bd135df9ac17b1b))
+* remove label ([978c2fa](https://github.com/peaceiris/actions-label-commenter/commit/978c2fa8be1885758f65451a20b05832f9f64b5c))
+* remove lib/index.js ([f1a439a](https://github.com/peaceiris/actions-label-commenter/commit/f1a439a04cd79dd3b26eb528a503d7527dc4829d))
+* remove render ([a2d0af3](https://github.com/peaceiris/actions-label-commenter/commit/a2d0af397f81d265d2237ce47cc895b02e9cb5f4))
+* test #454 ([f444b66](https://github.com/peaceiris/actions-label-commenter/commit/f444b66fefef6bec4b4b616cf14ae86e2badea80)), closes [#454](https://github.com/peaceiris/actions-label-commenter/issues/454)
+* test #454 ([b6ba0c6](https://github.com/peaceiris/actions-label-commenter/commit/b6ba0c6e90b8625d8b12810ee92cca90f0be1b23)), closes [#454](https://github.com/peaceiris/actions-label-commenter/issues/454)
+* test #454 ([e6c5041](https://github.com/peaceiris/actions-label-commenter/commit/e6c5041b79c6b1c5f1be4691d56b91bc2a65f812)), closes [#454](https://github.com/peaceiris/actions-label-commenter/issues/454)
+* test #454 ([afe4b1f](https://github.com/peaceiris/actions-label-commenter/commit/afe4b1f758e896491f97ea37622824b48e736608)), closes [#454](https://github.com/peaceiris/actions-label-commenter/issues/454)
+* test #455 ([1f29165](https://github.com/peaceiris/actions-label-commenter/commit/1f29165df9e14a92668f9a446ee1c7d562a380d0)), closes [#455](https://github.com/peaceiris/actions-label-commenter/issues/455)
+* test #455 ([c08c902](https://github.com/peaceiris/actions-label-commenter/commit/c08c9020c6d603247d3e7eca234a449aaabd1604)), closes [#455](https://github.com/peaceiris/actions-label-commenter/issues/455)
+* update description ([ca09eb7](https://github.com/peaceiris/actions-label-commenter/commit/ca09eb728e32afde4de4bc07140990dfd4eab001))
+* update url ([5010710](https://github.com/peaceiris/actions-label-commenter/commit/50107100af2b07a71b3717ad200b86b7f17412fc))
+* use v1 ([9a40aac](https://github.com/peaceiris/actions-label-commenter/commit/9a40aaceb0b81cacd049225e7cde2c0d4bf91f44))
+
+### ci
+
+* Add discussion ([f9bf053](https://github.com/peaceiris/actions-label-commenter/commit/f9bf05353f584dc1ee8237c0af3976eeb5be6a59)), closes [#444](https://github.com/peaceiris/actions-label-commenter/issues/444)
+* Add labels CI/CD ([8970c88](https://github.com/peaceiris/actions-label-commenter/commit/8970c88849c2ed2eee00c7d7e28b0103571d484a))
+* bump actions/setup-node from 2.1.5 to 2.2.0 (#451) ([06c6530](https://github.com/peaceiris/actions-label-commenter/commit/06c6530a8f12cae12e42389a4f293038a9e3d24e)), closes [#451](https://github.com/peaceiris/actions-label-commenter/issues/451)
+* bump actions/setup-node from 2.2.0 to 2.3.0 (#466) ([4928dfc](https://github.com/peaceiris/actions-label-commenter/commit/4928dfc5e6292dd805b4d45ff7c269fa15915eaa)), closes [#466](https://github.com/peaceiris/actions-label-commenter/issues/466)
+* bump codecov/codecov-action from 1 to 2.0.1 (#463) ([8590f29](https://github.com/peaceiris/actions-label-commenter/commit/8590f299749a976c23214671861a079084afdfea)), closes [#463](https://github.com/peaceiris/actions-label-commenter/issues/463)
+* bump peaceiris/actions-label-commenter from 1.9.1 to 1.9.2 (#448) ([c5419e5](https://github.com/peaceiris/actions-label-commenter/commit/c5419e53ceb7ca586412753b0a123d79d6c5d036)), closes [#448](https://github.com/peaceiris/actions-label-commenter/issues/448)
+* change published to released ([bbde9a6](https://github.com/peaceiris/actions-label-commenter/commit/bbde9a656ba1dda35e24816d1e6daaccc60c1d15))
+* Change ubuntu-18.04 to ubuntu-20.04 ([b9eaeee](https://github.com/peaceiris/actions-label-commenter/commit/b9eaeeee0aa42500b04c67b0d285f71532bdf64d))
+* Improve if syntax ([a84a0e2](https://github.com/peaceiris/actions-label-commenter/commit/a84a0e2404bdb59e352cd2023d7dd0a982739e66))
+* Improve workflows (#453) ([4cfd1e2](https://github.com/peaceiris/actions-label-commenter/commit/4cfd1e2acc61fa55a836dfd1322ae9113b97ade6)), closes [#453](https://github.com/peaceiris/actions-label-commenter/issues/453)
+* Install actionlint (#465) ([969ddee](https://github.com/peaceiris/actions-label-commenter/commit/969ddeea5ef09d4060d8124434db8b0d32a8c1a5)), closes [#465](https://github.com/peaceiris/actions-label-commenter/issues/465)
+* Install codecov-action v1 (#459) ([595284b](https://github.com/peaceiris/actions-label-commenter/commit/595284b205f47664af98919a5fa31c810725ff52)), closes [#459](https://github.com/peaceiris/actions-label-commenter/issues/459)
+* remove prerelease checking ([46838f5](https://github.com/peaceiris/actions-label-commenter/commit/46838f594ec8444741fbdede036222f60060b3a2))
+
+### deps
+
+* bump @octokit/types from 6.18.1 to 6.19.0 (#461) ([dc6c610](https://github.com/peaceiris/actions-label-commenter/commit/dc6c61031561bda54515e131d113df57bff3ec65)), closes [#461](https://github.com/peaceiris/actions-label-commenter/issues/461)
+* bump @octokit/types from 6.19.0 to 6.19.1 (#467) ([c41118e](https://github.com/peaceiris/actions-label-commenter/commit/c41118e431492825733cd89098464d8e4eb2cee0)), closes [#467](https://github.com/peaceiris/actions-label-commenter/issues/467)
+* bump @octokit/types from 6.19.1 to 6.21.0 (#469) ([7c2266c](https://github.com/peaceiris/actions-label-commenter/commit/7c2266caa76d1e6ab567f48be13de826f9693ef2)), closes [#469](https://github.com/peaceiris/actions-label-commenter/issues/469)
+* bump @octokit/webhooks-types from 4.1.0 to 4.2.0 (#462) ([c774d69](https://github.com/peaceiris/actions-label-commenter/commit/c774d69d517bca54f580e5a11486c523ba87b502)), closes [#462](https://github.com/peaceiris/actions-label-commenter/issues/462)
+* update devDependencies (#452) ([aa58646](https://github.com/peaceiris/actions-label-commenter/commit/aa58646aae02a357f51675d0bee5539210bc90c6)), closes [#452](https://github.com/peaceiris/actions-label-commenter/issues/452)
+* update devDependencies (#468) ([980e266](https://github.com/peaceiris/actions-label-commenter/commit/980e266984d56b0dc7f971c1b06cc3938549012e)), closes [#468](https://github.com/peaceiris/actions-label-commenter/issues/468)
+* Use octokit/webhooks-types (#458) ([fbe9e8e](https://github.com/peaceiris/actions-label-commenter/commit/fbe9e8eaaf405efdb4228efccf5bfb4a4a0a00d1)), closes [#458](https://github.com/peaceiris/actions-label-commenter/issues/458)
+
+### docs
+
+* Bump runs-on from ubuntu-18.04 to ubuntu-20.04 ([ee58094](https://github.com/peaceiris/actions-label-commenter/commit/ee580947f415b7a349daa1db80a14a395dc1cb1b))
+* Improve actions/labeler workflow ([27f77c1](https://github.com/peaceiris/actions-label-commenter/commit/27f77c1b40bc44948fae7325a3b4ec674bc0b093))
+* update Issue Template ([66a6907](https://github.com/peaceiris/actions-label-commenter/commit/66a6907742e23f4b692ca525b4f576e068e36bb7))
+* Upload images to #326 ([a26d1ae](https://github.com/peaceiris/actions-label-commenter/commit/a26d1ae134d03952e8c83ab995678eb66c584d5f)), closes [#326](https://github.com/peaceiris/actions-label-commenter/issues/326)
+
+### feat
+
+* Print action version (#470) ([f85b065](https://github.com/peaceiris/actions-label-commenter/commit/f85b065eafdd6829972d91ce362b4f4985ec1da1)), closes [#470](https://github.com/peaceiris/actions-label-commenter/issues/470)
+
+### style
+
+* Install eslint-plugin-import (#464) ([e05c4ef](https://github.com/peaceiris/actions-label-commenter/commit/e05c4ef0416206ece729ccdf7ea0346649bcfcb5)), closes [#464](https://github.com/peaceiris/actions-label-commenter/issues/464)
+
+
+
 ## [1.9.2](https://github.com/peaceiris/actions-label-commenter/compare/v1.9.1...v1.9.2) (2021-06-18)
 
 
