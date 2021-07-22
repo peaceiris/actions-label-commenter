@@ -47,9 +47,13 @@ fi
 
 npm ci
 
+CURRENT_VERSION=$(cat ./package.json | jq -r '.version')
+NEXT_VERSION=$(npx semver --increment "${RELEASE_TYPE}" "${CURRENT_VERSION}")
+sed -i "s/Version: '.*'/Version: '${NEXT_VERSION}'/" ./src/constants.ts
+
 mkdir ./lib
 npm run build
-git add ./lib/index.js
+git add ./lib/index.js ./src/constants.ts
 git commit -m "chore(release): Add build assets"
 
 npm run release -- --release-as "${RELEASE_TYPE}" --preset eslint

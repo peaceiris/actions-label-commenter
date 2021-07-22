@@ -43,7 +43,7 @@
     "import/first": 2,
     "import/group-exports": 2,
     "import/imports-first": 2,
-    "import/max-dependencies": 2,
+    "import/max-dependencies": 0,
     "import/named": 2,
     "import/namespace": 2,
     "import/newline-after-import": 2,
