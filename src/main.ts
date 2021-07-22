@@ -12,6 +12,7 @@ import {
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
 
+import {ActionInfo} from './constants';
 import {getInputs} from './get-inputs';
 import {Inputs} from './interfaces';
 import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
@@ -26,7 +27,9 @@ function groupConsoleLog(groupTitle: string, body: any, debug: boolean): void {
 
 export async function run(): Promise<void> {
   try {
-    info('[INFO] Usage https://github.com/peaceiris/actions-label-commenter#readme');
+    info(`[INFO] Version ${ActionInfo.Version}`);
+    const readmeUrl = `https://github.com/${ActionInfo.Owner}/${ActionInfo.Name}#readme`;
+    info(`[INFO] Usage ${readmeUrl}`);
 
     const inps: Inputs = getInputs();
 
@@ -138,9 +141,9 @@ export async function run(): Promise<void> {
       `<div align="right">` +
       `<a href="${logURL}">Log</a>` +
       ` | ` +
-      `<a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a>` +
+      `<a href="${readmeUrl}">Bot Usage</a>` +
       `</div>\n` +
-      '\n<!-- peaceiris/actions-label-commenter -->\n';
+      `\n<!-- ${ActionInfo.Owner}/${ActionInfo.Name} -->\n`;
     const rawCommentBody = (() => {
       if (isDebug()) {
         return `${commentHeader}\n\n${commentMain}\n\n${commentFooter}\n\n${commentFooterLinks}`;
