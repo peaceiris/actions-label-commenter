@@ -37,6 +37,7 @@ export async function run(): Promise<void> {
     const eventName = contextParser.eventName;
     const labelEvent = contextParser.action;
     const labelName = contextParser.labelName;
+    const eventType = contextParser.eventType;
     const issueNumber = contextParser.issueNumber;
 
     info(`\
@@ -46,43 +47,22 @@ export async function run(): Promise<void> {
 [INFO] issue number: ${issueNumber}\
   `);
 
-    const configParser = new ConfigParser(inps.ConfigFilePath, labelName as string);
+    const configParser = new ConfigParser(
+      inps.ConfigFilePath,
+      labelName as string,
+      labelEvent,
+      eventName,
+      contextParser.eventType
+    );
+
     if (isDebug()) {
       startGroup('Dump config');
       console.log(configParser.config);
       endGroup();
     }
 
-    if (!configParser.labelIndex) {
-      info(`[INFO] no configuration labels.${labelName}`);
+    if (!configParser.labelIndex || !configParser.isExistsField) {
       return;
-    }
-
-    if (configParser.config.labels[configParser.labelIndex][`${labelEvent}`] === void 0) {
-      info(`[INFO] no configuration labels.${labelName}.${labelEvent}`);
-      return;
-    }
-
-    if (
-      configParser.config.labels[configParser.labelIndex][`${labelEvent}`].issue === void 0 &&
-      configParser.config.labels[configParser.labelIndex][`${labelEvent}`].pr === void 0
-    ) {
-      throw new Error(`not found any definition labels.${labelName}.${labelEvent}`);
-    }
-
-    let eventType = '';
-    if (eventName === 'issues') {
-      eventType = 'issue';
-      if (configParser.config.labels[configParser.labelIndex][`${labelEvent}`].issue === void 0) {
-        info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
-        return;
-      }
-    } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
-      eventType = 'pr';
-      if (configParser.config.labels[configParser.labelIndex][`${labelEvent}`].pr === void 0) {
-        info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
-        return;
-      }
     }
 
     const parentFieldName = `labels.${labelName}.${labelEvent}.${eventType}`;

@@ -11,6 +11,7 @@ export class ContextParser {
   readonly context: Context;
   readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
   readonly eventName: string;
+  readonly eventType: string;
   readonly action: string;
   readonly labelName: string | undefined;
   readonly issueNumber: number;
@@ -26,6 +27,7 @@ export class ContextParser {
       | PullRequestEvent
       | PullRequestLabeledEvent;
     this.eventName = this.getEventName();
+    this.eventType = this.getEventType();
     this.action = this.getAction();
     this.labelName = this.getLabelName();
     this.issueNumber = this.getIssueNumber();
@@ -50,6 +52,15 @@ export class ContextParser {
     } else {
       throw new Error(`unsupported event: ${eventName}`);
     }
+  }
+
+  getEventType(): string {
+    if (this.eventName === 'issues') {
+      return 'issue';
+    }
+
+    // if (this.eventName === 'pull_request' || this.eventName === 'pull_request_target')
+    return 'pr';
   }
 
   getAction(): string {
