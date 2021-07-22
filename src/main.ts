@@ -2,7 +2,6 @@ import fs from 'fs';
 
 import {startGroup, endGroup, info, isDebug} from '@actions/core';
 import {context, getOctokit} from '@actions/github';
-import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 import {
   IssuesEvent,
   IssuesLabeledEvent,
@@ -16,6 +15,12 @@ import {ActionInfo} from './constants';
 import {getInputs} from './get-inputs';
 import {Inputs} from './interfaces';
 import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
+import {
+  IssuesCreateCommentResponse,
+  IssuesUpdateResponse,
+  IssuesLockResponse,
+  IssuesUnlockResponse
+} from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function groupConsoleLog(groupTitle: string, body: any, debug: boolean): void {
@@ -199,9 +204,6 @@ export async function run(): Promise<void> {
     // Create octokit client
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
-    type IssuesCreateCommentResponse = GetResponseTypeFromEndpointMethod<
-      typeof githubClient.rest.issues.createComment
-    >;
 
     // Get locking config
     const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
@@ -215,8 +217,11 @@ export async function run(): Promise<void> {
 
     // Unlock an issue
     if (locking === 'unlock') {
-      const unlockResult = await unlockIssue(githubClient, issueNumber);
-      groupConsoleLog('Unlock issue', unlockResult, isDebug());
+      const issuesUnlockResponse: IssuesUnlockResponse = await unlockIssue(
+        githubClient,
+        issueNumber
+      );
+      groupConsoleLog('Unlock issue', issuesUnlockResponse, isDebug());
     }
 
     // Get locked status
@@ -247,9 +252,11 @@ export async function run(): Promise<void> {
     // Close or Open an issue
     const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
     if (finalAction === 'close') {
-      await closeIssue(githubClient, issueNumber);
+      const issuesCloseResponse: IssuesUpdateResponse = await closeIssue(githubClient, issueNumber);
+      groupConsoleLog('issuesCloseResponse', issuesCloseResponse, isDebug());
     } else if (finalAction === 'open') {
-      await openIssue(githubClient, issueNumber);
+      const issuesOpenResponse: IssuesUpdateResponse = await openIssue(githubClient, issueNumber);
+      groupConsoleLog('issuesOpenResponse', issuesOpenResponse, isDebug());
     } else if (finalAction === '' || finalAction === void 0) {
       info(`[INFO] no configuration ${parentFieldName}.action`);
     } else {
@@ -259,8 +266,12 @@ export async function run(): Promise<void> {
     // Lock an issue
     if (locking === 'lock') {
       const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
-      const lockResult = await lockIssue(githubClient, issueNumber, lockReason);
-      groupConsoleLog('Lock issue', lockResult, isDebug());
+      const issuesLockResponse: IssuesLockResponse = await lockIssue(
+        githubClient,
+        issueNumber,
+        lockReason
+      );
+      groupConsoleLog('Lock issue', issuesLockResponse, isDebug());
     }
 
     return;

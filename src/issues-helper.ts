@@ -1,38 +1,37 @@
 import {context} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
 
+import {IssuesUpdateResponse, IssuesLockResponse, IssuesUnlockResponse} from './types';
+
 async function closeIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
-): Promise<void> {
-  await githubClient.rest.issues.update({
+): Promise<IssuesUpdateResponse> {
+  return await githubClient.rest.issues.update({
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: issueNumber,
     state: 'closed'
   });
-  return;
 }
 
 async function openIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
-): Promise<void> {
-  await githubClient.rest.issues.update({
+): Promise<IssuesUpdateResponse> {
+  return await githubClient.rest.issues.update({
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: issueNumber,
     state: 'open'
   });
-  return;
 }
 
 async function lockIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number,
   lockReason?: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<any> {
+): Promise<IssuesLockResponse> {
   const reason = (() => {
     switch (lockReason) {
       case 'off-topic':
@@ -59,8 +58,7 @@ async function lockIssue(
 async function unlockIssue(
   githubClient: InstanceType<typeof GitHub>,
   issueNumber: number
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<any> {
+): Promise<IssuesUnlockResponse> {
   return await githubClient.rest.issues.unlock({
     owner: context.repo.owner,
     repo: context.repo.repo,
