@@ -1,7 +1,26 @@
 import {context} from '@actions/github';
+import {Context} from '@actions/github/lib/context';
 import {GitHub} from '@actions/github/lib/utils';
 
-import {IssuesUpdateResponse, IssuesLockResponse, IssuesUnlockResponse} from './types';
+import {
+  IssuesCreateCommentResponse,
+  IssuesUpdateResponse,
+  IssuesLockResponse,
+  IssuesUnlockResponse
+} from './types';
+
+async function createComment(
+  githubClient: InstanceType<typeof GitHub>,
+  context: Context,
+  body: string
+): Promise<IssuesCreateCommentResponse> {
+  return githubClient.rest.issues.createComment({
+    issue_number: context.issue.number,
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    body: body
+  });
+}
 
 async function closeIssue(
   githubClient: InstanceType<typeof GitHub>,
@@ -66,4 +85,4 @@ async function unlockIssue(
   });
 }
 
-export {closeIssue, openIssue, lockIssue, unlockIssue};
+export {createComment, closeIssue, openIssue, lockIssue, unlockIssue};

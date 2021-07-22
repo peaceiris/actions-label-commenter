@@ -14,7 +14,7 @@ import Mustache from 'mustache';
 import {ActionInfo} from './constants';
 import {getInputs} from './get-inputs';
 import {Inputs} from './interfaces';
-import {openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
+import {createComment, openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
 import {
   IssuesCreateCommentResponse,
   IssuesUpdateResponse,
@@ -238,13 +238,11 @@ export async function run(): Promise<void> {
 
     // Post comment
     if (!locked) {
-      const issuesCreateCommentResponse: IssuesCreateCommentResponse =
-        await githubClient.rest.issues.createComment({
-          issue_number: context.issue.number,
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          body: commentBodyRendered
-        });
+      const issuesCreateCommentResponse: IssuesCreateCommentResponse = await createComment(
+        githubClient,
+        context,
+        commentBodyRendered
+      );
       groupConsoleLog('issuesCreateCommentResponse', issuesCreateCommentResponse, isDebug());
       info(`[INFO] comment URL: ${issuesCreateCommentResponse.data.html_url}`);
     }
