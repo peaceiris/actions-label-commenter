@@ -77,39 +77,40 @@ export class CommentGenerator {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get view(): any {
+    if (this.runContext.EventName === 'issues') {
+      return {
+        issue: {
+          user: {
+            login: this.contextParser.userLogin
+          }
+        },
+        sender: {
+          login: this.contextParser.senderLogin
+        }
+      };
+    } else if (
+      this.runContext.EventName === 'pull_request' ||
+      this.runContext.EventName === 'pull_request_target'
+    ) {
+      return {
+        pull_request: {
+          user: {
+            login: this.contextParser.userLogin
+          }
+        },
+        sender: {
+          login: this.contextParser.senderLogin
+        }
+      };
+    } else {
+      return {};
+    }
+  }
+
   get render(): string {
-    // Render template
-    const commentBodyView = (() => {
-      if (this.runContext.EventName === 'issues') {
-        return {
-          issue: {
-            user: {
-              login: this.contextParser.userLogin
-            }
-          },
-          sender: {
-            login: this.contextParser.senderLogin
-          }
-        };
-      } else if (
-        this.runContext.EventName === 'pull_request' ||
-        this.runContext.EventName === 'pull_request_target'
-      ) {
-        return {
-          pull_request: {
-            user: {
-              login: this.contextParser.userLogin
-            }
-          },
-          sender: {
-            login: this.contextParser.senderLogin
-          }
-        };
-      } else {
-        return {};
-      }
-    })();
-    const renderedBody = Mustache.render(this.rawBody, commentBodyView);
+    const renderedBody = Mustache.render(this.rawBody, this.view);
     groupConsoleLog('commentBodyRendered', renderedBody, 'debug');
     return renderedBody;
   }
