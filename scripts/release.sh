@@ -49,7 +49,7 @@ npm ci
 
 CURRENT_VERSION=$(cat ./package.json | jq -r '.version')
 NEXT_VERSION=$(npx semver --increment "${RELEASE_TYPE}" "${CURRENT_VERSION}")
-sed -i "s/Version: '[0-9].[0-9].[0-9]'/Version: '${NEXT_VERSION}'/" ./src/constants.ts
+sed -i "s/Version: '.*'/Version: '${NEXT_VERSION}'/" ./src/constants.ts
 
 mkdir ./lib
 npm run build

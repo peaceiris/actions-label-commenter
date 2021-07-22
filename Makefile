@@ -21,11 +21,13 @@ test:
 all:
 	docker-compose run --rm -T dev npm run all
 
+.PHONY: release
+release:
+	bash ./scripts/release.sh
+
 .PHONY: pre-release
 pre-release:
-	npm run build
-	git add ./lib/index.js
-	git commit -m "chore: npm run build"
+	bash ./scripts/pre-release.sh
 
 .PHONY: remove-pre-release
 remove-pre-release:
