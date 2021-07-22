@@ -11,6 +11,7 @@ import {
 import yaml from 'js-yaml';
 import Mustache from 'mustache';
 
+import {ContextParser} from './classes/context-parser';
 import {ActionInfo} from './constants';
 import {getInputs} from './get-inputs';
 import {Inputs} from './interfaces';
@@ -40,41 +41,11 @@ export async function run(): Promise<void> {
 
     groupConsoleLog('Dump GitHub context', context, isDebug());
 
-    const eventName: string = context.eventName;
-    if (
-      eventName === 'issues' ||
-      eventName === 'pull_request' ||
-      eventName === 'pull_request_target'
-    ) {
-      info(`[INFO] event name: ${eventName}`);
-    } else if (eventName === 'discussion' || eventName === 'discussion_comment') {
-      throw new Error(
-        `unsupported event: ${eventName}, Please subscribe issue https://github.com/peaceiris/actions-label-commenter/issues/444`
-      );
-    } else {
-      throw new Error(`unsupported event: ${eventName}`);
-    }
-
-    const payload = context.payload as IssuesEvent | PullRequestEvent;
-    const labelEvent: string = payload.action;
-
-    const labelName: string | undefined = (() => {
-      if (eventName === 'issues') {
-        return (payload as IssuesLabeledEvent).label?.name;
-      } else {
-        // if (eventName === 'pull_request' || eventName === 'pull_request_target')
-        return (payload as PullRequestLabeledEvent).label?.name;
-      }
-    })();
-
-    const issueNumber: number = (() => {
-      if (eventName === 'issues') {
-        return (payload as IssuesEvent).issue.number;
-      } else {
-        // if (eventName === 'pull_request' || eventName === 'pull_request_target')
-        return (payload as PullRequestEvent).number;
-      }
-    })();
+    const contextParser = new ContextParser(context);
+    const eventName = contextParser.eventName;
+    const labelEvent = contextParser.action;
+    const labelName = contextParser.labelName;
+    const issueNumber = contextParser.issueNumber;
 
     info(`\
 [INFO] config file path: ${inps.ConfigFilePath}
@@ -176,22 +147,22 @@ export async function run(): Promise<void> {
         return {
           issue: {
             user: {
-              login: (payload as IssuesEvent).issue.user.login
+              login: contextParser.userLogin
             }
           },
           sender: {
-            login: (payload as IssuesEvent).sender.login
+            login: contextParser.senderLogin
           }
         };
       } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
         return {
           pull_request: {
             user: {
-              login: (payload as PullRequestEvent).pull_request.user.login
+              login: contextParser.userLogin
             }
           },
           sender: {
-            login: (payload as PullRequestEvent).sender.login
+            login: contextParser.senderLogin
           }
         };
       } else {
@@ -229,10 +200,9 @@ export async function run(): Promise<void> {
       if (locking === 'unlock') {
         return false;
       } else if (eventName === 'issues') {
-        return (payload as IssuesEvent).issue.locked;
+        return contextParser.locked;
       } else {
-        // if (eventName === 'pull_request' || eventName === 'pull_request_target')
-        return (payload as PullRequestEvent).pull_request.locked;
+        return contextParser.locked;
       }
     })();
 
