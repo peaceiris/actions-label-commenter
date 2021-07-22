@@ -1,5 +1,5 @@
 const ActionInfo = {
-  Version: '1.9.2',
+  Version: '1.10.0',
   Name: 'actions-label-commenter',
   Owner: 'peaceiris'
 } as const;
