@@ -11,4 +11,11 @@ interface RunContext {
   readonly EventType: string;
 }
 
-export {Inputs, RunContext};
+interface Comment {
+  Main: string;
+  Header: string;
+  Footer: string;
+  FooterLinks: string;
+}
+
+export {Inputs, RunContext, Comment};

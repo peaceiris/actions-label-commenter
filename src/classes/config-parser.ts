@@ -11,6 +11,7 @@ export class ConfigParser {
   readonly labelIndex: string | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
+  readonly parentFieldName: string;
 
   constructor(runContext: RunContext) {
     this.runContext = runContext;
@@ -21,6 +22,7 @@ export class ConfigParser {
     this.config = this.loadConfig();
     this.labelIndex = this.getLabelIndex();
     this.isExistsField = this.confirmFieldExistence();
+    this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
