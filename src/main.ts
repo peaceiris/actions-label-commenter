@@ -36,14 +36,18 @@ export async function run(): Promise<void> {
     groupConsoleLog('Dump GitHub context', context, isDebug());
 
     const eventName: string = context.eventName;
-    info(`[INFO] event name: ${eventName}`);
     if (
-      eventName !== 'issues' &&
-      eventName !== 'pull_request' &&
-      eventName !== 'pull_request_target'
+      eventName === 'issues' ||
+      eventName === 'pull_request' ||
+      eventName === 'pull_request_target'
     ) {
-      info(`[INFO] unsupported event: ${eventName}`);
-      return;
+      info(`[INFO] event name: ${eventName}`);
+    } else if (eventName === 'discussion' || eventName === 'discussion_comment') {
+      throw new Error(
+        `unsupported event: ${eventName}, Please subscribe issue https://github.com/peaceiris/actions-label-commenter/issues/444`
+      );
+    } else {
+      throw new Error(`unsupported event: ${eventName}`);
     }
 
     const payload = context.payload as IssuesEvent | PullRequestEvent;
