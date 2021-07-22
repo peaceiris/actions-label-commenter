@@ -10,6 +10,13 @@ import {
 export class ContextParser {
   readonly context: Context;
   readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+  readonly eventName: string;
+  readonly action: string;
+  readonly labelName: string | undefined;
+  readonly issueNumber: number;
+  readonly userLogin: string;
+  readonly senderLogin: string;
+  readonly locked: boolean;
 
   constructor(context: Context) {
     this.context = context;
@@ -18,9 +25,16 @@ export class ContextParser {
       | IssuesLabeledEvent
       | PullRequestEvent
       | PullRequestLabeledEvent;
+    this.eventName = this.getEventName();
+    this.action = this.getAction();
+    this.labelName = this.getLabelName();
+    this.issueNumber = this.getIssueNumber();
+    this.userLogin = this.getUserLogin();
+    this.senderLogin = this.getSenderLogin();
+    this.locked = this.getLocked();
   }
 
-  get eventName(): string {
+  getEventName(): string {
     const eventName: string = this.context.eventName;
     info(`[INFO] event name: ${eventName}`);
     if (
@@ -38,11 +52,11 @@ export class ContextParser {
     }
   }
 
-  get action(): string {
+  getAction(): string {
     return this.payload.action;
   }
 
-  get labelName(): string | undefined {
+  getLabelName(): string | undefined {
     if (this.eventName === 'issues') {
       return (this.payload as IssuesLabeledEvent).label?.name;
     }
@@ -50,7 +64,7 @@ export class ContextParser {
     return (this.payload as PullRequestLabeledEvent).label?.name;
   }
 
-  get issueNumber(): number {
+  getIssueNumber(): number {
     if (this.eventName === 'issues') {
       return (this.payload as IssuesEvent).issue.number;
     }
@@ -58,7 +72,7 @@ export class ContextParser {
     return (this.payload as PullRequestEvent).number;
   }
 
-  get userLogin(): string {
+  getUserLogin(): string {
     if (this.eventName === 'issues') {
       return (this.payload as IssuesEvent).issue.user.login;
     }
@@ -66,7 +80,7 @@ export class ContextParser {
     return (this.payload as PullRequestEvent).pull_request.user.login;
   }
 
-  get senderLogin(): string {
+  getSenderLogin(): string {
     if (this.eventName === 'issues') {
       return (this.payload as IssuesEvent).sender.login;
     }
@@ -74,11 +88,11 @@ export class ContextParser {
     return (this.payload as PullRequestEvent).sender.login;
   }
 
-  get locked(): boolean | undefined {
+  getLocked(): boolean {
     if (this.eventName === 'issues') {
-      return (this.payload as IssuesEvent).issue.locked;
+      return Boolean((this.payload as IssuesEvent).issue.locked);
     }
     // pull_request OR pull_request_target
-    return (this.payload as PullRequestEvent).pull_request.locked;
+    return Boolean((this.payload as PullRequestEvent).pull_request.locked);
   }
 }

@@ -1,16 +1,8 @@
-import fs from 'fs';
-
 import {startGroup, endGroup, info, isDebug} from '@actions/core';
 import {context, getOctokit} from '@actions/github';
-import {
-  IssuesEvent,
-  IssuesLabeledEvent,
-  PullRequestEvent,
-  PullRequestLabeledEvent
-} from '@octokit/webhooks-types';
-import yaml from 'js-yaml';
 import Mustache from 'mustache';
 
+import {ConfigParser} from './classes/config-parser';
 import {ContextParser} from './classes/context-parser';
 import {ActionInfo} from './constants';
 import {getInputs} from './get-inputs';
@@ -54,43 +46,26 @@ export async function run(): Promise<void> {
 [INFO] issue number: ${issueNumber}\
   `);
 
-    const configFilePath = inps.ConfigFilePath;
-    // Validate config file location
-    if (!fs.existsSync(configFilePath)) {
-      throw new Error(`not found ${configFilePath}`);
-    }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const config: any = yaml.load(fs.readFileSync(configFilePath, 'utf8'));
+    const configParser = new ConfigParser(inps.ConfigFilePath, labelName as string);
     if (isDebug()) {
       startGroup('Dump config');
-      console.log(config);
+      console.log(configParser.config);
       endGroup();
     }
 
-    let isExistLabel = false;
-    let labelIndex = '';
-    Object.keys(config.labels).forEach(label => {
-      if (config.labels[label].name === labelName) {
-        isExistLabel = true;
-        if (labelIndex === '') {
-          labelIndex = label;
-        }
-      }
-    });
-
-    if (!isExistLabel) {
+    if (!configParser.labelIndex) {
       info(`[INFO] no configuration labels.${labelName}`);
       return;
     }
 
-    if (config.labels[labelIndex][`${labelEvent}`] === void 0) {
+    if (configParser.config.labels[configParser.labelIndex][`${labelEvent}`] === void 0) {
       info(`[INFO] no configuration labels.${labelName}.${labelEvent}`);
       return;
     }
 
     if (
-      config.labels[labelIndex][`${labelEvent}`].issue === void 0 &&
-      config.labels[labelIndex][`${labelEvent}`].pr === void 0
+      configParser.config.labels[configParser.labelIndex][`${labelEvent}`].issue === void 0 &&
+      configParser.config.labels[configParser.labelIndex][`${labelEvent}`].pr === void 0
     ) {
       throw new Error(`not found any definition labels.${labelName}.${labelEvent}`);
     }
@@ -98,13 +73,13 @@ export async function run(): Promise<void> {
     let eventType = '';
     if (eventName === 'issues') {
       eventType = 'issue';
-      if (config.labels[labelIndex][`${labelEvent}`].issue === void 0) {
+      if (configParser.config.labels[configParser.labelIndex][`${labelEvent}`].issue === void 0) {
         info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
         return;
       }
     } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
       eventType = 'pr';
-      if (config.labels[labelIndex][`${labelEvent}`].pr === void 0) {
+      if (configParser.config.labels[configParser.labelIndex][`${labelEvent}`].pr === void 0) {
         info(`[INFO] no configuration labels.${labelName}.${labelEvent}.${eventType}`);
         return;
       }
@@ -114,9 +89,10 @@ export async function run(): Promise<void> {
     const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
 
     // Merge comment body
-    const commentMain = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].body;
-    const commentHeader = config.comment?.header ?? '';
-    const commentFooter = config.comment?.footer ?? '';
+    const commentMain =
+      configParser.config.labels[configParser.labelIndex][`${labelEvent}`][`${eventType}`].body;
+    const commentHeader = configParser.config.comment?.header ?? '';
+    const commentFooter = configParser.config.comment?.footer ?? '';
     const commentFooterLinks =
       `<div align="right">` +
       `<a href="${logURL}">Log</a>` +
@@ -177,7 +153,8 @@ export async function run(): Promise<void> {
     const githubClient = getOctokit(githubToken);
 
     // Get locking config
-    const locking = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].locking;
+    const locking =
+      configParser.config.labels[configParser.labelIndex][`${labelEvent}`][`${eventType}`].locking;
     if (locking === 'lock' || locking === 'unlock') {
       info(`[INFO] ${parentFieldName}.locking is ${locking}`);
     } else if (locking === '' || locking === void 0) {
@@ -218,7 +195,8 @@ export async function run(): Promise<void> {
     }
 
     // Close or Open an issue
-    const finalAction = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].action;
+    const finalAction =
+      configParser.config.labels[configParser.labelIndex][`${labelEvent}`][`${eventType}`].action;
     if (finalAction === 'close') {
       const issuesCloseResponse: IssuesUpdateResponse = await closeIssue(githubClient, issueNumber);
       groupConsoleLog('issuesCloseResponse', issuesCloseResponse, isDebug());
@@ -233,7 +211,9 @@ export async function run(): Promise<void> {
 
     // Lock an issue
     if (locking === 'lock') {
-      const lockReason = config.labels[labelIndex][`${labelEvent}`][`${eventType}`].lock_reason;
+      const lockReason =
+        configParser.config.labels[configParser.labelIndex][`${labelEvent}`][`${eventType}`]
+          .lock_reason;
       const issuesLockResponse: IssuesLockResponse = await lockIssue(
         githubClient,
         issueNumber,
