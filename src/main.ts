@@ -6,7 +6,7 @@ import {ConfigParser} from './classes/config-parser';
 import {ContextParser} from './classes/context-parser';
 import {ActionInfo} from './constants';
 import {getInputs} from './get-inputs';
-import {Inputs} from './interfaces';
+import {Inputs, RunContext} from './interfaces';
 import {createComment, openIssue, closeIssue, unlockIssue, lockIssue} from './issues-helper';
 import {
   IssuesCreateCommentResponse,
@@ -34,26 +34,21 @@ export async function run(): Promise<void> {
     groupConsoleLog('Dump GitHub context', context, isDebug());
 
     const contextParser = new ContextParser(context);
-    const eventName = contextParser.eventName;
-    const labelEvent = contextParser.action;
-    const labelName = contextParser.labelName;
-    const eventType = contextParser.eventType;
+    const runContext: RunContext = {
+      ConfigFilePath: inps.ConfigFilePath,
+      LabelName: contextParser.labelName as string,
+      LabelEvent: contextParser.action,
+      EventName: contextParser.eventName,
+      EventType: contextParser.eventType
+    };
     const issueNumber = contextParser.issueNumber;
 
-    info(`\
-[INFO] config file path: ${inps.ConfigFilePath}
-[INFO] label name: ${labelName}
-[INFO] label event: ${labelEvent}
-[INFO] issue number: ${issueNumber}\
-  `);
+    startGroup('[INFO] Dump runContext');
+    console.log(runContext);
+    endGroup();
+    info(`[INFO] issue number: ${issueNumber}`);
 
-    const configParser = new ConfigParser(
-      inps.ConfigFilePath,
-      labelName as string,
-      labelEvent,
-      eventName,
-      contextParser.eventType
-    );
+    const configParser = new ConfigParser(runContext);
 
     if (isDebug()) {
       startGroup('Dump config');
@@ -65,12 +60,14 @@ export async function run(): Promise<void> {
       return;
     }
 
-    const parentFieldName = `labels.${labelName}.${labelEvent}.${eventType}`;
+    const parentFieldName = `labels.${runContext.LabelName}.${runContext.LabelEvent}.${runContext.EventType}`;
     const logURL = `${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/actions/runs/${process.env['GITHUB_RUN_ID']}`;
 
     // Merge comment body
     const commentMain =
-      configParser.config.labels[configParser.labelIndex][`${labelEvent}`][`${eventType}`].body;
+      configParser.config.labels[configParser.labelIndex][`${runContext.LabelEvent}`][
+        `${runContext.EventType}`
+      ].body;
     const commentHeader = configParser.config.comment?.header ?? '';
     const commentFooter = configParser.config.comment?.footer ?? '';
     const commentFooterLinks =
@@ -99,7 +96,7 @@ export async function run(): Promise<void> {
 
     // Render template
     const commentBodyView = (() => {
-      if (eventName === 'issues') {
+      if (runContext.EventName === 'issues') {
         return {
           issue: {
             user: {
@@ -110,7 +107,10 @@ export async function run(): Promise<void> {
             login: contextParser.senderLogin
           }
         };
-      } else if (eventName === 'pull_request' || eventName === 'pull_request_target') {
+      } else if (
+        runContext.EventName === 'pull_request' ||
+        runContext.EventName === 'pull_request_target'
+      ) {
         return {
           pull_request: {
             user: {
@@ -134,7 +134,9 @@ export async function run(): Promise<void> {
 
     // Get locking config
     const locking =
-      configParser.config.labels[configParser.labelIndex][`${labelEvent}`][`${eventType}`].locking;
+      configParser.config.labels[configParser.labelIndex][`${runContext.LabelEvent}`][
+        `${runContext.EventType}`
+      ].locking;
     if (locking === 'lock' || locking === 'unlock') {
       info(`[INFO] ${parentFieldName}.locking is ${locking}`);
     } else if (locking === '' || locking === void 0) {
@@ -156,7 +158,7 @@ export async function run(): Promise<void> {
     const locked: boolean | undefined = (() => {
       if (locking === 'unlock') {
         return false;
-      } else if (eventName === 'issues') {
+      } else if (runContext.EventName === 'issues') {
         return contextParser.locked;
       } else {
         return contextParser.locked;
@@ -176,7 +178,9 @@ export async function run(): Promise<void> {
 
     // Close or Open an issue
     const finalAction =
-      configParser.config.labels[configParser.labelIndex][`${labelEvent}`][`${eventType}`].action;
+      configParser.config.labels[configParser.labelIndex][`${runContext.LabelEvent}`][
+        `${runContext.EventType}`
+      ].action;
     if (finalAction === 'close') {
       const issuesCloseResponse: IssuesUpdateResponse = await closeIssue(githubClient, issueNumber);
       groupConsoleLog('issuesCloseResponse', issuesCloseResponse, isDebug());
@@ -192,8 +196,9 @@ export async function run(): Promise<void> {
     // Lock an issue
     if (locking === 'lock') {
       const lockReason =
-        configParser.config.labels[configParser.labelIndex][`${labelEvent}`][`${eventType}`]
-          .lock_reason;
+        configParser.config.labels[configParser.labelIndex][`${runContext.LabelEvent}`][
+          `${runContext.EventType}`
+        ].lock_reason;
       const issuesLockResponse: IssuesLockResponse = await lockIssue(
         githubClient,
         issueNumber,
