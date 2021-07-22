@@ -1,7 +1,7 @@
-import {Octokit} from '@octokit/rest';
+import {GitHub} from '@actions/github/lib/utils';
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
-const octokit = new Octokit();
+const octokit = new GitHub();
 type IssuesCreateCommentResponse = GetResponseTypeFromEndpointMethod<
   typeof octokit.rest.issues.createComment
 >;
