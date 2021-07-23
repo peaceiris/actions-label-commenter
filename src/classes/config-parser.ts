@@ -5,12 +5,15 @@ import yaml from 'js-yaml';
 
 import {RunContext} from '../interfaces';
 
+type lockingType = 'lock' | 'lock';
+
 export class ConfigParser {
-  readonly isExistsField: boolean;
   readonly runContext: RunContext;
-  readonly labelIndex: string | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
+  readonly labelIndex: string | undefined;
+  readonly isExistsField: boolean;
+  readonly locking: lockingType;
   readonly parentFieldName: string;
 
   constructor(runContext: RunContext) {
@@ -22,6 +25,7 @@ export class ConfigParser {
     this.config = this.loadConfig();
     this.labelIndex = this.getLabelIndex();
     this.isExistsField = this.confirmFieldExistence();
+    this.locking = this.getLocking();
     this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
   }
 
@@ -62,5 +66,22 @@ export class ConfigParser {
     }
 
     return false;
+  }
+
+  getLocking(): lockingType {
+    const locking =
+      this.config.labels[this.labelIndex as string][`${this.runContext.LabelEvent}`][
+        `${this.runContext.EventType}`
+      ].locking;
+
+    if (locking === 'lock' || locking === 'unlock') {
+      info(`[INFO] ${this.parentFieldName}.locking is ${locking}`);
+    } else if (locking === '' || locking === void 0) {
+      info(`[INFO] no configuration ${this.parentFieldName}.locking`);
+    } else {
+      throw new Error(`invalid value "${locking}" ${this.parentFieldName}.locking`);
+    }
+
+    return locking;
   }
 }

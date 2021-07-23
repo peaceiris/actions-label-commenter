@@ -59,21 +59,8 @@ export async function run(): Promise<void> {
     const githubToken = inps.GithubToken;
     const githubClient = getOctokit(githubToken);
 
-    // Get locking config
-    const locking =
-      configParser.config.labels[configParser.labelIndex][`${runContext.LabelEvent}`][
-        `${runContext.EventType}`
-      ].locking;
-    if (locking === 'lock' || locking === 'unlock') {
-      info(`[INFO] ${configParser.parentFieldName}.locking is ${locking}`);
-    } else if (locking === '' || locking === void 0) {
-      info(`[INFO] no configuration ${configParser.parentFieldName}.locking`);
-    } else {
-      throw new Error(`invalid value "${locking}" ${configParser.parentFieldName}.locking`);
-    }
-
     // Unlock an issue
-    if (locking === 'unlock') {
+    if (configParser.locking === 'unlock') {
       const issuesUnlockResponse: IssuesUnlockResponse = await unlockIssue(
         githubClient,
         issueNumber
@@ -83,7 +70,7 @@ export async function run(): Promise<void> {
 
     // Get locked status
     const locked: boolean | undefined = (() => {
-      if (locking === 'unlock') {
+      if (configParser.locking === 'unlock') {
         return false;
       } else if (runContext.EventName === 'issues') {
         return contextParser.locked;
@@ -121,7 +108,7 @@ export async function run(): Promise<void> {
     }
 
     // Lock an issue
-    if (locking === 'lock') {
+    if (configParser.locking === 'lock') {
       const lockReason =
         configParser.config.labels[configParser.labelIndex][`${runContext.LabelEvent}`][
           `${runContext.EventType}`
