@@ -2,7 +2,7 @@ import {startGroup, endGroup, info, isDebug} from '@actions/core';
 import {context, getOctokit} from '@actions/github';
 
 import {CommentGenerator} from './classes/comment-generator';
-import {ConfigParser} from './classes/config-parser';
+import {lockingType, ConfigParser} from './classes/config-parser';
 import {ContextParser} from './classes/context-parser';
 import {ActionInfo} from './constants';
 import {getInputs} from './get-inputs';
@@ -60,7 +60,7 @@ export async function run(): Promise<void> {
     const githubClient = getOctokit(githubToken);
 
     // Unlock an issue
-    if (configParser.locking === 'unlock') {
+    if (configParser.locking === ('unlock' as lockingType)) {
       const issuesUnlockResponse: IssuesUnlockResponse = await unlockIssue(
         githubClient,
         issueNumber
@@ -70,7 +70,7 @@ export async function run(): Promise<void> {
 
     // Get locked status
     const locked: boolean | undefined = (() => {
-      if (configParser.locking === 'unlock') {
+      if (configParser.locking === ('unlock' as lockingType)) {
         return false;
       } else if (runContext.EventName === 'issues') {
         return contextParser.locked;
@@ -108,7 +108,7 @@ export async function run(): Promise<void> {
     }
 
     // Lock an issue
-    if (configParser.locking === 'lock') {
+    if (configParser.locking === ('lock' as lockingType)) {
       const lockReason =
         configParser.config.labels[configParser.labelIndex][`${runContext.LabelEvent}`][
           `${runContext.EventType}`

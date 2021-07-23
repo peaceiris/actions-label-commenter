@@ -7,7 +7,7 @@ import {RunContext} from '../interfaces';
 
 type lockingType = 'lock' | 'lock';
 
-export class ConfigParser {
+class ConfigParser {
   readonly runContext: RunContext;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
@@ -85,3 +85,5 @@ export class ConfigParser {
     return locking;
   }
 }
+
+export {lockingType, ConfigParser};
