@@ -9,13 +9,13 @@
   },
   "scripts": {
     "postinstall": "npx husky install",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix .",
+    "lint": "eslint --ext .ts .",
+    "lint:fix": "eslint --ext .ts --fix .",
     "test": "jest --coverage --verbose",
     "build": "ncc build ./src/index.ts -o lib --minify",
     "tsc": "tsc --noEmit",
-    "fmt": "prettier --write ./**/*.{ts,tsx,js,json}",
-    "fmt:check": "prettier --check ./**/*.{ts,tsx,js,json}",
+    "fmt": "prettier --write ./**/*.ts",
+    "fmt:check": "prettier --check ./**/*.ts",
     "all": "npm run fmt && npm run lint && npm test",
     "release": "standard-version"
   },
