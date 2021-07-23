@@ -6,6 +6,7 @@ import yaml from 'js-yaml';
 import {RunContext} from '../interfaces';
 
 type lockingType = 'lock' | 'lock';
+type actionType = 'close' | 'open';
 
 class ConfigParser {
   readonly runContext: RunContext;
@@ -14,6 +15,7 @@ class ConfigParser {
   readonly labelIndex: string | undefined;
   readonly isExistsField: boolean;
   readonly locking: lockingType;
+  readonly action: actionType;
   readonly parentFieldName: string;
 
   constructor(runContext: RunContext) {
@@ -26,6 +28,7 @@ class ConfigParser {
     this.labelIndex = this.getLabelIndex();
     this.isExistsField = this.confirmFieldExistence();
     this.locking = this.getLocking();
+    this.action = this.getAction();
     this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
   }
 
@@ -76,7 +79,7 @@ class ConfigParser {
 
     if (locking === 'lock' || locking === 'unlock') {
       info(`[INFO] ${this.parentFieldName}.locking is ${locking}`);
-    } else if (locking === '' || locking === void 0) {
+    } else if (!locking) {
       info(`[INFO] no configuration ${this.parentFieldName}.locking`);
     } else {
       throw new Error(`invalid value "${locking}" ${this.parentFieldName}.locking`);
@@ -84,6 +87,12 @@ class ConfigParser {
 
     return locking;
   }
+
+  getAction(): actionType {
+    return this.config.labels[this.labelIndex as string][`${this.runContext.LabelEvent}`][
+      `${this.runContext.EventType}`
+    ].action;
+  }
 }
 
-export {lockingType, ConfigParser};
+export {lockingType, actionType, ConfigParser};

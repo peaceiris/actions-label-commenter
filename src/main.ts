@@ -2,7 +2,7 @@ import {startGroup, endGroup, info, isDebug} from '@actions/core';
 import {context, getOctokit} from '@actions/github';
 
 import {CommentGenerator} from './classes/comment-generator';
-import {lockingType, ConfigParser} from './classes/config-parser';
+import {lockingType, actionType, ConfigParser} from './classes/config-parser';
 import {ContextParser} from './classes/context-parser';
 import {ActionInfo} from './constants';
 import {getInputs} from './get-inputs';
@@ -91,20 +91,18 @@ export async function run(): Promise<void> {
     }
 
     // Close or Open an issue
-    const finalAction =
-      configParser.config.labels[configParser.labelIndex][`${runContext.LabelEvent}`][
-        `${runContext.EventType}`
-      ].action;
-    if (finalAction === 'close') {
+    if (configParser.action === ('close' as actionType)) {
       const issuesCloseResponse: IssuesUpdateResponse = await closeIssue(githubClient, issueNumber);
       groupConsoleLog('issuesCloseResponse', issuesCloseResponse, 'debug');
-    } else if (finalAction === 'open') {
+    } else if (configParser.action === ('open' as actionType)) {
       const issuesOpenResponse: IssuesUpdateResponse = await openIssue(githubClient, issueNumber);
       groupConsoleLog('issuesOpenResponse', issuesOpenResponse, 'debug');
-    } else if (finalAction === '' || finalAction === void 0) {
+    } else if (!configParser.action) {
       info(`[INFO] no configuration ${configParser.parentFieldName}.action`);
     } else {
-      throw new Error(`invalid value "${finalAction}" ${configParser.parentFieldName}.action`);
+      throw new Error(
+        `invalid value "${configParser.action}" ${configParser.parentFieldName}.action`
+      );
     }
 
     // Lock an issue
