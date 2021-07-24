@@ -12,10 +12,15 @@ interface RunContext {
 }
 
 interface Comment {
-  Main: string;
-  Header: string;
-  Footer: string;
-  FooterLinks: string;
+  readonly Main: string;
+  readonly Header: string;
+  readonly Footer: string;
+  readonly FooterLinks: string;
 }
 
-export {Inputs, RunContext, Comment};
+interface IIssue {
+  readonly number: number;
+  readonly locked: boolean;
+}
+
+export {Inputs, RunContext, Comment, IIssue};

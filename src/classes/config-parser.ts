@@ -4,9 +4,11 @@ import {info} from '@actions/core';
 import yaml from 'js-yaml';
 
 import {RunContext} from '../interfaces';
+import {groupConsoleLog} from '../logger';
+import {LockReason} from '../types';
 
-type lockingType = 'lock' | 'lock';
-type actionType = 'close' | 'open';
+type Locking = 'lock' | 'lock';
+type Action = 'close' | 'open';
 
 class ConfigParser {
   readonly runContext: RunContext;
@@ -14,8 +16,9 @@ class ConfigParser {
   readonly config: any;
   readonly labelIndex: string | undefined;
   readonly isExistsField: boolean;
-  readonly locking: lockingType;
-  readonly action: actionType;
+  readonly locking: Locking;
+  readonly action: Action;
+  readonly lockReason: LockReason;
   readonly parentFieldName: string;
 
   constructor(runContext: RunContext) {
@@ -29,12 +32,17 @@ class ConfigParser {
     this.isExistsField = this.confirmFieldExistence();
     this.locking = this.getLocking();
     this.action = this.getAction();
+    this.lockReason = this.getLockReason();
     this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadConfig(): any {
     return yaml.load(fs.readFileSync(this.runContext.ConfigFilePath, 'utf8'));
+  }
+
+  dumpConfig(): void {
+    groupConsoleLog('Dump config', this.config, 'debug');
   }
 
   getLabelIndex(): string | undefined {
@@ -71,7 +79,7 @@ class ConfigParser {
     return false;
   }
 
-  getLocking(): lockingType {
+  getLocking(): Locking {
     const locking =
       this.config.labels[this.labelIndex as string][`${this.runContext.LabelEvent}`][
         `${this.runContext.EventType}`
@@ -88,11 +96,17 @@ class ConfigParser {
     return locking;
   }
 
-  getAction(): actionType {
+  getAction(): Action {
     return this.config.labels[this.labelIndex as string][`${this.runContext.LabelEvent}`][
       `${this.runContext.EventType}`
     ].action;
   }
+
+  getLockReason(): LockReason {
+    return this.config.labels[this.labelIndex as string][`${this.runContext.LabelEvent}`][
+      `${this.runContext.EventType}`
+    ].lock_reason;
+  }
 }
 
-export {lockingType, actionType, ConfigParser};
+export {Locking, Action, ConfigParser};

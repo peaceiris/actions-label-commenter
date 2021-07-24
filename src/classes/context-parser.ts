@@ -7,7 +7,11 @@ import {
   PullRequestLabeledEvent
 } from '@octokit/webhooks-types';
 
+import {Inputs, RunContext} from '../interfaces';
+import {groupConsoleLog} from '../logger';
+
 export class ContextParser {
+  readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
   readonly eventName: string;
@@ -19,7 +23,8 @@ export class ContextParser {
   readonly senderLogin: string;
   readonly locked: boolean;
 
-  constructor(context: Context) {
+  constructor(inputs: Inputs, context: Context) {
+    this.inputs = inputs;
     this.context = context;
     this.payload = context.payload as
       | IssuesEvent
@@ -34,6 +39,23 @@ export class ContextParser {
     this.userLogin = this.getUserLogin();
     this.senderLogin = this.getSenderLogin();
     this.locked = this.getLocked();
+  }
+
+  dumpContext(): void {
+    groupConsoleLog('Dump GitHub context', this.context, 'debug');
+    info(`[INFO] issue number: ${this.issueNumber}`);
+  }
+
+  get runContext(): RunContext {
+    const runContext = {
+      ConfigFilePath: this.inputs.ConfigFilePath,
+      LabelName: this.labelName as string,
+      LabelEvent: this.action,
+      EventName: this.eventName,
+      EventType: this.eventType
+    };
+    groupConsoleLog('Dump runContext', runContext, 'info');
+    return runContext;
   }
 
   getEventName(): string {

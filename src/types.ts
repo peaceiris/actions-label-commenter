@@ -9,9 +9,12 @@ type IssuesUpdateResponse = GetResponseTypeFromEndpointMethod<typeof octokit.res
 type IssuesLockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.lock>;
 type IssuesUnlockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.unlock>;
 
+type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam';
+
 export {
   IssuesCreateCommentResponse,
   IssuesUpdateResponse,
   IssuesLockResponse,
-  IssuesUnlockResponse
+  IssuesUnlockResponse,
+  LockReason
 };
