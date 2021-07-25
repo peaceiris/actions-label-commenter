@@ -47,7 +47,7 @@ class Issue implements IIssue {
       body: body
     });
 
-    groupConsoleLog('IssuesCreateCommentResponse', ret, 'debug');
+    groupConsoleLog('IssuesCreateCommentResponse', ret);
 
     if (ret.status === 201) {
       info(`New comment has been created in issue #${this.number}`);
@@ -66,7 +66,7 @@ class Issue implements IIssue {
       state: 'closed'
     });
 
-    groupConsoleLog('IssuesUpdateResponse', ret, 'debug');
+    groupConsoleLog('IssuesUpdateResponse', ret);
 
     if (ret.status === 200) {
       info(`Issue #${this.number} has been closed`);
@@ -84,7 +84,7 @@ class Issue implements IIssue {
       state: 'open'
     });
 
-    groupConsoleLog('IssuesUpdateResponse', ret, 'debug');
+    groupConsoleLog('IssuesUpdateResponse', ret);
 
     if (ret.status === 200) {
       info(`Issue #${this.number} has been reopened`);
@@ -102,7 +102,7 @@ class Issue implements IIssue {
       lock_reason: reason || 'resolved'
     });
 
-    groupConsoleLog('IssuesLockResponse', ret, 'debug');
+    groupConsoleLog('IssuesLockResponse', ret);
 
     if (ret.status === 204) {
       this.setLocked(true);
@@ -120,7 +120,7 @@ class Issue implements IIssue {
       issue_number: this.number
     });
 
-    groupConsoleLog('IssuesUnlockResponse', ret, 'debug');
+    groupConsoleLog('IssuesUnlockResponse', ret);
 
     if (ret.status === 204) {
       this.setLocked(false);

@@ -8,14 +8,12 @@ import {
   error as coreError
 } from '@actions/core';
 
-type LogLevel = 'debug' | 'info' | 'warning' | 'error';
-
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-function groupConsoleLog(title: string, body: any, level: LogLevel): void {
-  if (level === ('debug' as LogLevel) && !isDebug()) {
+function groupConsoleLog(title: string, body: any): void {
+  if (!isDebug()) {
     return;
   }
-  startGroup(`[${level}] ${title}`);
+  startGroup(`[debug] ${title}`);
   console.log(body);
   endGroup();
 }

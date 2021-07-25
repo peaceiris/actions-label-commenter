@@ -77,11 +77,11 @@ export class CommentGenerator {
       info(`No configuration ${this.configParser.parentFieldName}.body`);
       return;
     } else {
-      groupConsoleLog('commentMain', this.comment.Main, 'debug');
-      groupConsoleLog('commentHeader', this.comment.Header, 'debug');
-      groupConsoleLog('commentFooter', this.comment.Footer, 'debug');
-      groupConsoleLog('commentFooterLinks', this.comment.FooterLinks, 'debug');
-      groupConsoleLog('rawCommentBody', this.rawBody, 'debug');
+      groupConsoleLog('commentMain', this.comment.Main);
+      groupConsoleLog('commentHeader', this.comment.Header);
+      groupConsoleLog('commentFooter', this.comment.Footer);
+      groupConsoleLog('commentFooterLinks', this.comment.FooterLinks);
+      groupConsoleLog('rawCommentBody', this.rawBody);
     }
   }
 
@@ -119,7 +119,7 @@ export class CommentGenerator {
 
   get render(): string {
     const renderedBody = Mustache.render(this.rawBody, this.view);
-    groupConsoleLog('commentBodyRendered', renderedBody, 'debug');
+    groupConsoleLog('commentBodyRendered', renderedBody);
     return renderedBody;
   }
 }

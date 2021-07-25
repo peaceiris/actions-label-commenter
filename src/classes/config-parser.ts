@@ -12,6 +12,7 @@ type Action = 'close' | 'open';
 
 class ConfigParser {
   readonly runContext: RunContext;
+  readonly parentFieldName: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
   readonly labelIndex: string | undefined;
@@ -19,11 +20,11 @@ class ConfigParser {
   readonly locking: Locking;
   readonly action: Action;
   readonly lockReason: LockReason;
-  readonly parentFieldName: string;
 
   constructor(runContext: RunContext) {
     try {
       this.runContext = runContext;
+      this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
       // Validate config file location
       if (!fs.existsSync(this.runContext.ConfigFilePath)) {
         throw new Error(`Not found ${this.runContext.ConfigFilePath}`);
@@ -34,7 +35,6 @@ class ConfigParser {
       this.locking = this.getLocking();
       this.action = this.getAction();
       this.lockReason = this.getLockReason();
-      this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -46,7 +46,7 @@ class ConfigParser {
   }
 
   dumpConfig(): void {
-    groupConsoleLog('Dump config', this.config, 'debug');
+    groupConsoleLog('Dump config', this.config);
   }
 
   getLabelIndex(): string | undefined {

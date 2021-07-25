@@ -53,7 +53,7 @@ class ContextParser {
   }
 
   dumpContext(): void {
-    groupConsoleLog('Dump GitHub context', this.context, 'debug');
+    groupConsoleLog('Dump GitHub context', this.context);
     info(`Issue number: ${this.issueNumber}`);
   }
 
@@ -65,7 +65,7 @@ class ContextParser {
       EventName: this.eventName,
       EventType: this.eventType
     };
-    groupConsoleLog('Dump runContext', runContext, 'info');
+    groupConsoleLog('Dump runContext', runContext);
     return runContext;
   }
 
