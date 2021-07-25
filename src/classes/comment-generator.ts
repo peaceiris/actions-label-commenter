@@ -1,4 +1,5 @@
 import {info, isDebug} from '@actions/core';
+import {get} from 'lodash-es';
 import Mustache from 'mustache';
 
 import {ActionInfo} from '../constants';
@@ -38,9 +39,10 @@ export class CommentGenerator {
   }
 
   getMain(): string {
-    return this.configParser.config.labels[this.configParser.labelIndex as string][
-      `${this.runContext.LabelEvent}`
-    ][`${this.runContext.EventType}`].body;
+    return get(
+      this.configParser.config.labels[this.configParser.labelIndex as string],
+      `${this.runContext.LabelEvent}.${this.runContext.EventType}.body`
+    );
   }
 
   getHeader(): string {

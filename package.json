@@ -51,11 +51,13 @@
     "@octokit/types": "^6.21.0",
     "@octokit/webhooks-types": "^4.2.0",
     "js-yaml": "^4.1.0",
+    "lodash-es": "^4.17.21",
     "mustache": "^4.2.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@types/js-yaml": "^4.0.2",
+    "@types/lodash-es": "^4.17.4",
     "@types/mustache": "^4.1.2",
     "@types/node": "~14",
     "@typescript-eslint/eslint-plugin": "^4.28.4",

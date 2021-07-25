@@ -1,7 +1,6 @@
 import {info} from '@actions/core';
 import {GitHub} from '@actions/github/lib/utils';
 
-import {ActionInfo} from '../constants';
 import {CommentGenerator} from './comment-generator';
 import {Locking, Action, ConfigParser} from './config-parser';
 import {ContextParser} from './context-parser';
@@ -35,12 +34,6 @@ class ActionProcessor {
     );
   }
 
-  dumpActionInfo(): void {
-    info(`[INFO] Version ${ActionInfo.Version}`);
-    const readmeUrl = `https://github.com/${ActionInfo.Owner}/${ActionInfo.Name}#readme`;
-    info(`[INFO] Usage ${readmeUrl}`);
-  }
-
   isLocked(): boolean | undefined {
     if (this.configParser.locking === ('unlock' as Locking)) {
       return false;
@@ -49,7 +42,6 @@ class ActionProcessor {
   }
 
   async process(): Promise<void> {
-    this.dumpActionInfo();
     this.contextParser.dumpContext();
     this.configParser.dumpConfig();
 

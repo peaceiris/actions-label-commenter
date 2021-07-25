@@ -2,6 +2,7 @@ import fs from 'fs';
 
 import {info} from '@actions/core';
 import yaml from 'js-yaml';
+import {get} from 'lodash-es';
 
 import {groupConsoleLog} from '../logger';
 import {RunContext} from './context-parser';
@@ -60,12 +61,10 @@ class ConfigParser {
 
   confirmFieldExistence(): boolean {
     if (this.labelIndex) {
-      if (this.config.labels[this.labelIndex][`${this.runContext.LabelEvent}`]) {
-        if (
-          this.config.labels[this.labelIndex][`${this.runContext.LabelEvent}`][
-            `${this.runContext.EventType}`
-          ]
-        ) {
+      const labelEvent = get(this.config.labels[this.labelIndex], `${this.runContext.LabelEvent}`);
+      if (labelEvent) {
+        const eventType = get(labelEvent, `${this.runContext.EventType}`);
+        if (eventType) {
           return true;
         }
         throw new Error(
@@ -84,10 +83,10 @@ class ConfigParser {
   }
 
   getLocking(): Locking {
-    const locking =
-      this.config.labels[this.labelIndex as string][`${this.runContext.LabelEvent}`][
-        `${this.runContext.EventType}`
-      ].locking;
+    const locking = get(
+      this.config.labels[this.labelIndex as string],
+      `${this.runContext.LabelEvent}.${this.runContext.EventType}.locking`
+    );
 
     if (locking === 'lock' || locking === 'unlock') {
       info(`[INFO] ${this.parentFieldName}.locking is ${locking}`);
@@ -101,15 +100,17 @@ class ConfigParser {
   }
 
   getAction(): Action {
-    return this.config.labels[this.labelIndex as string][`${this.runContext.LabelEvent}`][
-      `${this.runContext.EventType}`
-    ].action;
+    return get(
+      this.config.labels[this.labelIndex as string],
+      `${this.runContext.LabelEvent}.${this.runContext.EventType}.action`
+    );
   }
 
   getLockReason(): LockReason {
-    return this.config.labels[this.labelIndex as string][`${this.runContext.LabelEvent}`][
-      `${this.runContext.EventType}`
-    ].lock_reason;
+    return get(
+      this.config.labels[this.labelIndex as string],
+      `${this.runContext.LabelEvent}.${this.runContext.EventType}.lock_reason`
+    );
   }
 }
 
