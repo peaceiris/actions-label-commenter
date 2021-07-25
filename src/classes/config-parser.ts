@@ -3,9 +3,9 @@ import fs from 'fs';
 import {info} from '@actions/core';
 import yaml from 'js-yaml';
 
-import {RunContext} from '../interfaces';
 import {groupConsoleLog} from '../logger';
-import {LockReason} from '../types';
+import {RunContext} from './context-parser';
+import {LockReason} from './issue';
 
 type Locking = 'lock' | 'lock';
 type Action = 'close' | 'open';

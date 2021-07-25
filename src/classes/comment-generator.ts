@@ -2,10 +2,16 @@ import {info, isDebug} from '@actions/core';
 import Mustache from 'mustache';
 
 import {ActionInfo} from '../constants';
-import {RunContext, Comment} from '../interfaces';
 import {groupConsoleLog} from '../logger';
 import {ConfigParser} from './config-parser';
-import {ContextParser} from './context-parser';
+import {RunContext, ContextParser} from './context-parser';
+
+interface Comment {
+  readonly Main: string;
+  readonly Header: string;
+  readonly Footer: string;
+  readonly FooterLinks: string;
+}
 
 export class CommentGenerator {
   readonly contextParser: ContextParser;

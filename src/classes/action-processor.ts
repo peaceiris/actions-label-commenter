@@ -2,10 +2,10 @@ import {info} from '@actions/core';
 import {GitHub} from '@actions/github/lib/utils';
 
 import {ActionInfo} from '../constants';
-import {Inputs} from '../interfaces';
 import {CommentGenerator} from './comment-generator';
 import {Locking, Action, ConfigParser} from './config-parser';
 import {ContextParser} from './context-parser';
+import {Inputs} from './inputs-loader';
 import {Issue} from './issue';
 
 class ActionProcessor {

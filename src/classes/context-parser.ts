@@ -7,10 +7,18 @@ import {
   PullRequestLabeledEvent
 } from '@octokit/webhooks-types';
 
-import {Inputs, RunContext} from '../interfaces';
 import {groupConsoleLog} from '../logger';
+import {Inputs} from './inputs-loader';
 
-export class ContextParser {
+interface RunContext {
+  readonly ConfigFilePath: string;
+  readonly LabelName: string;
+  readonly LabelEvent: string;
+  readonly EventName: string;
+  readonly EventType: string;
+}
+
+class ContextParser {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
@@ -133,3 +141,5 @@ export class ContextParser {
     return Boolean((this.payload as PullRequestEvent).pull_request.locked);
   }
 }
+
+export {RunContext, ContextParser};

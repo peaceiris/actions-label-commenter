@@ -1,18 +1,26 @@
 import {info} from '@actions/core';
 import {context} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
+import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
-import {IIssue} from '../interfaces';
 import {groupConsoleLog} from '../logger';
-import {
-  IssuesCreateCommentResponse,
-  IssuesUpdateResponse,
-  IssuesLockResponse,
-  IssuesUnlockResponse,
-  LockReason
-} from '../types';
 
-export class Issue implements IIssue {
+const octokit = new GitHub();
+type IssuesCreateCommentResponse = GetResponseTypeFromEndpointMethod<
+  typeof octokit.rest.issues.createComment
+>;
+type IssuesUpdateResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.update>;
+type IssuesLockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.lock>;
+type IssuesUnlockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.unlock>;
+
+type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam';
+
+interface IIssue {
+  readonly number: number;
+  readonly locked: boolean;
+}
+
+class Issue implements IIssue {
   readonly githubClient: InstanceType<typeof GitHub>;
   readonly number: number;
   locked: boolean;
@@ -124,3 +132,5 @@ export class Issue implements IIssue {
     }
   }
 }
+
+export {LockReason, IIssue, Issue};
