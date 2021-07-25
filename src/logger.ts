@@ -1,7 +1,6 @@
 import {
   startGroup,
   endGroup,
-  isDebug,
   info as coreInfo,
   debug as coreDebug,
   warning as coreWarning,
@@ -10,10 +9,7 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 function groupConsoleLog(title: string, body: any): void {
-  if (!isDebug()) {
-    return;
-  }
-  startGroup(`[debug] ${title}`);
+  startGroup(`[info] ${title}`);
   console.log(body);
   endGroup();
 }
