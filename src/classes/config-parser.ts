@@ -22,18 +22,22 @@ class ConfigParser {
   readonly parentFieldName: string;
 
   constructor(runContext: RunContext) {
-    this.runContext = runContext;
-    // Validate config file location
-    if (!fs.existsSync(this.runContext.ConfigFilePath)) {
-      throw new Error(`not found ${this.runContext.ConfigFilePath}`);
+    try {
+      this.runContext = runContext;
+      // Validate config file location
+      if (!fs.existsSync(this.runContext.ConfigFilePath)) {
+        throw new Error(`not found ${this.runContext.ConfigFilePath}`);
+      }
+      this.config = this.loadConfig();
+      this.labelIndex = this.getLabelIndex();
+      this.isExistsField = this.confirmFieldExistence();
+      this.locking = this.getLocking();
+      this.action = this.getAction();
+      this.lockReason = this.getLockReason();
+      this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
+    } catch (error) {
+      throw new Error(error.message);
     }
-    this.config = this.loadConfig();
-    this.labelIndex = this.getLabelIndex();
-    this.isExistsField = this.confirmFieldExistence();
-    this.locking = this.getLocking();
-    this.action = this.getAction();
-    this.lockReason = this.getLockReason();
-    this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

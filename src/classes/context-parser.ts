@@ -24,21 +24,25 @@ export class ContextParser {
   readonly locked: boolean;
 
   constructor(inputs: Inputs, context: Context) {
-    this.inputs = inputs;
-    this.context = context;
-    this.payload = context.payload as
-      | IssuesEvent
-      | IssuesLabeledEvent
-      | PullRequestEvent
-      | PullRequestLabeledEvent;
-    this.eventName = this.getEventName();
-    this.eventType = this.getEventType();
-    this.action = this.getAction();
-    this.labelName = this.getLabelName();
-    this.issueNumber = this.getIssueNumber();
-    this.userLogin = this.getUserLogin();
-    this.senderLogin = this.getSenderLogin();
-    this.locked = this.getLocked();
+    try {
+      this.inputs = inputs;
+      this.context = context;
+      this.payload = context.payload as
+        | IssuesEvent
+        | IssuesLabeledEvent
+        | PullRequestEvent
+        | PullRequestLabeledEvent;
+      this.eventName = this.getEventName();
+      this.eventType = this.getEventType();
+      this.action = this.getAction();
+      this.labelName = this.getLabelName();
+      this.issueNumber = this.getIssueNumber();
+      this.userLogin = this.getUserLogin();
+      this.senderLogin = this.getSenderLogin();
+      this.locked = this.getLocked();
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
   dumpContext(): void {

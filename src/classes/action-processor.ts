@@ -23,20 +23,16 @@ class ActionProcessor {
     configParser: ConfigParser,
     commentGenerator: CommentGenerator
   ) {
-    try {
-      this.inputs = inputs;
-      this.githubClient = githubClient;
-      this.contextParser = contextParser;
-      this.configParser = configParser;
-      this.commentGenerator = commentGenerator;
-      this.issue = new Issue(
-        this.githubClient,
-        this.contextParser.issueNumber,
-        this.contextParser.locked
-      );
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    this.inputs = inputs;
+    this.githubClient = githubClient;
+    this.contextParser = contextParser;
+    this.configParser = configParser;
+    this.commentGenerator = commentGenerator;
+    this.issue = new Issue(
+      this.githubClient,
+      this.contextParser.issueNumber,
+      this.contextParser.locked
+    );
   }
 
   dumpActionInfo(): void {
