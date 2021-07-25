@@ -15,7 +15,7 @@ class ConfigParser {
   readonly parentFieldName: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
-  readonly labelIndex: string | undefined;
+  readonly labelIndex: string;
   readonly locking: Locking;
   readonly action: Action;
   readonly lockReason: LockReason;
@@ -47,13 +47,16 @@ class ConfigParser {
     groupConsoleLog('Dump config', this.config);
   }
 
-  getLabelIndex(): string | undefined {
+  getLabelIndex(): string {
+    let labelIndex = '';
     Object.keys(this.config.labels).forEach(label => {
       if (this.config.labels[label].name === this.runContext.LabelName) {
-        return label;
+        if (labelIndex === '') {
+          labelIndex = label;
+        }
       }
     });
-    return undefined;
+    return labelIndex;
   }
 
   getLocking(): Locking {

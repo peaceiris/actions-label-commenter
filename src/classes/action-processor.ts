@@ -45,7 +45,8 @@ class ActionProcessor {
     this.contextParser.dumpContext();
     this.configParser.dumpConfig();
 
-    if (this.configParser.labelIndex === void 0) {
+    if (!this.configParser.labelIndex) {
+      info(`No configuration`);
       return;
     }
 
