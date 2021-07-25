@@ -1,9 +1,8 @@
-import {info} from '@actions/core';
 import {context} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
-import {groupConsoleLog} from '../logger';
+import {groupConsoleLog, info} from '../logger';
 
 const octokit = new GitHub();
 type IssuesCreateCommentResponse = GetResponseTypeFromEndpointMethod<
@@ -51,8 +50,8 @@ class Issue implements IIssue {
     groupConsoleLog('IssuesCreateCommentResponse', ret, 'debug');
 
     if (ret.status === 201) {
-      info(`[INFO] New comment has been created in issue #${this.number}`);
-      info(`[INFO] Comment URL: ${ret.data.html_url}`);
+      info(`New comment has been created in issue #${this.number}`);
+      info(`Comment URL: ${ret.data.html_url}`);
       return;
     } else {
       throw new Error(`IssuesCreateCommentResponse.status: ${ret.status}`);

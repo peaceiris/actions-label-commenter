@@ -1,6 +1,6 @@
-import {info} from '@actions/core';
 import {GitHub} from '@actions/github/lib/utils';
 
+import {info} from '../logger';
 import {CommentGenerator} from './comment-generator';
 import {Locking, Action, ConfigParser} from './config-parser';
 import {ContextParser} from './context-parser';
@@ -63,10 +63,10 @@ class ActionProcessor {
       } else if (this.configParser.action === ('open' as Action)) {
         await this.issue.open();
       } else if (!this.configParser.action) {
-        info(`[INFO] no configuration ${this.configParser.parentFieldName}.action`);
+        info(`No configuration ${this.configParser.parentFieldName}.action`);
       } else {
         throw new Error(
-          `invalid value "${this.configParser.action}" ${this.configParser.parentFieldName}.action`
+          `Invalid value "${this.configParser.action}" ${this.configParser.parentFieldName}.action`
         );
       }
 

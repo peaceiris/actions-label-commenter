@@ -1,10 +1,9 @@
 import fs from 'fs';
 
-import {info} from '@actions/core';
 import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
-import {groupConsoleLog} from '../logger';
+import {groupConsoleLog, info} from '../logger';
 import {RunContext} from './context-parser';
 import {LockReason} from './issue';
 
@@ -27,7 +26,7 @@ class ConfigParser {
       this.runContext = runContext;
       // Validate config file location
       if (!fs.existsSync(this.runContext.ConfigFilePath)) {
-        throw new Error(`not found ${this.runContext.ConfigFilePath}`);
+        throw new Error(`Not found ${this.runContext.ConfigFilePath}`);
       }
       this.config = this.loadConfig();
       this.labelIndex = this.getLabelIndex();
@@ -68,15 +67,13 @@ class ConfigParser {
           return true;
         }
         throw new Error(
-          `not found definition labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`
+          `Not found definition labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`
         );
       } else {
-        info(
-          `[INFO] no configuration labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}`
-        );
+        info(`No configuration labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}`);
       }
     } else {
-      info(`[INFO] no configuration labels.${this.runContext.LabelName}`);
+      info(`No configuration labels.${this.runContext.LabelName}`);
     }
 
     return false;
@@ -89,11 +86,11 @@ class ConfigParser {
     );
 
     if (locking === 'lock' || locking === 'unlock') {
-      info(`[INFO] ${this.parentFieldName}.locking is ${locking}`);
+      info(`${this.parentFieldName}.locking is ${locking}`);
     } else if (!locking) {
-      info(`[INFO] no configuration ${this.parentFieldName}.locking`);
+      info(`No configuration ${this.parentFieldName}.locking`);
     } else {
-      throw new Error(`invalid value "${locking}" ${this.parentFieldName}.locking`);
+      throw new Error(`Invalid value "${locking}" ${this.parentFieldName}.locking`);
     }
 
     return locking;

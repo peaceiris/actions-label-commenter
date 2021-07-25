@@ -1,4 +1,3 @@
-import {info} from '@actions/core';
 import {getOctokit, context} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
 
@@ -8,12 +7,13 @@ import {ConfigParser} from './classes/config-parser';
 import {ContextParser} from './classes/context-parser';
 import {Inputs, InputsLoader} from './classes/inputs-loader';
 import {ActionInfo} from './constants';
+import {info} from './logger';
 
 export async function run(): Promise<void> {
   try {
-    info(`[INFO] Version ${ActionInfo.Version}`);
+    info(`Version ${ActionInfo.Version}`);
     const readmeUrl = `https://github.com/${ActionInfo.Owner}/${ActionInfo.Name}#readme`;
-    info(`[INFO] Usage ${readmeUrl}`);
+    info(`Usage ${readmeUrl}`);
 
     const inputs: Inputs = new InputsLoader();
     const githubClient: InstanceType<typeof GitHub> = getOctokit(inputs.GithubToken);

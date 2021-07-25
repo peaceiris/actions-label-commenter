@@ -1,9 +1,9 @@
-import {info, isDebug} from '@actions/core';
+import {isDebug} from '@actions/core';
 import {get} from 'lodash-es';
 import Mustache from 'mustache';
 
 import {ActionInfo} from '../constants';
-import {groupConsoleLog} from '../logger';
+import {groupConsoleLog, info} from '../logger';
 import {ConfigParser} from './config-parser';
 import {RunContext, ContextParser} from './context-parser';
 
@@ -74,7 +74,7 @@ export class CommentGenerator {
 
   dumpComponents(): void {
     if (!this.comment.Main) {
-      info(`[INFO] no configuration ${this.configParser.parentFieldName}.body`);
+      info(`No configuration ${this.configParser.parentFieldName}.body`);
       return;
     } else {
       groupConsoleLog('commentMain', this.comment.Main, 'debug');

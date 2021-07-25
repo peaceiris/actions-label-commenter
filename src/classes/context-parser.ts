@@ -1,4 +1,3 @@
-import {info} from '@actions/core';
 import {Context} from '@actions/github/lib/context';
 import {
   IssuesEvent,
@@ -7,7 +6,7 @@ import {
   PullRequestLabeledEvent
 } from '@octokit/webhooks-types';
 
-import {groupConsoleLog} from '../logger';
+import {groupConsoleLog, info} from '../logger';
 import {Inputs} from './inputs-loader';
 
 interface RunContext {
@@ -55,7 +54,7 @@ class ContextParser {
 
   dumpContext(): void {
     groupConsoleLog('Dump GitHub context', this.context, 'debug');
-    info(`[INFO] issue number: ${this.issueNumber}`);
+    info(`Issue number: ${this.issueNumber}`);
   }
 
   get runContext(): RunContext {
@@ -72,7 +71,7 @@ class ContextParser {
 
   getEventName(): string {
     const eventName: string = this.context.eventName;
-    info(`[INFO] event name: ${eventName}`);
+    info(`Event name: ${eventName}`);
     if (
       eventName === 'issues' ||
       eventName === 'pull_request' ||
@@ -81,10 +80,10 @@ class ContextParser {
       return eventName;
     } else if (eventName === 'discussion' || eventName === 'discussion_comment') {
       throw new Error(
-        `unsupported event: ${eventName}, Please subscribe issue https://github.com/peaceiris/actions-label-commenter/issues/444`
+        `Unsupported event: ${eventName}, Please subscribe issue https://github.com/peaceiris/actions-label-commenter/issues/444`
       );
     } else {
-      throw new Error(`unsupported event: ${eventName}`);
+      throw new Error(`Unsupported event: ${eventName}`);
     }
   }
 
