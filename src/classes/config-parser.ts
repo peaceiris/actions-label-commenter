@@ -16,7 +16,6 @@ class ConfigParser {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
   readonly labelIndex: string | undefined;
-  readonly isExistsField: boolean;
   readonly locking: Locking;
   readonly action: Action;
   readonly lockReason: LockReason;
@@ -31,7 +30,6 @@ class ConfigParser {
       }
       this.config = this.loadConfig();
       this.labelIndex = this.getLabelIndex();
-      this.isExistsField = this.confirmFieldExistence();
       this.locking = this.getLocking();
       this.action = this.getAction();
       this.lockReason = this.getLockReason();
@@ -56,27 +54,6 @@ class ConfigParser {
       }
     });
     return undefined;
-  }
-
-  confirmFieldExistence(): boolean {
-    if (this.labelIndex) {
-      const labelEvent = get(this.config.labels[this.labelIndex], `${this.runContext.LabelEvent}`);
-      if (labelEvent) {
-        const eventType = get(labelEvent, `${this.runContext.EventType}`);
-        if (eventType) {
-          return true;
-        }
-        throw new Error(
-          `Not found definition labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`
-        );
-      } else {
-        info(`No configuration labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}`);
-      }
-    } else {
-      info(`No configuration labels.${this.runContext.LabelName}`);
-    }
-
-    return false;
   }
 
   getLocking(): Locking {

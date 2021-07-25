@@ -45,7 +45,7 @@ class ActionProcessor {
     this.contextParser.dumpContext();
     this.configParser.dumpConfig();
 
-    if (!this.configParser.labelIndex || !this.configParser.isExistsField) {
+    if (!this.configParser.labelIndex) {
       return;
     }
 

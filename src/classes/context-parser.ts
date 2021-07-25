@@ -29,6 +29,7 @@ class ContextParser {
   readonly userLogin: string;
   readonly senderLogin: string;
   readonly locked: boolean;
+  readonly runContext: RunContext;
 
   constructor(inputs: Inputs, context: Context) {
     try {
@@ -47,6 +48,7 @@ class ContextParser {
       this.userLogin = this.getUserLogin();
       this.senderLogin = this.getSenderLogin();
       this.locked = this.getLocked();
+      this.runContext = this.getRunContext();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -57,7 +59,7 @@ class ContextParser {
     info(`Issue number: ${this.issueNumber}`);
   }
 
-  get runContext(): RunContext {
+  getRunContext(): RunContext {
     const runContext = {
       ConfigFilePath: this.inputs.ConfigFilePath,
       LabelName: this.labelName as string,
