@@ -14,10 +14,10 @@ export class CommentGenerator {
   readonly comment: Comment;
   readonly rawBody: string;
 
-  constructor(contextParser: ContextParser, configParser: ConfigParser, runContext: RunContext) {
+  constructor(contextParser: ContextParser, configParser: ConfigParser) {
     this.contextParser = contextParser;
     this.configParser = configParser;
-    this.runContext = runContext;
+    this.runContext = this.contextParser.runContext;
     this.comment = {
       Main: this.getMain(),
       Header: this.getHeader(),

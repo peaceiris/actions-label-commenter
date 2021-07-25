@@ -1,5 +1,4 @@
-import {info, getInput} from '@actions/core';
-import {context, getOctokit} from '@actions/github';
+import {info} from '@actions/core';
 import {GitHub} from '@actions/github/lib/utils';
 
 import {ActionInfo} from '../constants';
@@ -17,17 +16,19 @@ class ActionProcessor {
   readonly commentGenerator: CommentGenerator;
   readonly issue: Issue;
 
-  constructor() {
+  constructor(
+    inputs: Inputs,
+    githubClient: InstanceType<typeof GitHub>,
+    contextParser: ContextParser,
+    configParser: ConfigParser,
+    commentGenerator: CommentGenerator
+  ) {
     try {
-      this.inputs = this.getInputs();
-      this.githubClient = getOctokit(this.inputs.GithubToken);
-      this.contextParser = new ContextParser(this.inputs, context);
-      this.configParser = new ConfigParser(this.contextParser.runContext);
-      this.commentGenerator = new CommentGenerator(
-        this.contextParser,
-        this.configParser,
-        this.contextParser.runContext
-      );
+      this.inputs = inputs;
+      this.githubClient = githubClient;
+      this.contextParser = contextParser;
+      this.configParser = configParser;
+      this.commentGenerator = commentGenerator;
       this.issue = new Issue(
         this.githubClient,
         this.contextParser.issueNumber,
@@ -42,13 +43,6 @@ class ActionProcessor {
     info(`[INFO] Version ${ActionInfo.Version}`);
     const readmeUrl = `https://github.com/${ActionInfo.Owner}/${ActionInfo.Name}#readme`;
     info(`[INFO] Usage ${readmeUrl}`);
-  }
-
-  getInputs(): Inputs {
-    return {
-      GithubToken: getInput('github_token'),
-      ConfigFilePath: getInput('config_file')
-    };
   }
 
   isLocked(): boolean | undefined {
