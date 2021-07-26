@@ -45,4 +45,4 @@ jobs:
           name: coverage
           path: coverage
 
-      - uses: codecov/codecov-action@v2.0.1
+      - uses: codecov/codecov-action@v2.0.2
