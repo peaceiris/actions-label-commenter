@@ -47,7 +47,7 @@ fi
 
 npm ci
 
-CURRENT_VERSION=$(cat ./package.json | jq -r '.version')
+CURRENT_VERSION=$(jq -r '.version' < ./package.json)
 NEXT_VERSION=$(npx semver --increment "${RELEASE_TYPE}" "${CURRENT_VERSION}")
 sed -i "s/Version: '.*'/Version: '${NEXT_VERSION}'/" ./src/constants.ts
 
