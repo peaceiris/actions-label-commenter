@@ -18,6 +18,7 @@ interface IAction {
   isLocked(): boolean | undefined;
   process(): Promise<void>;
 }
+
 class ActionProcessor implements IAction {
   readonly inputs: Inputs;
   readonly githubClient: InstanceType<typeof GitHub>;
