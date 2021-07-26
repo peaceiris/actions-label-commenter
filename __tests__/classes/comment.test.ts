@@ -15,6 +15,10 @@ import {LockReason} from '../../src/classes/issue';
 import {getDefaultInputs, cleanupEnvs} from '../../src/test-helper';
 
 beforeEach(() => {
+  process.env['GITHUB_SERVER_URL'] = 'https://github.com';
+  process.env['GITHUB_REPOSITORY'] = 'peaceiris/actions-label-commenter';
+  process.env['GITHUB_RUN_ID'] = '123456789';
+
   getDefaultInputs();
 });
 
@@ -23,6 +27,8 @@ afterEach(() => {
   jest.resetModules();
 
   cleanupEnvs();
+
+  delete process.env['RUNNER_DEBUG'];
 });
 
 class ContextLoaderMock implements IContext {
@@ -140,7 +146,7 @@ class ConfigMock implements IConfig {
       comment: {
         header: 'Hi, there.',
         footer:
-          "---\n\n > This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.\n\n [peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter "
+          "---\n\n> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.\n\n[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter"
       },
       labels: [
         {
@@ -187,18 +193,48 @@ class ConfigMock implements IConfig {
   }
 }
 
-test('getFooterLinks', () => {
-  process.env['GITHUB_SERVER_URL'] = 'https://github.com';
-  process.env['GITHUB_REPOSITORY'] = 'peaceiris/actions-label-commenter';
-  process.env['GITHUB_RUN_ID'] = '123456789';
+test('getFooterLinks, isDebug is false', () => {
+  const inputs: Inputs = new Inputs();
+  const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
+  const config: ConfigMock = new ConfigMock(contextLoader.runContext);
+  const comment: Comment = new Comment(contextLoader, config);
+
+  expect(comment.render).toBe(`\
+Hi, there.
+
+Please follow the issue templates.
+
+---
+
+> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
+
+[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
+
+<!-- peaceiris/actions-label-commenter -->
+`);
+});
+
+test('getFooterLinks, isDebug is true', () => {
+  process.env['RUNNER_DEBUG'] = '1';
 
   const inputs: Inputs = new Inputs();
   const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
   const config: ConfigMock = new ConfigMock(contextLoader.runContext);
   const comment: Comment = new Comment(contextLoader, config);
 
-  expect(comment.getFooterLinks()).toBe(`\
+  expect(comment.render).toBe(`\
+Hi, there.
+
+Please follow the issue templates.
+
+---
+
+> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
+
+[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
+
 <div align="right"><a href="https://github.com/peaceiris/actions-label-commenter/actions/runs/123456789">Log</a> | <a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a></div>
 
-<!-- peaceiris/actions-label-commenter -->\n`);
+<!-- peaceiris/actions-label-commenter -->
+`);
 });

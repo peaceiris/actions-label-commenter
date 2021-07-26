@@ -78,16 +78,17 @@ export class Comment implements IComment {
       `<a href="${this.getLogURL()}">Log</a>` +
       ` | ` +
       `<a href="${readmeUrl}">Bot Usage</a>` +
-      `</div>\n` +
-      `\n<!-- ${ActionInfo.Owner}/${ActionInfo.Name} -->\n`
+      `</div>\n`
     );
   }
 
   getRawBody(): string {
+    const rawBody = `${this.header}\n\n${this.main}\n\n${this.footer}`;
+    const identifier = `\n<!-- ${ActionInfo.Owner}/${ActionInfo.Name} -->\n`;
     if (isDebug()) {
-      return `${this.header}\n\n${this.main}\n\n${this.footer}\n\n${this.footerLinks}`;
+      return `${rawBody}\n\n${this.footerLinks}${identifier}`;
     }
-    return `${this.header}\n\n${this.main}\n\n${this.footer}`;
+    return `${rawBody}\n${identifier}`;
   }
 
   dumpComponents(): void {
