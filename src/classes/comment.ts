@@ -75,7 +75,7 @@ export class Comment implements IComment {
     const readmeUrl = `https://github.com/${ActionInfo.Owner}/${ActionInfo.Name}#readme`;
     return (
       `<div align="right">` +
-      `<a href="${this.getLogURL}">Log</a>` +
+      `<a href="${this.getLogURL()}">Log</a>` +
       ` | ` +
       `<a href="${readmeUrl}">Bot Usage</a>` +
       `</div>\n` +

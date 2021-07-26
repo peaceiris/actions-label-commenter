@@ -1,26 +1,17 @@
 import fs from 'fs';
 
-import yaml from 'js-yaml';
-
 import {Inputs} from '../../src/classes/inputs';
+import {getDefaultInputs, cleanupEnvs} from '../../src/test-helper';
 
 beforeEach(() => {
-  jest.resetModules();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const doc: any = yaml.load(fs.readFileSync(__dirname + '/../../action.yml', 'utf8'));
-  Object.keys(doc.inputs).forEach(name => {
-    const envVar = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`;
-    process.env[envVar] = doc.inputs[name]['default'];
-  });
+  getDefaultInputs();
 });
 
 afterEach(() => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const doc: any = yaml.load(fs.readFileSync(__dirname + '/../../action.yml', 'utf8'));
-  Object.keys(doc.inputs).forEach(name => {
-    const envVar = `INPUT_${name.replace(/ /g, '_').toUpperCase()}`;
-    delete process.env[envVar];
-  });
+  jest.resetAllMocks();
+  jest.resetModules();
+
+  cleanupEnvs();
 });
 
 test('get default inputs', () => {

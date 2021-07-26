@@ -86,7 +86,7 @@ class ContextLoader implements IContext {
   }
 
   getRunContext(): RunContext {
-    const runContext = {
+    const runContext: RunContext = {
       ConfigFilePath: this.inputs.ConfigFilePath,
       LabelName: this.labelName as string,
       LabelEvent: this.action,
@@ -169,4 +169,4 @@ class ContextLoader implements IContext {
   }
 }
 
-export {RunContext, ContextLoader};
+export {RunContext, IContext, ContextLoader};

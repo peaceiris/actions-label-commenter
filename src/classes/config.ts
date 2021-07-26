@@ -7,7 +7,7 @@ import {groupConsoleLog, info} from '../logger';
 import {RunContext} from './context-loader';
 import {LockReason} from './issue';
 
-type Locking = 'lock' | 'lock';
+type Locking = 'lock' | 'unlock';
 type Action = 'close' | 'open';
 
 interface IConfig {
@@ -106,4 +106,4 @@ class Config implements IConfig {
   }
 }
 
-export {Locking, Action, Config};
+export {Locking, Action, IConfig, Config};
