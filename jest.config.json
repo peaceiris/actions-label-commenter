@@ -1,0 +1,18 @@
+{
+  "verbose": true,
+  "clearMocks": true,
+  "testEnvironment": "node",
+  "testMatch": ["**/*.test.ts"],
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.js$": "babel-jest"
+  },
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js"
+  ],
+  "moduleNameMapper": {
+    "^lodash-es$": "lodash"
+  }
+}

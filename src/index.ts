@@ -6,6 +6,6 @@ import {run} from './main';
   try {
     await run();
   } catch (error) {
-    setFailed(`Action failed with error "${error.message}"`);
+    setFailed(`Action failed with error: ${error.message}`);
   }
 })();
