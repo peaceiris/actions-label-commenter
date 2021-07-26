@@ -101,11 +101,10 @@ Create your action configuration file `.github/label-commenter-config.yml` as fo
 comment:
   header: Hi, there.
   footer: "\
-    ---\n\n
+    ---\n\n\
     > This is an automated comment created by the [peaceiris/actions-label-commenter]. \
-    Responding to the bot or mentioning it won't have any effect.\n\n
-    [peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
-    "
+    Responding to the bot or mentioning it won't have any effect.\n\n\
+    [peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter"
 
 labels:
   - name: invalid
