@@ -15,8 +15,16 @@ type IssuesUnlockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.res
 type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam';
 
 interface IIssue {
+  readonly githubClient: InstanceType<typeof GitHub>;
   readonly number: number;
-  readonly locked: boolean;
+  locked: boolean;
+
+  setLocked(locked: boolean): void;
+  createComment(body: string): Promise<void>;
+  close(): Promise<void>;
+  open(): Promise<void>;
+  lock(reason: LockReason): Promise<void>;
+  unlock(reason: LockReason): Promise<void>;
 }
 
 class Issue implements IIssue {
@@ -30,7 +38,7 @@ class Issue implements IIssue {
     this.locked = locked;
   }
 
-  private setLocked(locked: boolean): void {
+  setLocked(locked: boolean): void {
     this.locked = locked;
   }
 
@@ -132,4 +140,4 @@ class Issue implements IIssue {
   }
 }
 
-export {LockReason, IIssue, Issue};
+export {LockReason, Issue};

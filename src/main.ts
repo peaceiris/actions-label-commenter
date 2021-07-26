@@ -2,10 +2,10 @@ import {getOctokit, context} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
 
 import {ActionProcessor} from './classes/action-processor';
-import {CommentGenerator} from './classes/comment-generator';
-import {ConfigParser} from './classes/config-parser';
-import {ContextParser} from './classes/context-parser';
-import {Inputs, InputsLoader} from './classes/inputs-loader';
+import {Comment} from './classes/comment';
+import {Config} from './classes/config';
+import {ContextLoader} from './classes/context-loader';
+import {Inputs} from './classes/inputs';
 import {ActionInfo} from './constants';
 import {info} from './logger';
 
@@ -15,17 +15,17 @@ export async function run(): Promise<void> {
     const readmeUrl = `https://github.com/${ActionInfo.Owner}/${ActionInfo.Name}#readme`;
     info(`Usage ${readmeUrl}`);
 
-    const inputs: Inputs = new InputsLoader();
+    const inputs: Inputs = new Inputs();
     const githubClient: InstanceType<typeof GitHub> = getOctokit(inputs.GithubToken);
-    const contextParser: ContextParser = new ContextParser(inputs, context);
-    const configParser: ConfigParser = new ConfigParser(contextParser.runContext);
-    const commentGenerator: CommentGenerator = new CommentGenerator(contextParser, configParser);
+    const contextLoader: ContextLoader = new ContextLoader(inputs, context);
+    const config: Config = new Config(contextLoader.runContext);
+    const comment: Comment = new Comment(contextLoader, config);
     const actionProcessor: ActionProcessor = new ActionProcessor(
       inputs,
       githubClient,
-      contextParser,
-      configParser,
-      commentGenerator
+      contextLoader,
+      config,
+      comment
     );
     await actionProcessor.process();
   } catch (error) {

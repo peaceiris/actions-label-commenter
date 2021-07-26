@@ -7,7 +7,7 @@ import {
 } from '@octokit/webhooks-types';
 
 import {groupConsoleLog, info} from '../logger';
-import {Inputs} from './inputs-loader';
+import {Inputs} from './inputs';
 
 interface RunContext {
   readonly ConfigFilePath: string;
@@ -17,7 +17,33 @@ interface RunContext {
   readonly EventType: string;
 }
 
-class ContextParser {
+interface IContext {
+  readonly inputs: Inputs;
+  readonly context: Context;
+  readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+  readonly eventName: string;
+  readonly eventType: string;
+  readonly action: string;
+  readonly labelName: string | undefined;
+  readonly issueNumber: number;
+  readonly userLogin: string;
+  readonly senderLogin: string;
+  readonly locked: boolean;
+  readonly runContext: RunContext;
+
+  dumpContext(): void;
+  getRunContext(): RunContext;
+  getEventName(): string;
+  getEventType(): string;
+  getAction(): string;
+  getLabelName(): string | undefined;
+  getIssueNumber(): number;
+  getUserLogin(): string;
+  getSenderLogin(): string;
+  getLocked(): boolean;
+}
+
+class ContextLoader implements IContext {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
@@ -143,4 +169,4 @@ class ContextParser {
   }
 }
 
-export {RunContext, ContextParser};
+export {RunContext, ContextLoader};

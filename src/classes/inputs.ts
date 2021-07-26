@@ -1,13 +1,13 @@
 import {getInput} from '@actions/core';
 
-interface Inputs {
+interface IInputs {
   readonly GithubToken: string;
   readonly ConfigFilePath: string;
 
   // validate(): void;
 }
 
-class InputsLoader implements Inputs {
+class Inputs implements IInputs {
   readonly GithubToken: string;
   readonly ConfigFilePath: string;
 
@@ -19,4 +19,4 @@ class InputsLoader implements Inputs {
   // TODO: Implements validate()
 }
 
-export {Inputs, InputsLoader};
+export {Inputs};

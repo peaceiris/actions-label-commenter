@@ -2,7 +2,7 @@ import fs from 'fs';
 
 import yaml from 'js-yaml';
 
-import {Inputs, InputsLoader} from '../../src/classes/inputs-loader';
+import {Inputs} from '../../src/classes/inputs';
 
 beforeEach(() => {
   jest.resetModules();
@@ -26,7 +26,7 @@ afterEach(() => {
 test('get default inputs', () => {
   process.env['INPUT_GITHUB_TOKEN'] = 'secret_token';
 
-  const inputs: Inputs = new InputsLoader();
+  const inputs: Inputs = new Inputs();
 
   const expextedInputs: Inputs = {
     GithubToken: 'secret_token',
@@ -40,7 +40,7 @@ test('get custom inputs', () => {
   process.env['INPUT_GITHUB_TOKEN'] = 'secret_token';
   process.env['INPUT_CONFIG_FILE'] = '.github/custom-label-commenter-config.yml';
 
-  const inputs: Inputs = new InputsLoader();
+  const inputs: Inputs = new Inputs();
 
   const expextedInputs: Inputs = {
     GithubToken: 'secret_token',

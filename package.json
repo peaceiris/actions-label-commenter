@@ -14,8 +14,8 @@
     "test": "jest --coverage --verbose",
     "build": "ncc build ./src/index.ts -o lib --minify",
     "tsc": "tsc --noEmit",
-    "fmt": "prettier --write ./**/*.ts",
-    "fmt:check": "prettier --check ./**/*.ts",
+    "fmt": "prettier --write '**/*.ts'",
+    "fmt:check": "prettier --check '**/*.ts'",
     "all": "npm run fmt && npm run lint:fix && npm run tsc && npm test",
     "release": "standard-version"
   },

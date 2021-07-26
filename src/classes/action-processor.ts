@@ -1,78 +1,89 @@
 import {GitHub} from '@actions/github/lib/utils';
 
 import {info} from '../logger';
-import {CommentGenerator} from './comment-generator';
-import {Locking, Action, ConfigParser} from './config-parser';
-import {ContextParser} from './context-parser';
-import {Inputs} from './inputs-loader';
+import {Comment} from './comment';
+import {Locking, Action, Config} from './config';
+import {ContextLoader} from './context-loader';
+import {Inputs} from './inputs';
 import {Issue} from './issue';
 
-class ActionProcessor {
+interface IAction {
   readonly inputs: Inputs;
   readonly githubClient: InstanceType<typeof GitHub>;
-  readonly contextParser: ContextParser;
-  readonly configParser: ConfigParser;
-  readonly commentGenerator: CommentGenerator;
+  readonly contextLoader: ContextLoader;
+  readonly config: Config;
+  readonly comment: Comment;
+  readonly issue: Issue;
+
+  isLocked(): boolean | undefined;
+  process(): Promise<void>;
+}
+class ActionProcessor implements IAction {
+  readonly inputs: Inputs;
+  readonly githubClient: InstanceType<typeof GitHub>;
+  readonly contextLoader: ContextLoader;
+  readonly config: Config;
+  readonly comment: Comment;
   readonly issue: Issue;
 
   constructor(
     inputs: Inputs,
     githubClient: InstanceType<typeof GitHub>,
-    contextParser: ContextParser,
-    configParser: ConfigParser,
-    commentGenerator: CommentGenerator
+    contextLoader: ContextLoader,
+    config: Config,
+    comment: Comment
   ) {
     this.inputs = inputs;
     this.githubClient = githubClient;
-    this.contextParser = contextParser;
-    this.configParser = configParser;
-    this.commentGenerator = commentGenerator;
+    this.contextLoader = contextLoader;
+    this.config = config;
+    this.comment = comment;
     this.issue = new Issue(
       this.githubClient,
-      this.contextParser.issueNumber,
-      this.contextParser.locked
+      this.contextLoader.issueNumber,
+      this.contextLoader.locked
     );
   }
 
   isLocked(): boolean | undefined {
-    if (this.configParser.locking === ('unlock' as Locking)) {
+    if (this.config.locking === ('unlock' as Locking)) {
       return false;
     }
-    return Boolean(this.contextParser.locked);
+    return Boolean(this.contextLoader.locked);
   }
 
   async process(): Promise<void> {
-    this.contextParser.dumpContext();
-    this.configParser.dumpConfig();
+    this.contextLoader.dumpContext();
+    this.config.dumpConfig();
 
-    if (!this.configParser.labelIndex) {
+    if (!this.config.labelIndex) {
       info(`No configuration`);
       return;
     }
 
-    this.commentGenerator.dumpComponents();
+    this.comment.dumpComponents();
 
     try {
-      if (this.configParser.locking === ('unlock' as Locking)) {
+      if (this.config.locking === ('unlock' as Locking)) {
         await this.issue.unlock();
       }
 
-      await this.issue.createComment(this.commentGenerator.render);
+      await this.issue.createComment(this.comment.render);
 
-      if (this.configParser.action === ('close' as Action)) {
+      if (this.config.action === ('close' as Action)) {
         await this.issue.close();
-      } else if (this.configParser.action === ('open' as Action)) {
+      } else if (this.config.action === ('open' as Action)) {
         await this.issue.open();
-      } else if (!this.configParser.action) {
-        info(`No configuration ${this.configParser.parentFieldName}.action`);
+      } else if (!this.config.action) {
+        info(`No configuration ${this.config.parentFieldName}.action`);
       } else {
         throw new Error(
-          `Invalid value "${this.configParser.action}" ${this.configParser.parentFieldName}.action`
+          `Invalid value "${this.config.action}" ${this.config.parentFieldName}.action`
         );
       }
 
-      if (this.configParser.locking === ('lock' as Locking)) {
-        this.issue.lock(this.configParser.lockReason);
+      if (this.config.locking === ('lock' as Locking)) {
+        this.issue.lock(this.config.lockReason);
       }
     } catch (error) {
       throw new Error(error.message);

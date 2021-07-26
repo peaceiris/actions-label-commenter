@@ -4,13 +4,32 @@ import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
 import {groupConsoleLog, info} from '../logger';
-import {RunContext} from './context-parser';
+import {RunContext} from './context-loader';
 import {LockReason} from './issue';
 
 type Locking = 'lock' | 'lock';
 type Action = 'close' | 'open';
 
-class ConfigParser {
+interface IConfig {
+  readonly runContext: RunContext;
+  readonly parentFieldName: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  readonly config: any;
+  readonly labelIndex: string;
+  readonly locking: Locking;
+  readonly action: Action;
+  readonly lockReason: LockReason;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  loadConfig(): any;
+  dumpConfig(): void;
+  getLabelIndex(): string;
+  getLocking(): Locking;
+  getAction(): Action;
+  getLockReason(): LockReason;
+}
+
+class Config implements IConfig {
   readonly runContext: RunContext;
   readonly parentFieldName: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,4 +110,4 @@ class ConfigParser {
   }
 }
 
-export {Locking, Action, ConfigParser};
+export {Locking, Action, Config};
