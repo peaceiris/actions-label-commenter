@@ -1,10 +1,13 @@
+import fs from 'fs';
+
 import {getInput} from '@actions/core';
 
 interface IInputs {
   readonly GithubToken: string;
   readonly ConfigFilePath: string;
 
-  // validate(): void;
+  isFileExists(file: string): boolean;
+  validate(): void;
 }
 
 class Inputs implements IInputs {
@@ -12,11 +15,20 @@ class Inputs implements IInputs {
   readonly ConfigFilePath: string;
 
   constructor() {
-    this.GithubToken = getInput('github_token');
-    this.ConfigFilePath = getInput('config_file');
+    this.GithubToken = getInput('github_token', {required: true});
+    this.ConfigFilePath = getInput('config_file', {required: true});
+    this.validate();
   }
 
-  // TODO: Implements validate()
+  isFileExists(file: string): boolean {
+    return fs.existsSync(file);
+  }
+
+  validate(): void {
+    if (!this.isFileExists(this.ConfigFilePath)) {
+      throw new Error(`Not found ${this.ConfigFilePath}`);
+    }
+  }
 }
 
 export {Inputs};

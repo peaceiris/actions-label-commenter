@@ -43,10 +43,6 @@ class Config implements IConfig {
     try {
       this.runContext = runContext;
       this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
-      // Validate config file location
-      if (!fs.existsSync(this.runContext.ConfigFilePath)) {
-        throw new Error(`Not found ${this.runContext.ConfigFilePath}`);
-      }
       this.config = this.loadConfig();
       this.labelIndex = this.getLabelIndex();
       this.locking = this.getLocking();
