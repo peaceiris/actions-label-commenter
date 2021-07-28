@@ -46,34 +46,20 @@ const config = {
       labeled: {
         issue: {
           body: 'Thank you @{{ issue.user.login }} for suggesting this. Please follow the issue templates.',
-          action: 'close'
+          action: 'close',
+          locking: 'lock',
+          lock_reason: 'resolved'
         },
         pr: {
           body: 'Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.',
-          action: 'close'
+          action: 'close',
+          locking: 'lock'
         }
       },
       unlabeled: {
         issue: {
           body: 'Thank you for following the template. The repository owner will reply.',
           action: 'open'
-        }
-      }
-    },
-    {
-      name: 'locked (spam)',
-      labeled: {
-        issue: {
-          body: 'This issue has been **LOCKED** because of spam!\n\nPlease do not spam messages and/or issues on the issue tracker. You may get blocked from this repository for doing so.\n',
-          action: 'close',
-          locking: 'lock',
-          lock_reason: 'spam'
-        },
-        pr: {
-          body: 'This pull-request has been **LOCKED** because of spam!\n\nPlease do not spam messages and/or pull-requests on this project. You may get blocked from this repository for doing so.\n',
-          action: 'close',
-          locking: 'lock',
-          lock_reason: 'spam'
         }
       }
     }
@@ -399,7 +385,7 @@ describe('Mustache issues', () => {
     }
   }
 
-  test('invalid.labeled.pr', () => {
+  test('invalid.labeled.issue', () => {
     const inputs: Inputs = new Inputs();
     const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
     const config: ConfigMock = new ConfigMock(contextLoader.runContext);
