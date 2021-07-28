@@ -45,7 +45,7 @@ const config = {
       name: 'invalid',
       labeled: {
         issue: {
-          body: 'Please follow the issue templates.',
+          body: 'Thank you @{{ issue.user.login }} for suggesting this. Please follow the issue templates.',
           action: 'close'
         },
         pr: {
@@ -57,14 +57,6 @@ const config = {
         issue: {
           body: 'Thank you for following the template. The repository owner will reply.',
           action: 'open'
-        }
-      }
-    },
-    {
-      name: 'proposal',
-      labeled: {
-        issue: {
-          body: 'Thank you @{{ issue.user.login }} for suggesting this.'
         }
       }
     },
@@ -162,11 +154,11 @@ describe('getRawBody', () => {
     }
 
     getUserLogin(): string {
-      return 'userlogin';
+      return 'userLogin';
     }
 
     getSenderLogin(): string {
-      return 'senderlogin';
+      return 'senderLogin';
     }
 
     getLocked(): boolean {
@@ -233,7 +225,7 @@ describe('getRawBody', () => {
     expect(comment.render).toBe(`\
 Hi, there.
 
-Please follow the issue templates.
+Thank you @userLogin for suggesting this. Please follow the issue templates.
 
 ---
 
@@ -256,7 +248,7 @@ Please follow the issue templates.
     expect(comment.render).toBe(`\
 Hi, there.
 
-Please follow the issue templates.
+Thank you @userLogin for suggesting this. Please follow the issue templates.
 
 ---
 
@@ -345,11 +337,11 @@ describe('Mustache', () => {
     }
 
     getUserLogin(): string {
-      return 'userlogin';
+      return 'userLogin';
     }
 
     getSenderLogin(): string {
-      return 'senderlogin';
+      return 'senderLogin';
     }
 
     getLocked(): boolean {
@@ -416,7 +408,7 @@ describe('Mustache', () => {
     expect(comment.render).toBe(`\
 Hi, there.
 
-Thank you @userlogin for suggesting this. Please follow the pull request templates.
+Thank you @userLogin for suggesting this. Please follow the pull request templates.
 
 ---
 
