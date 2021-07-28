@@ -7,7 +7,7 @@ import {groupConsoleLog, info} from '../logger';
 import {RunContext} from './context-loader';
 import {LockReason} from './issue';
 
-type Locking = 'lock' | 'unlock';
+type Locking = 'lock' | 'unlock' | undefined;
 type Action = 'close' | 'open';
 
 interface IConfig {
@@ -84,6 +84,7 @@ class Config implements IConfig {
       info(`${this.parentFieldName}.locking is ${locking}`);
     } else if (!locking) {
       info(`No configuration ${this.parentFieldName}.locking`);
+      return undefined;
     } else {
       throw new Error(`Invalid value "${locking}" ${this.parentFieldName}.locking`);
     }
