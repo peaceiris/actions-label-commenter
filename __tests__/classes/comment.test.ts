@@ -263,7 +263,165 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
   });
 });
 
-describe('Mustache', () => {
+describe('Mustache issues', () => {
+  class ContextLoaderMock implements IContext {
+    readonly inputs: Inputs;
+    readonly context: Context;
+    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly eventName: string;
+    readonly eventType: string;
+    readonly action: string;
+    readonly labelName: string | undefined;
+    readonly issueNumber: number;
+    readonly userLogin: string;
+    readonly senderLogin: string;
+    readonly locked: boolean;
+    readonly runContext: RunContext;
+
+    constructor(inputs: Inputs, context: Context) {
+      try {
+        this.inputs = inputs;
+        this.context = context;
+        this.payload = context.payload as
+          | IssuesEvent
+          | IssuesLabeledEvent
+          | PullRequestEvent
+          | PullRequestLabeledEvent;
+        this.eventName = this.getEventName();
+        this.eventType = this.getEventType();
+        this.action = this.getAction();
+        this.labelName = this.getLabelName();
+        this.issueNumber = this.getIssueNumber();
+        this.userLogin = this.getUserLogin();
+        this.senderLogin = this.getSenderLogin();
+        this.locked = this.getLocked();
+        this.runContext = this.getRunContext();
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+
+    dumpContext(): void {
+      return;
+    }
+
+    getRunContext(): RunContext {
+      const runContext: RunContext = {
+        ConfigFilePath: this.inputs.ConfigFilePath,
+        LabelName: this.labelName as string,
+        LabelEvent: this.action,
+        EventName: this.eventName,
+        EventType: this.eventType
+      };
+      return runContext;
+    }
+
+    getEventName(): string {
+      return 'issues';
+    }
+
+    getEventType(): string {
+      return 'issue';
+    }
+
+    getAction(): string {
+      return 'labeled';
+    }
+
+    getLabelName(): string | undefined {
+      return 'invalid';
+    }
+
+    getIssueNumber(): number {
+      return 1;
+    }
+
+    getUserLogin(): string {
+      return 'userLogin';
+    }
+
+    getSenderLogin(): string {
+      return 'senderLogin';
+    }
+
+    getLocked(): boolean {
+      return false;
+    }
+  }
+
+  class ConfigMock implements IConfig {
+    readonly runContext: RunContext;
+    readonly parentFieldName: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    readonly config: any;
+    readonly labelIndex: string;
+    readonly locking: Locking;
+    readonly action: Action;
+    readonly lockReason: LockReason;
+
+    constructor(runContext: RunContext) {
+      try {
+        this.runContext = runContext;
+        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
+        this.config = this.loadConfig();
+        this.labelIndex = this.getLabelIndex();
+        this.locking = this.getLocking();
+        this.action = this.getAction();
+        this.lockReason = this.getLockReason();
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    loadConfig(): any {
+      return config;
+    }
+
+    dumpConfig(): void {
+      return;
+    }
+
+    getLabelIndex(): string {
+      return '0';
+    }
+
+    getLocking(): Locking {
+      return undefined;
+    }
+
+    getAction(): Action {
+      return 'close';
+    }
+
+    getLockReason(): LockReason {
+      return 'resolved';
+    }
+  }
+
+  test('invalid.labeled.pr', () => {
+    const inputs: Inputs = new Inputs();
+    const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
+    const config: ConfigMock = new ConfigMock(contextLoader.runContext);
+    const comment: Comment = new Comment(contextLoader, config);
+
+    expect(comment.render).toBe(`\
+Hi, there.
+
+Thank you @userLogin for suggesting this. Please follow the issue templates.
+
+---
+
+> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
+
+[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
+
+<!-- peaceiris/actions-label-commenter -->
+`);
+  });
+});
+
+describe('Mustache pull_request', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
@@ -318,6 +476,164 @@ describe('Mustache', () => {
 
     getEventName(): string {
       return 'pull_request';
+    }
+
+    getEventType(): string {
+      return 'pr';
+    }
+
+    getAction(): string {
+      return 'labeled';
+    }
+
+    getLabelName(): string | undefined {
+      return 'invalid';
+    }
+
+    getIssueNumber(): number {
+      return 1;
+    }
+
+    getUserLogin(): string {
+      return 'userLogin';
+    }
+
+    getSenderLogin(): string {
+      return 'senderLogin';
+    }
+
+    getLocked(): boolean {
+      return false;
+    }
+  }
+
+  class ConfigMock implements IConfig {
+    readonly runContext: RunContext;
+    readonly parentFieldName: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    readonly config: any;
+    readonly labelIndex: string;
+    readonly locking: Locking;
+    readonly action: Action;
+    readonly lockReason: LockReason;
+
+    constructor(runContext: RunContext) {
+      try {
+        this.runContext = runContext;
+        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
+        this.config = this.loadConfig();
+        this.labelIndex = this.getLabelIndex();
+        this.locking = this.getLocking();
+        this.action = this.getAction();
+        this.lockReason = this.getLockReason();
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    loadConfig(): any {
+      return config;
+    }
+
+    dumpConfig(): void {
+      return;
+    }
+
+    getLabelIndex(): string {
+      return '0';
+    }
+
+    getLocking(): Locking {
+      return undefined;
+    }
+
+    getAction(): Action {
+      return 'close';
+    }
+
+    getLockReason(): LockReason {
+      return 'resolved';
+    }
+  }
+
+  test('invalid.labeled.pr', () => {
+    const inputs: Inputs = new Inputs();
+    const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
+    const config: ConfigMock = new ConfigMock(contextLoader.runContext);
+    const comment: Comment = new Comment(contextLoader, config);
+
+    expect(comment.render).toBe(`\
+Hi, there.
+
+Thank you @userLogin for suggesting this. Please follow the pull request templates.
+
+---
+
+> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
+
+[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
+
+<!-- peaceiris/actions-label-commenter -->
+`);
+  });
+});
+
+describe('Mustache pull_request_target', () => {
+  class ContextLoaderMock implements IContext {
+    readonly inputs: Inputs;
+    readonly context: Context;
+    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly eventName: string;
+    readonly eventType: string;
+    readonly action: string;
+    readonly labelName: string | undefined;
+    readonly issueNumber: number;
+    readonly userLogin: string;
+    readonly senderLogin: string;
+    readonly locked: boolean;
+    readonly runContext: RunContext;
+
+    constructor(inputs: Inputs, context: Context) {
+      try {
+        this.inputs = inputs;
+        this.context = context;
+        this.payload = context.payload as
+          | IssuesEvent
+          | IssuesLabeledEvent
+          | PullRequestEvent
+          | PullRequestLabeledEvent;
+        this.eventName = this.getEventName();
+        this.eventType = this.getEventType();
+        this.action = this.getAction();
+        this.labelName = this.getLabelName();
+        this.issueNumber = this.getIssueNumber();
+        this.userLogin = this.getUserLogin();
+        this.senderLogin = this.getSenderLogin();
+        this.locked = this.getLocked();
+        this.runContext = this.getRunContext();
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+
+    dumpContext(): void {
+      return;
+    }
+
+    getRunContext(): RunContext {
+      const runContext: RunContext = {
+        ConfigFilePath: this.inputs.ConfigFilePath,
+        LabelName: this.labelName as string,
+        LabelEvent: this.action,
+        EventName: this.eventName,
+        EventType: this.eventType
+      };
+      return runContext;
+    }
+
+    getEventName(): string {
+      return 'pull_request_target';
     }
 
     getEventType(): string {
