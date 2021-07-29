@@ -94,7 +94,6 @@ export class Comment implements IComment {
   dumpComponents(): void {
     if (!this.main) {
       info(`No configuration ${this.config.parentFieldName}.body`);
-      return;
     } else {
       groupConsoleLog('rawCommentBody', this.rawBody);
     }
