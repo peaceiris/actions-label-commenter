@@ -96,10 +96,6 @@ export class Comment implements IComment {
       info(`No configuration ${this.config.parentFieldName}.body`);
       return;
     } else {
-      groupConsoleLog('commentMain', this.main);
-      groupConsoleLog('commentHeader', this.header);
-      groupConsoleLog('commentFooter', this.footer);
-      groupConsoleLog('commentFooterLinks', this.footerLinks);
       groupConsoleLog('rawCommentBody', this.rawBody);
     }
   }
