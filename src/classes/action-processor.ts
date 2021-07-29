@@ -1,7 +1,6 @@
 import {GitHub} from '@actions/github/lib/utils';
 
 import {info} from '../logger';
-import {Comment} from './comment';
 import {Locking, Action, Config} from './config';
 import {ContextLoader} from './context-loader';
 import {Inputs} from './inputs';
@@ -12,7 +11,7 @@ interface IAction {
   readonly githubClient: InstanceType<typeof GitHub>;
   readonly contextLoader: ContextLoader;
   readonly config: Config;
-  readonly comment: Comment;
+  readonly commentBody: string;
   readonly issue: Issue;
 
   isLocked(): boolean | undefined;
@@ -24,7 +23,7 @@ class ActionProcessor implements IAction {
   readonly githubClient: InstanceType<typeof GitHub>;
   readonly contextLoader: ContextLoader;
   readonly config: Config;
-  readonly comment: Comment;
+  readonly commentBody: string;
   readonly issue: Issue;
 
   constructor(
@@ -32,13 +31,13 @@ class ActionProcessor implements IAction {
     githubClient: InstanceType<typeof GitHub>,
     contextLoader: ContextLoader,
     config: Config,
-    comment: Comment
+    commentBody: string
   ) {
     this.inputs = inputs;
     this.githubClient = githubClient;
     this.contextLoader = contextLoader;
     this.config = config;
-    this.comment = comment;
+    this.commentBody = commentBody;
     this.issue = new Issue(
       this.githubClient,
       this.contextLoader.issueNumber,
@@ -62,14 +61,12 @@ class ActionProcessor implements IAction {
       return;
     }
 
-    this.comment.dumpComponents();
-
     try {
       if (this.config.locking === ('unlock' as Locking)) {
         await this.issue.unlock();
       }
 
-      await this.issue.createComment(this.comment.render);
+      await this.issue.createComment(this.commentBody);
 
       if (this.config.action === ('close' as Action)) {
         await this.issue.close();

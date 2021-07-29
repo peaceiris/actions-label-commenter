@@ -20,12 +20,13 @@ export async function run(): Promise<void> {
     const contextLoader: ContextLoader = new ContextLoader(inputs, context);
     const config: Config = new Config(contextLoader.runContext);
     const comment: Comment = new Comment(contextLoader, config);
+    comment.dumpComponents();
     const actionProcessor: ActionProcessor = new ActionProcessor(
       inputs,
       githubClient,
       contextLoader,
       config,
-      comment
+      comment.render
     );
     await actionProcessor.process();
   } catch (error) {
