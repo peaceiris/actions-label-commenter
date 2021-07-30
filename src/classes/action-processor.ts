@@ -49,6 +49,20 @@ class ActionProcessor implements IAction {
     return Boolean(this.contextLoader.locked);
   }
 
+  async updateState(): Promise<void> {
+    if (this.config.action === 'close') {
+      await this.issue.updateState('closed');
+    } else if (this.config.action === 'open') {
+      await this.issue.updateState('open');
+    } else if (!this.config.action) {
+      info(`No configuration ${this.config.parentFieldName}.action`);
+    } else {
+      throw new Error(
+        `Invalid value "${this.config.action}" ${this.config.parentFieldName}.action`
+      );
+    }
+  }
+
   async process(): Promise<void> {
     this.contextLoader.dumpContext();
     this.config.dumpConfig();
@@ -64,18 +78,7 @@ class ActionProcessor implements IAction {
       }
 
       await this.issue.createComment(this.commentBody);
-
-      if (this.config.action === 'close') {
-        await this.issue.updateState('closed');
-      } else if (this.config.action === 'open') {
-        await this.issue.updateState('open');
-      } else if (!this.config.action) {
-        info(`No configuration ${this.config.parentFieldName}.action`);
-      } else {
-        throw new Error(
-          `Invalid value "${this.config.action}" ${this.config.parentFieldName}.action`
-        );
-      }
+      await this.updateState();
 
       if (this.config.locking === 'lock') {
         this.issue.lock(this.config.lockReason);
