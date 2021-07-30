@@ -31,18 +31,15 @@ class ActionProcessor implements IAction {
     githubClient: InstanceType<typeof GitHub>,
     contextLoader: ContextLoader,
     config: Config,
-    commentBody: string
+    commentBody: string,
+    issue: Issue
   ) {
     this.inputs = inputs;
     this.githubClient = githubClient;
     this.contextLoader = contextLoader;
     this.config = config;
     this.commentBody = commentBody;
-    this.issue = new Issue(
-      this.githubClient,
-      this.contextLoader.issueNumber,
-      this.contextLoader.locked
-    );
+    this.issue = issue;
   }
 
   isLocked(): boolean | undefined {

@@ -6,6 +6,7 @@ import {Comment} from './classes/comment';
 import {Config} from './classes/config';
 import {ContextLoader} from './classes/context-loader';
 import {Inputs} from './classes/inputs';
+import {Issue} from './classes/issue';
 import {ActionInfo} from './constants';
 import {info} from './logger';
 
@@ -21,12 +22,14 @@ export async function run(): Promise<void> {
     const config: Config = new Config(contextLoader.runContext);
     const comment: Comment = new Comment(contextLoader, config);
     comment.dumpComponents();
+    const issue = new Issue(githubClient, contextLoader.issueNumber, contextLoader.locked);
     const actionProcessor: ActionProcessor = new ActionProcessor(
       inputs,
       githubClient,
       contextLoader,
       config,
-      comment.render
+      comment.render,
+      issue
     );
     await actionProcessor.process();
   } catch (error) {
