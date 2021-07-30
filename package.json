@@ -49,7 +49,7 @@
     "@actions/core": "^1.4.0",
     "@actions/github": "^5.0.0",
     "@octokit/types": "^6.21.1",
-    "@octokit/webhooks-types": "^4.2.1",
+    "@octokit/webhooks-types": "^4.2.2",
     "js-yaml": "^4.1.0",
     "lodash-es": "^4.17.21",
     "mustache": "^4.2.0"
