@@ -81,7 +81,7 @@ class ActionProcessor implements IAction {
       await this.updateState();
 
       if (this.config.locking === 'lock') {
-        this.issue.lock(this.config.lockReason);
+        await this.issue.lock(this.config.lockReason);
       }
     } catch (error) {
       throw new Error(error.message);
