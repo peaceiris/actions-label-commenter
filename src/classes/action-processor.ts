@@ -1,7 +1,7 @@
 import {GitHub} from '@actions/github/lib/utils';
 
 import {info} from '../logger';
-import {Locking, Action, Config} from './config';
+import {Config} from './config';
 import {ContextLoader} from './context-loader';
 import {Inputs} from './inputs';
 import {Issue} from './issue';
