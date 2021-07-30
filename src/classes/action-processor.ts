@@ -43,7 +43,7 @@ class ActionProcessor implements IAction {
   }
 
   isLocked(): boolean | undefined {
-    if (this.config.locking === ('unlock' as Locking)) {
+    if (this.config.locking === 'unlock') {
       return false;
     }
     return Boolean(this.contextLoader.locked);
@@ -59,16 +59,16 @@ class ActionProcessor implements IAction {
     }
 
     try {
-      if (this.config.locking === ('unlock' as Locking)) {
+      if (this.config.locking === 'unlock') {
         await this.issue.unlock();
       }
 
       await this.issue.createComment(this.commentBody);
 
-      if (this.config.action === ('close' as Action)) {
-        await this.issue.close();
-      } else if (this.config.action === ('open' as Action)) {
-        await this.issue.open();
+      if (this.config.action === 'close') {
+        await this.issue.updateState('closed');
+      } else if (this.config.action === 'open') {
+        await this.issue.updateState('open');
       } else if (!this.config.action) {
         info(`No configuration ${this.config.parentFieldName}.action`);
       } else {
@@ -77,7 +77,7 @@ class ActionProcessor implements IAction {
         );
       }
 
-      if (this.config.locking === ('lock' as Locking)) {
+      if (this.config.locking === 'lock') {
         this.issue.lock(this.config.lockReason);
       }
     } catch (error) {

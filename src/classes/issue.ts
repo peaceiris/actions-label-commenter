@@ -12,6 +12,7 @@ type IssuesUpdateResponse = GetResponseTypeFromEndpointMethod<typeof octokit.res
 type IssuesLockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.lock>;
 type IssuesUnlockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.unlock>;
 
+type IssueState = 'open' | 'closed';
 type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam';
 
 interface IIssue {
@@ -21,8 +22,7 @@ interface IIssue {
 
   setLocked(locked: boolean): void;
   createComment(body: string): Promise<void>;
-  close(): Promise<void>;
-  open(): Promise<void>;
+  updateState(state: IssueState): Promise<void>;
   lock(reason: LockReason): Promise<void>;
   unlock(reason: LockReason): Promise<void>;
 }
@@ -66,37 +66,22 @@ class Issue implements IIssue {
     }
   }
 
-  async close(): Promise<void> {
+  async updateState(state: IssueState): Promise<void> {
     const ret: IssuesUpdateResponse = await this.githubClient.rest.issues.update({
       owner: context.repo.owner,
       repo: context.repo.repo,
       issue_number: this.number,
-      state: 'closed'
+      state: state
     });
 
     groupConsoleLog('IssuesUpdateResponse', ret);
 
     if (ret.status === 200) {
-      info(`Issue #${this.number} has been closed`);
-      return;
-    } else {
-      throw new Error(`IssuesUpdateResponse.status: ${ret.status}`);
-    }
-  }
-
-  async open(): Promise<void> {
-    const ret: IssuesUpdateResponse = await this.githubClient.rest.issues.update({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      issue_number: this.number,
-      state: 'open'
-    });
-
-    groupConsoleLog('IssuesUpdateResponse', ret);
-
-    if (ret.status === 200) {
+      if (state === 'closed') {
+        info(`Issue #${this.number} has been closed`);
+        return;
+      }
       info(`Issue #${this.number} has been reopened`);
-      return;
     } else {
       throw new Error(`IssuesUpdateResponse.status: ${ret.status}`);
     }
