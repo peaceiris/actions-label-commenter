@@ -1,10 +1,9 @@
 import {info} from '../logger';
 import {Config} from './config';
-import {ContextLoader} from './context-loader';
 import {Issue} from './issue';
 
 interface IAction {
-  readonly contextLoader: ContextLoader;
+  readonly locked: boolean;
   readonly config: Config;
   readonly commentBody: string;
   readonly issue: Issue;
@@ -14,13 +13,13 @@ interface IAction {
 }
 
 class ActionProcessor implements IAction {
-  readonly contextLoader: ContextLoader;
+  readonly locked: boolean;
   readonly config: Config;
   readonly commentBody: string;
   readonly issue: Issue;
 
-  constructor(contextLoader: ContextLoader, config: Config, commentBody: string, issue: Issue) {
-    this.contextLoader = contextLoader;
+  constructor(locked: boolean, config: Config, commentBody: string, issue: Issue) {
+    this.locked = locked;
     this.config = config;
     this.commentBody = commentBody;
     this.issue = issue;
@@ -30,7 +29,7 @@ class ActionProcessor implements IAction {
     if (this.config.locking === 'unlock') {
       return false;
     }
-    return Boolean(this.contextLoader.locked);
+    return Boolean(this.locked);
   }
 
   async updateState(): Promise<void> {
@@ -48,7 +47,7 @@ class ActionProcessor implements IAction {
   }
 
   async process(): Promise<void> {
-    this.contextLoader.dumpContext();
+    info(`isLocked: ${this.locked}`);
     this.config.dumpConfig();
 
     if (!this.config.labelIndex) {

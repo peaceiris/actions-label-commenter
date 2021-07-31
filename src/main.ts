@@ -24,8 +24,7 @@ export async function run(): Promise<void> {
     comment.dumpComponents();
     const issue = new Issue(githubClient, contextLoader.issueNumber, contextLoader.locked);
     const actionProcessor: ActionProcessor = new ActionProcessor(
-      inputs,
-      contextLoader,
+      contextLoader.locked,
       config,
       comment.render,
       issue
