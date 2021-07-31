@@ -3,17 +3,16 @@ import {Config} from './config';
 import {Issue} from './issue';
 
 interface IAction {
-  readonly locked: boolean;
+  locked: boolean;
   readonly config: Config;
   readonly commentBody: string;
   readonly issue: Issue;
 
-  isLocked(): boolean | undefined;
   process(): Promise<void>;
 }
 
 class ActionProcessor implements IAction {
-  readonly locked: boolean;
+  locked: boolean;
   readonly config: Config;
   readonly commentBody: string;
   readonly issue: Issue;
@@ -23,13 +22,6 @@ class ActionProcessor implements IAction {
     this.config = config;
     this.commentBody = commentBody;
     this.issue = issue;
-  }
-
-  isLocked(): boolean | undefined {
-    if (this.config.locking === 'unlock') {
-      return false;
-    }
-    return Boolean(this.locked);
   }
 
   async updateState(): Promise<void> {
@@ -58,9 +50,13 @@ class ActionProcessor implements IAction {
     try {
       if (this.config.locking === 'unlock') {
         await this.issue.unlock();
+        this.locked = false;
       }
 
-      await this.issue.createComment(this.commentBody);
+      if (!this.locked) {
+        await this.issue.createComment(this.commentBody);
+      }
+
       await this.updateState();
 
       if (this.config.locking === 'lock') {
