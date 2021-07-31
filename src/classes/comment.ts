@@ -4,12 +4,12 @@ import Mustache from 'mustache';
 
 import {ActionInfo} from '../constants';
 import {groupConsoleLog, info} from '../logger';
-import {Config} from './config';
+import {ConfigLoader} from './config';
 import {RunContext, ContextLoader} from './context-loader';
 
 interface IComment {
   readonly contextLoader: ContextLoader;
-  readonly config: Config;
+  readonly config: ConfigLoader;
   readonly runContext: RunContext;
 
   readonly main: string;
@@ -32,7 +32,7 @@ interface IComment {
 
 export class Comment implements IComment {
   readonly contextLoader: ContextLoader;
-  readonly config: Config;
+  readonly config: ConfigLoader;
   readonly runContext: RunContext;
 
   readonly main: string;
@@ -41,7 +41,7 @@ export class Comment implements IComment {
   readonly footerLinks: string;
   readonly rawBody: string;
 
-  constructor(contextParser: ContextLoader, config: Config) {
+  constructor(contextParser: ContextLoader, config: ConfigLoader) {
     this.contextLoader = contextParser;
     this.config = config;
     this.runContext = this.contextLoader.runContext;

@@ -8,7 +8,7 @@ import {
 } from '@octokit/webhooks-types';
 
 import {Comment} from '../../src/classes/comment';
-import {Locking, Action, IConfig} from '../../src/classes/config';
+import {Locking, Action, IConfig, IConfigLoader} from '../../src/classes/config';
 import {RunContext, IContext} from '../../src/classes/context-loader';
 import {Inputs} from '../../src/classes/inputs';
 import {LockReason} from '../../src/classes/issue';
@@ -152,7 +152,7 @@ describe('getRawBody', () => {
     }
   }
 
-  class ConfigMock implements IConfig {
+  class ConfigMock implements IConfigLoader {
     readonly runContext: RunContext;
     readonly parentFieldName: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -174,6 +174,17 @@ describe('getRawBody', () => {
       } catch (error) {
         throw new Error(error.message);
       }
+    }
+
+    getConfig(): IConfig {
+      const config: IConfig = {
+        parentFieldName: this.parentFieldName,
+        labelIndex: this.labelIndex,
+        locking: this.locking,
+        action: this.action,
+        lockReason: this.lockReason
+      };
+      return config;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -335,7 +346,7 @@ describe('Mustache issues', () => {
     }
   }
 
-  class ConfigMock implements IConfig {
+  class ConfigMock implements IConfigLoader {
     readonly runContext: RunContext;
     readonly parentFieldName: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -357,6 +368,17 @@ describe('Mustache issues', () => {
       } catch (error) {
         throw new Error(error.message);
       }
+    }
+
+    getConfig(): IConfig {
+      const config: IConfig = {
+        parentFieldName: this.parentFieldName,
+        labelIndex: this.labelIndex,
+        locking: this.locking,
+        action: this.action,
+        lockReason: this.lockReason
+      };
+      return config;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -493,7 +515,7 @@ describe('Mustache pull_request', () => {
     }
   }
 
-  class ConfigMock implements IConfig {
+  class ConfigMock implements IConfigLoader {
     readonly runContext: RunContext;
     readonly parentFieldName: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -515,6 +537,17 @@ describe('Mustache pull_request', () => {
       } catch (error) {
         throw new Error(error.message);
       }
+    }
+
+    getConfig(): IConfig {
+      const config: IConfig = {
+        parentFieldName: this.parentFieldName,
+        labelIndex: this.labelIndex,
+        locking: this.locking,
+        action: this.action,
+        lockReason: this.lockReason
+      };
+      return config;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -651,7 +684,7 @@ describe('Mustache pull_request_target', () => {
     }
   }
 
-  class ConfigMock implements IConfig {
+  class ConfigMock implements IConfigLoader {
     readonly runContext: RunContext;
     readonly parentFieldName: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -673,6 +706,17 @@ describe('Mustache pull_request_target', () => {
       } catch (error) {
         throw new Error(error.message);
       }
+    }
+
+    getConfig(): IConfig {
+      const config: IConfig = {
+        parentFieldName: this.parentFieldName,
+        labelIndex: this.labelIndex,
+        locking: this.locking,
+        action: this.action,
+        lockReason: this.lockReason
+      };
+      return config;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

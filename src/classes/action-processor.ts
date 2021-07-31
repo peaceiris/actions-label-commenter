@@ -1,10 +1,10 @@
-import {info} from '../logger';
-import {Config} from './config';
+import {groupConsoleLog, info} from '../logger';
+import {IConfig} from './config';
 import {Issue} from './issue';
 
 interface IAction {
   locked: boolean;
-  readonly config: Config;
+  readonly config: IConfig;
   readonly commentBody: string;
   readonly issue: Issue;
 
@@ -13,11 +13,11 @@ interface IAction {
 
 class ActionProcessor implements IAction {
   locked: boolean;
-  readonly config: Config;
+  readonly config: IConfig;
   readonly commentBody: string;
   readonly issue: Issue;
 
-  constructor(locked: boolean, config: Config, commentBody: string, issue: Issue) {
+  constructor(locked: boolean, config: IConfig, commentBody: string, issue: Issue) {
     this.locked = locked;
     this.config = config;
     this.commentBody = commentBody;
@@ -39,8 +39,7 @@ class ActionProcessor implements IAction {
   }
 
   async process(): Promise<void> {
-    info(`isLocked: ${this.locked}`);
-    this.config.dumpConfig();
+    groupConsoleLog('Dump config', this.config);
 
     if (!this.config.labelIndex) {
       info(`No configuration`);

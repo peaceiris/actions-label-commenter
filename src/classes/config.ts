@@ -11,15 +11,19 @@ type Locking = 'lock' | 'unlock' | undefined;
 type Action = 'close' | 'open';
 
 interface IConfig {
-  readonly runContext: RunContext;
   readonly parentFieldName: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly config: any;
   readonly labelIndex: string;
   readonly locking: Locking;
   readonly action: Action;
   readonly lockReason: LockReason;
+}
 
+interface IConfigLoader extends IConfig {
+  readonly runContext: RunContext;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  readonly config: any;
+
+  getConfig(): IConfig;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadConfig(): any;
   dumpConfig(): void;
@@ -29,7 +33,7 @@ interface IConfig {
   getLockReason(): LockReason;
 }
 
-class Config implements IConfig {
+class ConfigLoader implements IConfigLoader {
   readonly runContext: RunContext;
   readonly parentFieldName: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,6 +55,17 @@ class Config implements IConfig {
     } catch (error) {
       throw new Error(error.message);
     }
+  }
+
+  getConfig(): IConfig {
+    const config: IConfig = {
+      parentFieldName: this.parentFieldName,
+      labelIndex: this.labelIndex,
+      locking: this.locking,
+      action: this.action,
+      lockReason: this.lockReason
+    };
+    return config;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,4 +122,4 @@ class Config implements IConfig {
   }
 }
 
-export {Locking, Action, IConfig, Config};
+export {Locking, Action, IConfig, IConfigLoader, ConfigLoader};
