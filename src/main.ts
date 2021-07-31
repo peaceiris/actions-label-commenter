@@ -25,7 +25,6 @@ export async function run(): Promise<void> {
     const issue = new Issue(githubClient, contextLoader.issueNumber, contextLoader.locked);
     const actionProcessor: ActionProcessor = new ActionProcessor(
       inputs,
-      githubClient,
       contextLoader,
       config,
       comment.render,

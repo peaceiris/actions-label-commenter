@@ -1,5 +1,3 @@
-import {GitHub} from '@actions/github/lib/utils';
-
 import {info} from '../logger';
 import {Config} from './config';
 import {ContextLoader} from './context-loader';
@@ -8,7 +6,6 @@ import {Issue} from './issue';
 
 interface IAction {
   readonly inputs: Inputs;
-  readonly githubClient: InstanceType<typeof GitHub>;
   readonly contextLoader: ContextLoader;
   readonly config: Config;
   readonly commentBody: string;
@@ -20,7 +17,6 @@ interface IAction {
 
 class ActionProcessor implements IAction {
   readonly inputs: Inputs;
-  readonly githubClient: InstanceType<typeof GitHub>;
   readonly contextLoader: ContextLoader;
   readonly config: Config;
   readonly commentBody: string;
@@ -28,14 +24,12 @@ class ActionProcessor implements IAction {
 
   constructor(
     inputs: Inputs,
-    githubClient: InstanceType<typeof GitHub>,
     contextLoader: ContextLoader,
     config: Config,
     commentBody: string,
     issue: Issue
   ) {
     this.inputs = inputs;
-    this.githubClient = githubClient;
     this.contextLoader = contextLoader;
     this.config = config;
     this.commentBody = commentBody;
