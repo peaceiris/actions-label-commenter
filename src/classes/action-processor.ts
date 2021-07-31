@@ -1,11 +1,9 @@
 import {info} from '../logger';
 import {Config} from './config';
 import {ContextLoader} from './context-loader';
-import {Inputs} from './inputs';
 import {Issue} from './issue';
 
 interface IAction {
-  readonly inputs: Inputs;
   readonly contextLoader: ContextLoader;
   readonly config: Config;
   readonly commentBody: string;
@@ -16,20 +14,12 @@ interface IAction {
 }
 
 class ActionProcessor implements IAction {
-  readonly inputs: Inputs;
   readonly contextLoader: ContextLoader;
   readonly config: Config;
   readonly commentBody: string;
   readonly issue: Issue;
 
-  constructor(
-    inputs: Inputs,
-    contextLoader: ContextLoader,
-    config: Config,
-    commentBody: string,
-    issue: Issue
-  ) {
-    this.inputs = inputs;
+  constructor(contextLoader: ContextLoader, config: Config, commentBody: string, issue: Issue) {
     this.contextLoader = contextLoader;
     this.config = config;
     this.commentBody = commentBody;
