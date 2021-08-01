@@ -6,11 +6,13 @@ interface IAction {
   readonly config: IConfig;
   readonly commentBody: string;
   readonly issue: Issue;
+}
 
+interface IActionProcessor extends IAction {
   process(): Promise<void>;
 }
 
-class ActionProcessor implements IAction {
+class ActionProcessor implements IActionProcessor {
   readonly config: IConfig;
   readonly commentBody: string;
   readonly issue: Issue;
