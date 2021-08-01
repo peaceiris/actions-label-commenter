@@ -3,7 +3,6 @@ import {IConfig} from './config';
 import {Issue} from './issue';
 
 interface IAction {
-  locked: boolean;
   readonly config: IConfig;
   readonly commentBody: string;
   readonly issue: Issue;
@@ -12,13 +11,11 @@ interface IAction {
 }
 
 class ActionProcessor implements IAction {
-  locked: boolean;
   readonly config: IConfig;
   readonly commentBody: string;
   readonly issue: Issue;
 
-  constructor(locked: boolean, config: IConfig, commentBody: string, issue: Issue) {
-    this.locked = locked;
+  constructor(config: IConfig, commentBody: string, issue: Issue) {
     this.config = config;
     this.commentBody = commentBody;
     this.issue = issue;
@@ -49,12 +46,9 @@ class ActionProcessor implements IAction {
     try {
       if (this.config.locking === 'unlock') {
         await this.issue.unlock();
-        this.locked = false;
       }
 
-      if (!this.locked) {
-        await this.issue.createComment(this.commentBody);
-      }
+      await this.issue.createComment(this.commentBody);
 
       await this.updateState();
 

@@ -22,12 +22,7 @@ export async function run(): Promise<void> {
     const comment = new Comment(contextLoader, configLoader);
     comment.dumpComponents();
     const issue = new Issue(githubClient, contextLoader.issueNumber, contextLoader.locked);
-    const actionProcessor = new ActionProcessor(
-      contextLoader.locked,
-      configLoader.getConfig(),
-      comment.render,
-      issue
-    );
+    const actionProcessor = new ActionProcessor(configLoader.getConfig(), comment.render, issue);
     await actionProcessor.process();
   } catch (error) {
     throw new Error(error.message);
