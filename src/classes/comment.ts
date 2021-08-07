@@ -17,7 +17,9 @@ interface IComment {
   readonly footer: string;
   readonly footerLinks: string;
   readonly rawBody: string;
+}
 
+interface ICommentGenerator extends IComment {
   getLogURL(): string;
   getMain(): string;
   getHeader(): string;
@@ -30,7 +32,7 @@ interface IComment {
   get render(): string;
 }
 
-export class Comment implements IComment {
+class Comment implements ICommentGenerator {
   readonly contextLoader: ContextLoader;
   readonly config: ConfigLoader;
   readonly runContext: RunContext;
@@ -137,3 +139,5 @@ export class Comment implements IComment {
     return renderedBody;
   }
 }
+
+export {Comment};

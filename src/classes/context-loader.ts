@@ -30,7 +30,9 @@ interface IContext {
   readonly senderLogin: string;
   readonly locked: boolean;
   readonly runContext: RunContext;
+}
 
+interface IContextLoader extends IContext {
   dumpContext(): void;
   getRunContext(): RunContext;
   getEventName(): string;
@@ -43,7 +45,7 @@ interface IContext {
   getLocked(): boolean;
 }
 
-class ContextLoader implements IContext {
+class ContextLoader implements IContextLoader {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;

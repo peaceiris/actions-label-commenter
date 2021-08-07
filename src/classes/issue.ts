@@ -19,7 +19,9 @@ interface IIssue {
   readonly githubClient: InstanceType<typeof GitHub>;
   readonly number: number;
   locked: boolean;
+}
 
+interface IIssueProcessor extends IIssue {
   setLocked(locked: boolean): void;
   createComment(body: string): Promise<void>;
   updateState(state: IssueState): Promise<void>;
@@ -27,7 +29,7 @@ interface IIssue {
   unlock(reason: LockReason): Promise<void>;
 }
 
-class Issue implements IIssue {
+class Issue implements IIssueProcessor {
   readonly githubClient: InstanceType<typeof GitHub>;
   readonly number: number;
   locked: boolean;
