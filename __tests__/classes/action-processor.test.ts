@@ -14,7 +14,9 @@ const issueMock: Issue = {
   createComment: jest.fn(),
   updateState: jest.fn(),
   lock: jest.fn(),
-  unlock: jest.fn()
+  unlock: jest.fn(),
+  markPullRequestReadyForReview: jest.fn(),
+  convertPullRequestToDraft: jest.fn()
 };
 
 // beforeAll(() => {
@@ -133,7 +135,9 @@ describe('issue', () => {
       createComment: jest.fn(),
       updateState: jest.fn(),
       lock: jest.fn(),
-      unlock: jest.fn()
+      unlock: jest.fn(),
+      markPullRequestReadyForReview: jest.fn(),
+      convertPullRequestToDraft: jest.fn()
     };
     const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
     await actionProcessor.process();
