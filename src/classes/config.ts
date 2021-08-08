@@ -16,6 +16,7 @@ interface IConfig {
   readonly action: Action;
   readonly locking: Locking;
   readonly lockReason: LockReason;
+  readonly draft?: boolean;
 }
 
 interface IConfigLoader extends IConfig {
@@ -42,6 +43,7 @@ class ConfigLoader implements IConfigLoader {
   readonly action: Action;
   readonly locking: Locking;
   readonly lockReason: LockReason;
+  readonly draft?: boolean;
 
   constructor(runContext: RunContext) {
     try {
@@ -52,6 +54,7 @@ class ConfigLoader implements IConfigLoader {
       this.action = this.getAction();
       this.locking = this.getLocking();
       this.lockReason = this.getLockReason();
+      this.draft = this.getDraft();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -63,7 +66,8 @@ class ConfigLoader implements IConfigLoader {
       labelIndex: this.labelIndex,
       action: this.action,
       locking: this.locking,
-      lockReason: this.lockReason
+      lockReason: this.lockReason,
+      draft: this.draft
     };
     return config;
   }
@@ -115,6 +119,15 @@ class ConfigLoader implements IConfigLoader {
     return get(
       this.config.labels[this.labelIndex as string],
       `${this.runContext.LabelEvent}.${this.runContext.EventType}.lock_reason`
+    );
+  }
+
+  getDraft(): boolean {
+    return Boolean(
+      get(
+        this.config.labels[this.labelIndex as string],
+        `${this.runContext.LabelEvent}.${this.runContext.EventType}.draft`
+      )
     );
   }
 }

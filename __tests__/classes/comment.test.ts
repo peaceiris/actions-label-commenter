@@ -158,9 +158,10 @@ describe('getRawBody', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly config: any;
     readonly labelIndex: string;
-    readonly locking: Locking;
     readonly action: Action;
+    readonly locking: Locking;
     readonly lockReason: LockReason;
+    readonly draft?: boolean;
 
     constructor(runContext: RunContext) {
       try {
@@ -168,9 +169,10 @@ describe('getRawBody', () => {
         this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
-        this.locking = this.getLocking();
         this.action = this.getAction();
+        this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
+        this.draft = this.getDraft();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -210,6 +212,10 @@ describe('getRawBody', () => {
 
     getLockReason(): LockReason {
       return 'resolved';
+    }
+
+    getDraft(): boolean {
+      return false;
     }
   }
 
@@ -352,9 +358,10 @@ describe('Mustache issues', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly config: any;
     readonly labelIndex: string;
-    readonly locking: Locking;
     readonly action: Action;
+    readonly locking: Locking;
     readonly lockReason: LockReason;
+    readonly draft?: boolean;
 
     constructor(runContext: RunContext) {
       try {
@@ -362,9 +369,10 @@ describe('Mustache issues', () => {
         this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
-        this.locking = this.getLocking();
         this.action = this.getAction();
+        this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
+        this.draft = this.getDraft();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -404,6 +412,10 @@ describe('Mustache issues', () => {
 
     getLockReason(): LockReason {
       return 'resolved';
+    }
+
+    getDraft(): boolean {
+      return false;
     }
   }
 
@@ -521,9 +533,10 @@ describe('Mustache pull_request', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly config: any;
     readonly labelIndex: string;
-    readonly locking: Locking;
     readonly action: Action;
+    readonly locking: Locking;
     readonly lockReason: LockReason;
+    readonly draft?: boolean;
 
     constructor(runContext: RunContext) {
       try {
@@ -531,9 +544,10 @@ describe('Mustache pull_request', () => {
         this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
-        this.locking = this.getLocking();
         this.action = this.getAction();
+        this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
+        this.draft = this.getDraft();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -573,6 +587,10 @@ describe('Mustache pull_request', () => {
 
     getLockReason(): LockReason {
       return 'resolved';
+    }
+
+    getDraft(): boolean {
+      return false;
     }
   }
 
@@ -690,9 +708,10 @@ describe('Mustache pull_request_target', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly config: any;
     readonly labelIndex: string;
-    readonly locking: Locking;
     readonly action: Action;
+    readonly locking: Locking;
     readonly lockReason: LockReason;
+    readonly draft?: boolean;
 
     constructor(runContext: RunContext) {
       try {
@@ -700,9 +719,10 @@ describe('Mustache pull_request_target', () => {
         this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
-        this.locking = this.getLocking();
         this.action = this.getAction();
+        this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
+        this.draft = this.getDraft();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -742,6 +762,10 @@ describe('Mustache pull_request_target', () => {
 
     getLockReason(): LockReason {
       return 'resolved';
+    }
+
+    getDraft(): boolean {
+      return false;
     }
   }
 
