@@ -1,5 +1,5 @@
 name: 'Label Commenter'
-description: 'Label triggered GitHub Actions for posting a template message, automatically close or reopen issues or pull requests.'
+description: 'Label triggered GitHub Action for posting a template comment, open/close/lock/unlock issue or pull-request automatically.'
 author: 'peaceiris'
 inputs:
   github_token:
