@@ -13,7 +13,7 @@ type IssuesLockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.
 type IssuesUnlockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.unlock>;
 
 type IssueState = 'open' | 'closed';
-type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam';
+type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam' | undefined;
 
 interface IIssue {
   readonly githubClient: InstanceType<typeof GitHub>;
