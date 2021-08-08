@@ -27,7 +27,7 @@ afterEach(() => {
 });
 
 describe('ActionProcessor', () => {
-  test('Create a comment and close an issue', async () => {
+  test('Create a comment and close', async () => {
     const config: IConfig = {
       parentFieldName: 'labels.invalid.labeled.issue',
       labelIndex: '0',
@@ -37,7 +37,6 @@ describe('ActionProcessor', () => {
     };
     const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
     await actionProcessor.process();
-    expect(issueMock.setLocked).toBeCalledTimes(0);
     expect(issueMock.createComment).toBeCalledTimes(1);
     expect(issueMock.createComment).toBeCalledWith(commentBody);
     expect(issueMock.updateState).toBeCalledTimes(1);
@@ -46,7 +45,25 @@ describe('ActionProcessor', () => {
     expect(issueMock.unlock).toBeCalledTimes(0);
   });
 
-  test('Create a comment and open an issue', async () => {
+  test('Create a comment, close, and lock without lockReason', async () => {
+    const config: IConfig = {
+      parentFieldName: 'labels.locked (resolved).labeled.issue',
+      labelIndex: '0',
+      action: 'close',
+      locking: 'lock',
+      lockReason: undefined
+    };
+    const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+    await actionProcessor.process();
+    expect(issueMock.createComment).toBeCalledTimes(1);
+    expect(issueMock.createComment).toBeCalledWith(commentBody);
+    expect(issueMock.updateState).toBeCalledTimes(1);
+    expect(issueMock.updateState).toBeCalledWith('closed');
+    expect(issueMock.lock).toBeCalledTimes(1);
+    expect(issueMock.unlock).toBeCalledTimes(0);
+  });
+
+  test('Create a comment and open', async () => {
     const config: IConfig = {
       parentFieldName: 'labels.invalid.labeled.issue',
       labelIndex: '0',
@@ -56,7 +73,6 @@ describe('ActionProcessor', () => {
     };
     const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
     await actionProcessor.process();
-    expect(issueMock.setLocked).toBeCalledTimes(0);
     expect(issueMock.createComment).toBeCalledTimes(1);
     expect(issueMock.createComment).toBeCalledWith(commentBody);
     expect(issueMock.updateState).toBeCalledTimes(1);
@@ -65,7 +81,7 @@ describe('ActionProcessor', () => {
     expect(issueMock.unlock).toBeCalledTimes(0);
   });
 
-  test('Open an issue without creating a comment if the issue is locked', async () => {
+  test('Open without creating a comment if the issue is locked', async () => {
     const config: IConfig = {
       parentFieldName: 'labels.invalid.labeled.issue',
       labelIndex: '0',
@@ -86,7 +102,6 @@ describe('ActionProcessor', () => {
     };
     const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
     await actionProcessor.process();
-    expect(issueMock.setLocked).toBeCalledTimes(0);
     expect(issueMock.createComment).toBeCalledTimes(0);
     expect(issueMock.updateState).toBeCalledTimes(1);
     expect(issueMock.updateState).toBeCalledWith('open');
@@ -104,7 +119,6 @@ describe('ActionProcessor', () => {
     };
     const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
     await actionProcessor.process();
-    expect(issueMock.setLocked).toBeCalledTimes(0);
     expect(issueMock.createComment).toBeCalledTimes(0);
     expect(issueMock.updateState).toBeCalledTimes(0);
     expect(issueMock.lock).toBeCalledTimes(0);
