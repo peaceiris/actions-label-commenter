@@ -45,11 +45,6 @@ class Issue implements IIssueProcessor {
   }
 
   async createComment(body: string): Promise<void> {
-    if (this.locked) {
-      info(`Issue #${this.number} is locked, skip ${this.createComment.name}`);
-      return;
-    }
-
     const ret: IssuesCreateCommentResponse = await this.githubClient.rest.issues.createComment({
       issue_number: context.issue.number,
       owner: context.repo.owner,

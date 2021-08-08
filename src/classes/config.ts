@@ -13,8 +13,8 @@ type Action = 'close' | 'open';
 interface IConfig {
   readonly parentFieldName: string;
   readonly labelIndex: string;
-  readonly locking: Locking;
   readonly action: Action;
+  readonly locking: Locking;
   readonly lockReason: LockReason;
 }
 
@@ -39,8 +39,8 @@ class ConfigLoader implements IConfigLoader {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
   readonly labelIndex: string;
-  readonly locking: Locking;
   readonly action: Action;
+  readonly locking: Locking;
   readonly lockReason: LockReason;
 
   constructor(runContext: RunContext) {
@@ -49,8 +49,8 @@ class ConfigLoader implements IConfigLoader {
       this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
       this.config = this.loadConfig();
       this.labelIndex = this.getLabelIndex();
-      this.locking = this.getLocking();
       this.action = this.getAction();
+      this.locking = this.getLocking();
       this.lockReason = this.getLockReason();
     } catch (error) {
       throw new Error(error.message);
@@ -61,8 +61,8 @@ class ConfigLoader implements IConfigLoader {
     const config: IConfig = {
       parentFieldName: this.parentFieldName,
       labelIndex: this.labelIndex,
-      locking: this.locking,
       action: this.action,
+      locking: this.locking,
       lockReason: this.lockReason
     };
     return config;

@@ -50,7 +50,11 @@ class ActionProcessor implements IActionProcessor {
         await this.issue.unlock();
       }
 
-      await this.issue.createComment(this.commentBody);
+      if (this.issue.locked) {
+        info(`Issue #${this.issue.number} is locked, skip creating comment`);
+      } else {
+        await this.issue.createComment(this.commentBody);
+      }
 
       await this.updateState();
 
