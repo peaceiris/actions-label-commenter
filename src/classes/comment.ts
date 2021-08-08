@@ -4,12 +4,12 @@ import Mustache from 'mustache';
 
 import {ActionInfo} from '../constants';
 import {groupConsoleLog, info} from '../logger';
-import {Config} from './config';
+import {ConfigLoader} from './config';
 import {RunContext, ContextLoader} from './context-loader';
 
 interface IComment {
   readonly contextLoader: ContextLoader;
-  readonly config: Config;
+  readonly config: ConfigLoader;
   readonly runContext: RunContext;
 
   readonly main: string;
@@ -17,7 +17,9 @@ interface IComment {
   readonly footer: string;
   readonly footerLinks: string;
   readonly rawBody: string;
+}
 
+interface ICommentGenerator extends IComment {
   getLogURL(): string;
   getMain(): string;
   getHeader(): string;
@@ -30,9 +32,9 @@ interface IComment {
   get render(): string;
 }
 
-export class Comment implements IComment {
+class Comment implements ICommentGenerator {
   readonly contextLoader: ContextLoader;
-  readonly config: Config;
+  readonly config: ConfigLoader;
   readonly runContext: RunContext;
 
   readonly main: string;
@@ -41,7 +43,7 @@ export class Comment implements IComment {
   readonly footerLinks: string;
   readonly rawBody: string;
 
-  constructor(contextParser: ContextLoader, config: Config) {
+  constructor(contextParser: ContextLoader, config: ConfigLoader) {
     this.contextLoader = contextParser;
     this.config = config;
     this.runContext = this.contextLoader.runContext;
@@ -94,12 +96,7 @@ export class Comment implements IComment {
   dumpComponents(): void {
     if (!this.main) {
       info(`No configuration ${this.config.parentFieldName}.body`);
-      return;
     } else {
-      groupConsoleLog('commentMain', this.main);
-      groupConsoleLog('commentHeader', this.header);
-      groupConsoleLog('commentFooter', this.footer);
-      groupConsoleLog('commentFooterLinks', this.footerLinks);
       groupConsoleLog('rawCommentBody', this.rawBody);
     }
   }
@@ -142,3 +139,5 @@ export class Comment implements IComment {
     return renderedBody;
   }
 }
+
+export {Comment};

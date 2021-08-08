@@ -5,12 +5,14 @@ import {getInput} from '@actions/core';
 interface IInputs {
   readonly GithubToken: string;
   readonly ConfigFilePath: string;
+}
 
+interface IInputsLoader extends IInputs {
   isFileExists(file: string): boolean;
   validate(): void;
 }
 
-class Inputs implements IInputs {
+class Inputs implements IInputsLoader {
   readonly GithubToken: string;
   readonly ConfigFilePath: string;
 

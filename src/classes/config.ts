@@ -7,19 +7,23 @@ import {groupConsoleLog, info} from '../logger';
 import {RunContext} from './context-loader';
 import {LockReason} from './issue';
 
-type Locking = 'lock' | 'unlock';
-type Action = 'close' | 'open';
+type Locking = 'lock' | 'unlock' | undefined;
+type Action = 'close' | 'open' | undefined;
 
 interface IConfig {
-  readonly runContext: RunContext;
   readonly parentFieldName: string;
+  readonly labelIndex: string;
+  readonly action: Action;
+  readonly locking: Locking;
+  readonly lockReason: LockReason;
+}
+
+interface IConfigLoader extends IConfig {
+  readonly runContext: RunContext;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
-  readonly labelIndex: string;
-  readonly locking: Locking;
-  readonly action: Action;
-  readonly lockReason: LockReason;
 
+  getConfig(): IConfig;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadConfig(): any;
   dumpConfig(): void;
@@ -29,14 +33,14 @@ interface IConfig {
   getLockReason(): LockReason;
 }
 
-class Config implements IConfig {
+class ConfigLoader implements IConfigLoader {
   readonly runContext: RunContext;
   readonly parentFieldName: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
   readonly labelIndex: string;
-  readonly locking: Locking;
   readonly action: Action;
+  readonly locking: Locking;
   readonly lockReason: LockReason;
 
   constructor(runContext: RunContext) {
@@ -45,12 +49,23 @@ class Config implements IConfig {
       this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
       this.config = this.loadConfig();
       this.labelIndex = this.getLabelIndex();
-      this.locking = this.getLocking();
       this.action = this.getAction();
+      this.locking = this.getLocking();
       this.lockReason = this.getLockReason();
     } catch (error) {
       throw new Error(error.message);
     }
+  }
+
+  getConfig(): IConfig {
+    const config: IConfig = {
+      parentFieldName: this.parentFieldName,
+      labelIndex: this.labelIndex,
+      action: this.action,
+      locking: this.locking,
+      lockReason: this.lockReason
+    };
+    return config;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,14 +96,12 @@ class Config implements IConfig {
     );
 
     if (locking === 'lock' || locking === 'unlock') {
-      info(`${this.parentFieldName}.locking is ${locking}`);
+      return locking;
     } else if (!locking) {
-      info(`No configuration ${this.parentFieldName}.locking`);
+      return undefined;
     } else {
       throw new Error(`Invalid value "${locking}" ${this.parentFieldName}.locking`);
     }
-
-    return locking;
   }
 
   getAction(): Action {
@@ -106,4 +119,4 @@ class Config implements IConfig {
   }
 }
 
-export {Locking, Action, IConfig, Config};
+export {Locking, Action, IConfig, IConfigLoader, ConfigLoader};
