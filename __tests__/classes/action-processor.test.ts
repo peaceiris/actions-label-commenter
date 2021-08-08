@@ -159,4 +159,23 @@ describe('issue', () => {
     expect(issueMock.lock).toBeCalledTimes(0);
     expect(issueMock.unlock).toBeCalledTimes(0);
   });
+
+  test('Skip comment if body is empty', async () => {
+    const config: IConfig = {
+      parentFieldName: 'labels.spam.labeled.issue',
+      labelIndex: '1',
+      action: 'close',
+      locking: 'lock',
+      lockReason: 'spam'
+    };
+    const commentBody = '';
+    const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+    await actionProcessor.process();
+    expect(issueMock.createComment).toBeCalledTimes(0);
+    expect(issueMock.updateState).toBeCalledTimes(1);
+    expect(issueMock.updateState).toBeCalledWith('closed');
+    expect(issueMock.lock).toBeCalledTimes(1);
+    expect(issueMock.lock).toBeCalledWith('spam');
+    expect(issueMock.unlock).toBeCalledTimes(0);
+  });
 });
