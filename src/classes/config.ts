@@ -8,7 +8,7 @@ import {RunContext} from './context-loader';
 import {LockReason} from './issue';
 
 type Locking = 'lock' | 'unlock' | undefined;
-type Action = 'close' | 'open';
+type Action = 'close' | 'open' | undefined;
 
 interface IConfig {
   readonly parentFieldName: string;

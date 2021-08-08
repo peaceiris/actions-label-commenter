@@ -93,4 +93,21 @@ describe('ActionProcessor', () => {
     expect(issueMock.lock).toBeCalledTimes(0);
     expect(issueMock.unlock).toBeCalledTimes(0);
   });
+
+  test('Skip all actions for a label that has no configuration', async () => {
+    const config: IConfig = {
+      parentFieldName: 'labels.unknown.labeled.issue',
+      labelIndex: '',
+      action: undefined,
+      locking: undefined,
+      lockReason: undefined
+    };
+    const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+    await actionProcessor.process();
+    expect(issueMock.setLocked).toBeCalledTimes(0);
+    expect(issueMock.createComment).toBeCalledTimes(0);
+    expect(issueMock.updateState).toBeCalledTimes(0);
+    expect(issueMock.lock).toBeCalledTimes(0);
+    expect(issueMock.unlock).toBeCalledTimes(0);
+  });
 });
