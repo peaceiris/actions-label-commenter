@@ -3,7 +3,6 @@ import {getOctokit} from '@actions/github';
 import {ActionProcessor} from '../../src/classes/action-processor';
 import {IConfig} from '../../src/classes/config';
 import {Issue} from '../../src/classes/issue';
-import {groupConsoleLog} from '../../src/logger';
 
 const commentBody = `hello`;
 const githubClient = getOctokit('token');
@@ -26,8 +25,8 @@ afterEach(() => {
   jest.resetModules();
 });
 
-describe('ActionProcessor', () => {
-  test('Create a comment and close', async () => {
+describe('issue', () => {
+  test('Comment and close', async () => {
     const config: IConfig = {
       parentFieldName: 'labels.invalid.labeled.issue',
       labelIndex: '0',
@@ -45,7 +44,7 @@ describe('ActionProcessor', () => {
     expect(issueMock.unlock).toBeCalledTimes(0);
   });
 
-  test('Create a comment, close, and lock without lockReason', async () => {
+  test('Comment, close, and lock without lockReason', async () => {
     const config: IConfig = {
       parentFieldName: 'labels.locked (resolved).labeled.issue',
       labelIndex: '0',
@@ -63,7 +62,44 @@ describe('ActionProcessor', () => {
     expect(issueMock.unlock).toBeCalledTimes(0);
   });
 
-  test('Create a comment and open', async () => {
+  test('Comment, close, and lock with lockReason', async () => {
+    const config: IConfig = {
+      parentFieldName: 'labels.locked (spam).labeled.issue',
+      labelIndex: '0',
+      action: 'close',
+      locking: 'lock',
+      lockReason: 'spam'
+    };
+    const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+    await actionProcessor.process();
+    expect(issueMock.createComment).toBeCalledTimes(1);
+    expect(issueMock.createComment).toBeCalledWith(commentBody);
+    expect(issueMock.updateState).toBeCalledTimes(1);
+    expect(issueMock.updateState).toBeCalledWith('closed');
+    expect(issueMock.lock).toBeCalledTimes(1);
+    expect(issueMock.lock).toBeCalledWith('spam');
+    expect(issueMock.unlock).toBeCalledTimes(0);
+  });
+
+  test('Unlock, open and comment', async () => {
+    const config: IConfig = {
+      parentFieldName: 'labels.locked (heated).labeled.issue',
+      labelIndex: '0',
+      action: 'open',
+      locking: 'unlock',
+      lockReason: undefined
+    };
+    const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+    await actionProcessor.process();
+    expect(issueMock.createComment).toBeCalledTimes(1);
+    expect(issueMock.createComment).toBeCalledWith(commentBody);
+    expect(issueMock.updateState).toBeCalledTimes(1);
+    expect(issueMock.updateState).toBeCalledWith('open');
+    expect(issueMock.lock).toBeCalledTimes(0);
+    expect(issueMock.unlock).toBeCalledTimes(1);
+  });
+
+  test('Comment and open', async () => {
     const config: IConfig = {
       parentFieldName: 'labels.invalid.labeled.issue',
       labelIndex: '0',
@@ -81,7 +117,7 @@ describe('ActionProcessor', () => {
     expect(issueMock.unlock).toBeCalledTimes(0);
   });
 
-  test('Open without creating a comment if the issue is locked', async () => {
+  test('Open without comment if the issue is locked', async () => {
     const config: IConfig = {
       parentFieldName: 'labels.invalid.labeled.issue',
       labelIndex: '0',
@@ -89,11 +125,10 @@ describe('ActionProcessor', () => {
       locking: undefined,
       lockReason: undefined
     };
-    const locked = true;
     const issueMock: Issue = {
       githubClient: githubClient,
       number: 1,
-      locked: locked,
+      locked: true,
       setLocked: jest.fn(),
       createComment: jest.fn(),
       updateState: jest.fn(),

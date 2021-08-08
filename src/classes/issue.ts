@@ -95,7 +95,6 @@ class Issue implements IIssueProcessor {
     groupConsoleLog('IssuesLockResponse', ret);
 
     if (ret.status === 204) {
-      this.setLocked(true);
       info(`Issue #${this.number} has been locked`);
       return;
     } else {
@@ -113,7 +112,6 @@ class Issue implements IIssueProcessor {
     groupConsoleLog('IssuesUnlockResponse', ret);
 
     if (ret.status === 204) {
-      this.setLocked(false);
       info(`Issue #${this.number} has been unlocked`);
       return;
     } else {
@@ -122,4 +120,4 @@ class Issue implements IIssueProcessor {
   }
 }
 
-export {LockReason, Issue};
+export {LockReason, IIssueProcessor, Issue};

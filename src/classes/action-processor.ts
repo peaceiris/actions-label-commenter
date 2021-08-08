@@ -48,6 +48,7 @@ class ActionProcessor implements IActionProcessor {
     try {
       if (this.config.locking === 'unlock') {
         await this.issue.unlock();
+        this.issue.setLocked(false);
       }
 
       if (this.issue.locked) {
@@ -60,6 +61,7 @@ class ActionProcessor implements IActionProcessor {
 
       if (this.config.locking === 'lock') {
         await this.issue.lock(this.config.lockReason);
+        this.issue.setLocked(true);
       }
     } catch (error) {
       throw new Error(error.message);
