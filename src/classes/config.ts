@@ -96,15 +96,12 @@ class ConfigLoader implements IConfigLoader {
     );
 
     if (locking === 'lock' || locking === 'unlock') {
-      info(`${this.parentFieldName}.locking is ${locking}`);
+      return locking;
     } else if (!locking) {
-      info(`No configuration ${this.parentFieldName}.locking`);
       return undefined;
     } else {
       throw new Error(`Invalid value "${locking}" ${this.parentFieldName}.locking`);
     }
-
-    return locking;
   }
 
   getAction(): Action {
