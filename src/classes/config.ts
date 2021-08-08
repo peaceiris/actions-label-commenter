@@ -3,7 +3,7 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
-import {groupConsoleLog, info} from '../logger';
+import {groupConsoleLog} from '../logger';
 import {RunContext} from './context-loader';
 import {LockReason} from './issue';
 
