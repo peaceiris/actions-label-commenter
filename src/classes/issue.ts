@@ -73,6 +73,7 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesCreateCommentResponse.status: ${res.status}`);
       }
     } catch (error) {
+      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }
@@ -98,6 +99,7 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesUpdateResponse.status: ${res.status}`);
       }
     } catch (error) {
+      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }
@@ -120,6 +122,7 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesLockResponse.status: ${res.status}`);
       }
     } catch (error) {
+      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }
@@ -141,6 +144,7 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesUnlockResponse.status: ${res.status}`);
       }
     } catch (error) {
+      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }
@@ -168,6 +172,7 @@ class Issue implements IIssueProcessor {
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       groupConsoleLog('Request failed', error.request);
+      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }
@@ -195,6 +200,7 @@ class Issue implements IIssueProcessor {
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       groupConsoleLog('Request failed', error.request);
+      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }

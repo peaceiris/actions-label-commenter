@@ -1,15 +1,9 @@
 import {context} from '@actions/github';
 import {Context} from '@actions/github/lib/context';
-import {
-  IssuesEvent,
-  IssuesLabeledEvent,
-  PullRequestEvent,
-  PullRequestLabeledEvent
-} from '@octokit/webhooks-types';
 
 import {Comment} from '../../src/classes/comment';
 import {Locking, Action, Draft, IConfig, IConfigLoader} from '../../src/classes/config';
-import {RunContext, IContext} from '../../src/classes/context-loader';
+import {Payload, RunContext, IContext} from '../../src/classes/context-loader';
 import {Inputs} from '../../src/classes/inputs';
 import {LockReason} from '../../src/classes/issue';
 import {getDefaultInputs, cleanupEnvs} from '../../src/test-helper';
@@ -70,7 +64,7 @@ describe('getRawBody', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
-    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly payload: Payload;
 
     readonly id: string;
     readonly eventName: string;
@@ -88,11 +82,7 @@ describe('getRawBody', () => {
       try {
         this.inputs = inputs;
         this.context = context;
-        this.payload = context.payload as
-          | IssuesEvent
-          | IssuesLabeledEvent
-          | PullRequestEvent
-          | PullRequestLabeledEvent;
+        this.payload = context.payload as Payload;
 
         this.id = this.getId();
         this.eventName = this.getEventName();
@@ -281,7 +271,7 @@ describe('Mustache issues', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
-    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly payload: Payload;
 
     readonly id: string;
     readonly eventName: string;
@@ -299,11 +289,7 @@ describe('Mustache issues', () => {
       try {
         this.inputs = inputs;
         this.context = context;
-        this.payload = context.payload as
-          | IssuesEvent
-          | IssuesLabeledEvent
-          | PullRequestEvent
-          | PullRequestLabeledEvent;
+        this.payload = context.payload as Payload;
 
         this.id = this.getId();
         this.eventName = this.getEventName();
@@ -467,7 +453,7 @@ describe('Mustache pull_request', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
-    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly payload: Payload;
 
     readonly id: string;
     readonly eventName: string;
@@ -485,11 +471,7 @@ describe('Mustache pull_request', () => {
       try {
         this.inputs = inputs;
         this.context = context;
-        this.payload = context.payload as
-          | IssuesEvent
-          | IssuesLabeledEvent
-          | PullRequestEvent
-          | PullRequestLabeledEvent;
+        this.payload = context.payload as Payload;
 
         this.id = this.getId();
         this.eventName = this.getEventName();
@@ -653,7 +635,7 @@ describe('Mustache pull_request_target', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
-    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly payload: Payload;
 
     readonly id: string;
     readonly eventName: string;
@@ -671,11 +653,7 @@ describe('Mustache pull_request_target', () => {
       try {
         this.inputs = inputs;
         this.context = context;
-        this.payload = context.payload as
-          | IssuesEvent
-          | IssuesLabeledEvent
-          | PullRequestEvent
-          | PullRequestLabeledEvent;
+        this.payload = context.payload as Payload;
 
         this.id = this.getId();
         this.eventName = this.getEventName();

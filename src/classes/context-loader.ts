@@ -1,13 +1,17 @@
 import {Context} from '@actions/github/lib/context';
 import {
-  IssuesEvent,
   IssuesLabeledEvent,
-  PullRequestEvent,
-  PullRequestLabeledEvent
+  IssuesUnlabeledEvent,
+  PullRequestLabeledEvent,
+  PullRequestUnlabeledEvent
 } from '@octokit/webhooks-types';
 
 import {groupConsoleLog, info} from '../logger';
 import {Inputs} from './inputs';
+
+type IssuePayload = IssuesLabeledEvent | IssuesUnlabeledEvent;
+type PullRequestPayload = PullRequestLabeledEvent | PullRequestUnlabeledEvent;
+type Payload = IssuePayload | PullRequestPayload;
 
 interface RunContext {
   readonly Id: string;
@@ -21,7 +25,7 @@ interface RunContext {
 interface IContext {
   readonly inputs: Inputs;
   readonly context: Context;
-  readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+  readonly payload: Payload;
 
   readonly id: string;
   readonly eventName: string;
@@ -52,7 +56,7 @@ interface IContextLoader extends IContext {
 class ContextLoader implements IContextLoader {
   readonly inputs: Inputs;
   readonly context: Context;
-  readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+  readonly payload: Payload;
 
   readonly id: string;
   readonly eventName: string;
@@ -70,11 +74,7 @@ class ContextLoader implements IContextLoader {
     try {
       this.inputs = inputs;
       this.context = context;
-      this.payload = context.payload as
-        | IssuesEvent
-        | IssuesLabeledEvent
-        | PullRequestEvent
-        | PullRequestLabeledEvent;
+      this.payload = context.payload as Payload;
 
       this.id = this.getId();
       this.eventName = this.getEventName();
@@ -89,6 +89,7 @@ class ContextLoader implements IContextLoader {
       this.runContext = this.getRunContext();
     } catch (error) {
       groupConsoleLog('Dump context', context);
+      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }
@@ -113,10 +114,10 @@ class ContextLoader implements IContextLoader {
 
   getId(): string {
     if (this.eventName === 'issues') {
-      return (this.payload as IssuesEvent).issue.node_id;
+      return (this.payload as IssuePayload).issue.node_id;
     }
-    // pull_request OR pull_request_target
-    return (this.payload as PullRequestEvent).pull_request.node_id;
+
+    return (this.payload as PullRequestPayload).pull_request.node_id;
   }
 
   getEventName(): string {
@@ -142,7 +143,6 @@ class ContextLoader implements IContextLoader {
       return 'issue';
     }
 
-    // if (this.eventName === 'pull_request' || this.eventName === 'pull_request_target')
     return 'pr';
   }
 
@@ -152,43 +152,43 @@ class ContextLoader implements IContextLoader {
 
   getLabelName(): string | undefined {
     if (this.eventName === 'issues') {
-      return (this.payload as IssuesLabeledEvent).label?.name;
+      return (this.payload as IssuePayload).label?.name;
     }
-    // pull_request OR pull_request_target
-    return (this.payload as PullRequestLabeledEvent).label?.name;
+
+    return (this.payload as PullRequestPayload).label?.name;
   }
 
   getIssueNumber(): number {
     if (this.eventName === 'issues') {
-      return (this.payload as IssuesEvent).issue.number;
+      return (this.payload as IssuePayload).issue.number;
     }
-    // pull_request OR pull_request_target
-    return (this.payload as PullRequestEvent).number;
+
+    return (this.payload as PullRequestPayload).number;
   }
 
   getUserLogin(): string {
     if (this.eventName === 'issues') {
-      return (this.payload as IssuesEvent).issue.user.login;
+      return (this.payload as IssuePayload).issue.user.login;
     }
-    // pull_request OR pull_request_target
-    return (this.payload as PullRequestEvent).pull_request.user.login;
+
+    return (this.payload as PullRequestPayload).pull_request.user.login;
   }
 
   getSenderLogin(): string {
     if (this.eventName === 'issues') {
-      return (this.payload as IssuesEvent).sender.login;
+      return (this.payload as IssuePayload).sender.login;
     }
-    // pull_request OR pull_request_target
-    return (this.payload as PullRequestEvent).sender.login;
+
+    return (this.payload as PullRequestPayload).sender.login;
   }
 
   getLocked(): boolean {
     if (this.eventName === 'issues') {
-      return Boolean((this.payload as IssuesEvent).issue.locked);
+      return Boolean((this.payload as IssuePayload).issue.locked);
     }
-    // pull_request OR pull_request_target
-    return Boolean((this.payload as PullRequestEvent).pull_request.locked);
+
+    return Boolean((this.payload as PullRequestPayload).pull_request.locked);
   }
 }
 
-export {RunContext, IContext, ContextLoader};
+export {Payload, RunContext, IContext, ContextLoader};
