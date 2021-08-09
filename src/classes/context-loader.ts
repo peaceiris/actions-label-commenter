@@ -113,8 +113,10 @@ class ContextLoader implements IContextLoader {
   }
 
   getId(): string {
-    if (this.eventName === 'issues') return '';
-    return (this.payload as PullRequestPayload).pull_request.node_id;
+    if (this.eventName === 'issues') {
+      return (this.payload as IssuePayload).issue?.node_id;
+    }
+    return (this.payload as PullRequestPayload).pull_request?.node_id;
   }
 
   getEventName(): string {
