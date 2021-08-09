@@ -32,5 +32,5 @@ create-pre-release:
 
 .PHONY: pre-release
 pre-release: create-pre-release
-	git rm -f ./lib/index.js
-	git commit -m "chore: remove lib/index.js"
+	git rm -f ./lib/*
+	git commit -m "chore(release): Remove build assets [skip ci]"

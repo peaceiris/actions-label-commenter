@@ -8,4 +8,4 @@ sed -i "s/Version: '.*'/Version: '${NEXT_VERSION}'/" ./src/constants.ts
 npm run build
 git checkout ./src/constants.ts
 git add ./lib/*
-git commit -m "chore: npm run build"
+git commit -m "chore(release): Add build assets"
