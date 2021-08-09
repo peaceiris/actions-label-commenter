@@ -164,6 +164,7 @@ class Issue implements IIssueProcessor {
 
     try {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
+      info(`Pull-request #${this.number} has been marked as ready for review`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       groupConsoleLog('Request failed', error.request);
@@ -190,6 +191,7 @@ class Issue implements IIssueProcessor {
 
     try {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
+      info(`Pull-request #${this.number} has been converted to draft`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       groupConsoleLog('Request failed', error.request);
