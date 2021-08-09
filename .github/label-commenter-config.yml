@@ -14,14 +14,14 @@ labels:
         action: close
       pr:
         body: Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.
-        action: draft
+        action: close
     unlabeled:
       issue:
         body: Thank you for following the template. The repository owner will reply.
         action: open
       pr:
         body: Thank you for following the template. The repository owner will review this.
-        action: ready
+        action: close
   - name: forum
     labeled:
       issue:
