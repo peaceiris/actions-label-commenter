@@ -5,6 +5,7 @@ import type {RequestParameters} from '@octokit/graphql/dist-types/types';
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 import {groupConsoleLog, info} from '../logger';
+import {Id} from './context-loader';
 
 const octokit = new GitHub();
 type IssuesCreateCommentResponse = GetResponseTypeFromEndpointMethod<
@@ -19,7 +20,7 @@ type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam' | undefined;
 
 interface IIssue {
   readonly githubClient: InstanceType<typeof GitHub>;
-  readonly id: string;
+  readonly id: Id;
   readonly number: number;
   locked: boolean;
 }
@@ -34,16 +35,11 @@ interface IIssueProcessor extends IIssue {
 
 class Issue implements IIssueProcessor {
   readonly githubClient: InstanceType<typeof GitHub>;
-  readonly id: string;
+  readonly id: Id;
   readonly number: number;
   locked: boolean;
 
-  constructor(
-    githubClient: InstanceType<typeof GitHub>,
-    id: string,
-    number: number,
-    locked: boolean
-  ) {
+  constructor(githubClient: InstanceType<typeof GitHub>, id: Id, number: number, locked: boolean) {
     this.githubClient = githubClient;
     this.id = id;
     this.number = number;

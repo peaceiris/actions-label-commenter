@@ -12,9 +12,10 @@ import {Inputs} from './inputs';
 type IssuePayload = IssuesLabeledEvent | IssuesUnlabeledEvent;
 type PullRequestPayload = PullRequestLabeledEvent | PullRequestUnlabeledEvent;
 type Payload = IssuePayload | PullRequestPayload;
+type Id = string | undefined;
 
 interface RunContext {
-  readonly Id: string;
+  readonly Id: Id;
   readonly ConfigFilePath: string;
   readonly LabelName: string;
   readonly LabelEvent: string;
@@ -27,7 +28,7 @@ interface IContext {
   readonly context: Context;
   readonly payload: Payload;
 
-  readonly id: string;
+  readonly id: Id;
   readonly eventName: string;
   readonly eventType: string;
   readonly action: string;
@@ -43,7 +44,7 @@ interface IContext {
 interface IContextLoader extends IContext {
   dumpContext(): void;
   getRunContext(): RunContext;
-  getId(): string;
+  getId(): Id;
   getEventName(): string;
   getEventType(): string;
   getAction(): string;
@@ -59,7 +60,7 @@ class ContextLoader implements IContextLoader {
   readonly context: Context;
   readonly payload: Payload;
 
-  readonly id: string;
+  readonly id: Id;
   readonly eventName: string;
   readonly eventType: string;
   readonly action: string;
@@ -112,11 +113,8 @@ class ContextLoader implements IContextLoader {
     return runContext;
   }
 
-  getId(): string {
-    if (this.eventName === 'issues') {
-      return (this.payload as IssuePayload).issue.node_id;
-    }
-
+  getId(): Id {
+    if (this.eventName === 'issues') return undefined;
     return (this.payload as PullRequestPayload).pull_request.node_id;
   }
 
@@ -191,4 +189,4 @@ class ContextLoader implements IContextLoader {
   }
 }
 
-export {Payload, RunContext, IContext, ContextLoader};
+export {Payload, Id, RunContext, IContext, ContextLoader};
