@@ -147,11 +147,15 @@ class Issue implements IIssueProcessor {
 
   async markPullRequestReadyForReview(): Promise<void> {
     const query = `
-      mutation($input: MarkPullRequestReadyForReviewInput!) {
+      mutation MarkPullRequestReadyForReview($input: MarkPullRequestReadyForReviewInput!) {
+        __typename
         markPullRequestReadyForReview(input: $input) {
-          clientMutationId
+          pullRequest {
+            isDraft
+          }
         }
-      }`;
+      }
+    `;
     const variables: RequestParameters = {
       input: {
         pullRequestId: this.id
@@ -169,11 +173,15 @@ class Issue implements IIssueProcessor {
 
   async convertPullRequestToDraft(): Promise<void> {
     const query = `
-      mutation($input: ConvertPullRequestToDraftInput!) {
+      mutation ConvertPullRequestToDraft($input: ConvertPullRequestToDraftInput!) {
+        __typename
         convertPullRequestToDraft(input: $input) {
-          clientMutationId
+          pullRequest {
+            isDraft
+          }
         }
-      }`;
+      }
+    `;
     const variables: RequestParameters = {
       input: {
         pullRequestId: this.id
