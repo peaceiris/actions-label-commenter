@@ -43,6 +43,7 @@ interface IContext {
 interface IContextLoader extends IContext {
   dumpContext(): void;
   getRunContext(): RunContext;
+  getId(): string;
   getEventName(): string;
   getEventType(): string;
   getAction(): string;
