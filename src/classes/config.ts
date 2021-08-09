@@ -9,6 +9,7 @@ import {LockReason} from './issue';
 
 type Locking = 'lock' | 'unlock' | undefined;
 type Action = 'close' | 'open' | undefined;
+type Draft = boolean | undefined;
 
 interface IConfig {
   readonly parentFieldName: string;
@@ -16,7 +17,7 @@ interface IConfig {
   readonly action: Action;
   readonly locking: Locking;
   readonly lockReason: LockReason;
-  readonly draft?: boolean;
+  readonly draft?: Draft;
 }
 
 interface IConfigLoader extends IConfig {
@@ -43,7 +44,7 @@ class ConfigLoader implements IConfigLoader {
   readonly action: Action;
   readonly locking: Locking;
   readonly lockReason: LockReason;
-  readonly draft?: boolean;
+  readonly draft?: Draft;
 
   constructor(runContext: RunContext) {
     try {
@@ -122,14 +123,12 @@ class ConfigLoader implements IConfigLoader {
     );
   }
 
-  getDraft(): boolean {
-    return Boolean(
-      get(
-        this.config.labels[this.labelIndex as string],
-        `${this.runContext.LabelEvent}.${this.runContext.EventType}.draft`
-      )
+  getDraft(): Draft {
+    return get(
+      this.config.labels[this.labelIndex as string],
+      `${this.runContext.LabelEvent}.${this.runContext.EventType}.draft`
     );
   }
 }
 
-export {Locking, Action, IConfig, IConfigLoader, ConfigLoader};
+export {Locking, Action, Draft, IConfig, IConfigLoader, ConfigLoader};

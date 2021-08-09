@@ -55,7 +55,7 @@ class ActionProcessor implements IActionProcessor {
 
       if (this.config.draft) {
         await this.issue.convertPullRequestToDraft();
-      } else {
+      } else if (this.config.draft === false) {
         await this.issue.markPullRequestReadyForReview();
       }
 

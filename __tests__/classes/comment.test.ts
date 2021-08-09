@@ -8,7 +8,7 @@ import {
 } from '@octokit/webhooks-types';
 
 import {Comment} from '../../src/classes/comment';
-import {Locking, Action, IConfig, IConfigLoader} from '../../src/classes/config';
+import {Locking, Action, Draft, IConfig, IConfigLoader} from '../../src/classes/config';
 import {RunContext, IContext} from '../../src/classes/context-loader';
 import {Inputs} from '../../src/classes/inputs';
 import {LockReason} from '../../src/classes/issue';
@@ -172,7 +172,7 @@ describe('getRawBody', () => {
     readonly action: Action;
     readonly locking: Locking;
     readonly lockReason: LockReason;
-    readonly draft?: boolean;
+    readonly draft: Draft;
 
     constructor(runContext: RunContext) {
       try {
@@ -225,8 +225,8 @@ describe('getRawBody', () => {
       return 'resolved';
     }
 
-    getDraft(): boolean {
-      return false;
+    getDraft(): Draft {
+      return undefined;
     }
   }
 
@@ -383,7 +383,7 @@ describe('Mustache issues', () => {
     readonly action: Action;
     readonly locking: Locking;
     readonly lockReason: LockReason;
-    readonly draft?: boolean;
+    readonly draft?: Draft;
 
     constructor(runContext: RunContext) {
       try {
@@ -436,7 +436,7 @@ describe('Mustache issues', () => {
       return 'resolved';
     }
 
-    getDraft(): boolean {
+    getDraft(): Draft {
       return false;
     }
   }
@@ -569,7 +569,7 @@ describe('Mustache pull_request', () => {
     readonly action: Action;
     readonly locking: Locking;
     readonly lockReason: LockReason;
-    readonly draft?: boolean;
+    readonly draft?: Draft;
 
     constructor(runContext: RunContext) {
       try {
@@ -622,7 +622,7 @@ describe('Mustache pull_request', () => {
       return 'resolved';
     }
 
-    getDraft(): boolean {
+    getDraft(): Draft {
       return false;
     }
   }
@@ -755,7 +755,7 @@ describe('Mustache pull_request_target', () => {
     readonly action: Action;
     readonly locking: Locking;
     readonly lockReason: LockReason;
-    readonly draft?: boolean;
+    readonly draft?: Draft;
 
     constructor(runContext: RunContext) {
       try {
@@ -808,7 +808,7 @@ describe('Mustache pull_request_target', () => {
       return 'resolved';
     }
 
-    getDraft(): boolean {
+    getDraft(): Draft {
       return false;
     }
   }
