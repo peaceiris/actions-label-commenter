@@ -71,6 +71,8 @@ describe('getRawBody', () => {
     readonly inputs: Inputs;
     readonly context: Context;
     readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+
+    readonly id: string;
     readonly eventName: string;
     readonly eventType: string;
     readonly action: string;
@@ -79,6 +81,7 @@ describe('getRawBody', () => {
     readonly userLogin: string;
     readonly senderLogin: string;
     readonly locked: boolean;
+
     readonly runContext: RunContext;
 
     constructor(inputs: Inputs, context: Context) {
@@ -90,6 +93,8 @@ describe('getRawBody', () => {
           | IssuesLabeledEvent
           | PullRequestEvent
           | PullRequestLabeledEvent;
+
+        this.id = this.getId();
         this.eventName = this.getEventName();
         this.eventType = this.getEventType();
         this.action = this.getAction();
@@ -98,6 +103,7 @@ describe('getRawBody', () => {
         this.userLogin = this.getUserLogin();
         this.senderLogin = this.getSenderLogin();
         this.locked = this.getLocked();
+
         this.runContext = this.getRunContext();
       } catch (error) {
         throw new Error(error.message);
@@ -110,6 +116,7 @@ describe('getRawBody', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
+        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
         LabelEvent: this.action,
@@ -117,6 +124,10 @@ describe('getRawBody', () => {
         EventType: this.eventType
       };
       return runContext;
+    }
+
+    getId(): string {
+      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
     getEventName(): string {
@@ -271,6 +282,8 @@ describe('Mustache issues', () => {
     readonly inputs: Inputs;
     readonly context: Context;
     readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+
+    readonly id: string;
     readonly eventName: string;
     readonly eventType: string;
     readonly action: string;
@@ -279,6 +292,7 @@ describe('Mustache issues', () => {
     readonly userLogin: string;
     readonly senderLogin: string;
     readonly locked: boolean;
+
     readonly runContext: RunContext;
 
     constructor(inputs: Inputs, context: Context) {
@@ -290,6 +304,8 @@ describe('Mustache issues', () => {
           | IssuesLabeledEvent
           | PullRequestEvent
           | PullRequestLabeledEvent;
+
+        this.id = this.getId();
         this.eventName = this.getEventName();
         this.eventType = this.getEventType();
         this.action = this.getAction();
@@ -298,6 +314,7 @@ describe('Mustache issues', () => {
         this.userLogin = this.getUserLogin();
         this.senderLogin = this.getSenderLogin();
         this.locked = this.getLocked();
+
         this.runContext = this.getRunContext();
       } catch (error) {
         throw new Error(error.message);
@@ -310,6 +327,7 @@ describe('Mustache issues', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
+        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
         LabelEvent: this.action,
@@ -317,6 +335,10 @@ describe('Mustache issues', () => {
         EventType: this.eventType
       };
       return runContext;
+    }
+
+    getId(): string {
+      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
     getEventName(): string {
@@ -446,6 +468,8 @@ describe('Mustache pull_request', () => {
     readonly inputs: Inputs;
     readonly context: Context;
     readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+
+    readonly id: string;
     readonly eventName: string;
     readonly eventType: string;
     readonly action: string;
@@ -454,6 +478,7 @@ describe('Mustache pull_request', () => {
     readonly userLogin: string;
     readonly senderLogin: string;
     readonly locked: boolean;
+
     readonly runContext: RunContext;
 
     constructor(inputs: Inputs, context: Context) {
@@ -465,6 +490,8 @@ describe('Mustache pull_request', () => {
           | IssuesLabeledEvent
           | PullRequestEvent
           | PullRequestLabeledEvent;
+
+        this.id = this.getId();
         this.eventName = this.getEventName();
         this.eventType = this.getEventType();
         this.action = this.getAction();
@@ -473,6 +500,7 @@ describe('Mustache pull_request', () => {
         this.userLogin = this.getUserLogin();
         this.senderLogin = this.getSenderLogin();
         this.locked = this.getLocked();
+
         this.runContext = this.getRunContext();
       } catch (error) {
         throw new Error(error.message);
@@ -485,6 +513,7 @@ describe('Mustache pull_request', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
+        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
         LabelEvent: this.action,
@@ -492,6 +521,10 @@ describe('Mustache pull_request', () => {
         EventType: this.eventType
       };
       return runContext;
+    }
+
+    getId(): string {
+      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
     getEventName(): string {
@@ -621,6 +654,8 @@ describe('Mustache pull_request_target', () => {
     readonly inputs: Inputs;
     readonly context: Context;
     readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+
+    readonly id: string;
     readonly eventName: string;
     readonly eventType: string;
     readonly action: string;
@@ -629,6 +664,7 @@ describe('Mustache pull_request_target', () => {
     readonly userLogin: string;
     readonly senderLogin: string;
     readonly locked: boolean;
+
     readonly runContext: RunContext;
 
     constructor(inputs: Inputs, context: Context) {
@@ -640,6 +676,8 @@ describe('Mustache pull_request_target', () => {
           | IssuesLabeledEvent
           | PullRequestEvent
           | PullRequestLabeledEvent;
+
+        this.id = this.getId();
         this.eventName = this.getEventName();
         this.eventType = this.getEventType();
         this.action = this.getAction();
@@ -648,6 +686,7 @@ describe('Mustache pull_request_target', () => {
         this.userLogin = this.getUserLogin();
         this.senderLogin = this.getSenderLogin();
         this.locked = this.getLocked();
+
         this.runContext = this.getRunContext();
       } catch (error) {
         throw new Error(error.message);
@@ -660,6 +699,7 @@ describe('Mustache pull_request_target', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
+        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
         LabelEvent: this.action,
@@ -667,6 +707,10 @@ describe('Mustache pull_request_target', () => {
         EventType: this.eventType
       };
       return runContext;
+    }
+
+    getId(): string {
+      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
     getEventName(): string {

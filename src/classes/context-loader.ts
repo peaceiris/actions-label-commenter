@@ -10,6 +10,7 @@ import {groupConsoleLog, info} from '../logger';
 import {Inputs} from './inputs';
 
 interface RunContext {
+  readonly Id: string;
   readonly ConfigFilePath: string;
   readonly LabelName: string;
   readonly LabelEvent: string;
@@ -21,6 +22,8 @@ interface IContext {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+
+  readonly id: string;
   readonly eventName: string;
   readonly eventType: string;
   readonly action: string;
@@ -29,6 +32,7 @@ interface IContext {
   readonly userLogin: string;
   readonly senderLogin: string;
   readonly locked: boolean;
+
   readonly runContext: RunContext;
 }
 
@@ -49,6 +53,8 @@ class ContextLoader implements IContextLoader {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+
+  readonly id: string;
   readonly eventName: string;
   readonly eventType: string;
   readonly action: string;
@@ -57,6 +63,7 @@ class ContextLoader implements IContextLoader {
   readonly userLogin: string;
   readonly senderLogin: string;
   readonly locked: boolean;
+
   readonly runContext: RunContext;
 
   constructor(inputs: Inputs, context: Context) {
@@ -68,6 +75,8 @@ class ContextLoader implements IContextLoader {
         | IssuesLabeledEvent
         | PullRequestEvent
         | PullRequestLabeledEvent;
+
+      this.id = this.getId();
       this.eventName = this.getEventName();
       this.eventType = this.getEventType();
       this.action = this.getAction();
@@ -76,6 +85,7 @@ class ContextLoader implements IContextLoader {
       this.userLogin = this.getUserLogin();
       this.senderLogin = this.getSenderLogin();
       this.locked = this.getLocked();
+
       this.runContext = this.getRunContext();
     } catch (error) {
       throw new Error(error.message);
@@ -89,6 +99,7 @@ class ContextLoader implements IContextLoader {
 
   getRunContext(): RunContext {
     const runContext: RunContext = {
+      Id: this.id,
       ConfigFilePath: this.inputs.ConfigFilePath,
       LabelName: this.labelName as string,
       LabelEvent: this.action,
@@ -97,6 +108,14 @@ class ContextLoader implements IContextLoader {
     };
     groupConsoleLog('Dump runContext', runContext);
     return runContext;
+  }
+
+  getId(): string {
+    if (this.eventName === 'issues') {
+      return (this.payload as IssuesEvent).issue.node_id;
+    }
+    // pull_request OR pull_request_target
+    return (this.payload as PullRequestEvent).pull_request.node_id;
   }
 
   getEventName(): string {

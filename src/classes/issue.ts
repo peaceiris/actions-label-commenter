@@ -19,6 +19,7 @@ type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam' | undefined;
 
 interface IIssue {
   readonly githubClient: InstanceType<typeof GitHub>;
+  readonly id: string;
   readonly number: number;
   locked: boolean;
 }
@@ -33,11 +34,18 @@ interface IIssueProcessor extends IIssue {
 
 class Issue implements IIssueProcessor {
   readonly githubClient: InstanceType<typeof GitHub>;
+  readonly id: string;
   readonly number: number;
   locked: boolean;
 
-  constructor(githubClient: InstanceType<typeof GitHub>, number: number, locked: boolean) {
+  constructor(
+    githubClient: InstanceType<typeof GitHub>,
+    id: string,
+    number: number,
+    locked: boolean
+  ) {
     this.githubClient = githubClient;
+    this.id = id;
     this.number = number;
     this.locked = locked;
   }
@@ -146,7 +154,7 @@ class Issue implements IIssueProcessor {
       }`;
     const variables: RequestParameters = {
       input: {
-        pullRequestId: this.number
+        pullRequestId: this.id
       }
     };
 
@@ -168,7 +176,7 @@ class Issue implements IIssueProcessor {
       }`;
     const variables: RequestParameters = {
       input: {
-        pullRequestId: this.number
+        pullRequestId: this.id
       }
     };
 

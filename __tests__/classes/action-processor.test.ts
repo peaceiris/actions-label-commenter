@@ -8,6 +8,7 @@ const commentBody = `hello`;
 const githubClient = getOctokit('token');
 const issueMock: Issue = {
   githubClient: githubClient,
+  id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
   number: 1,
   locked: false,
   setLocked: jest.fn(),
@@ -129,6 +130,7 @@ describe('issue', () => {
     };
     const issueMock: Issue = {
       githubClient: githubClient,
+      id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
       number: 1,
       locked: true,
       setLocked: jest.fn(),
