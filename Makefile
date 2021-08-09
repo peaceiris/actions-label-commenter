@@ -28,7 +28,7 @@ release:
 .PHONY: create-pre-release
 create-pre-release:
 	bash ./scripts/pre-release.sh
-	git show
+	git rev-parse HEAD
 
 .PHONY: pre-release
 pre-release: create-pre-release
