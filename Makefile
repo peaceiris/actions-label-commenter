@@ -25,11 +25,12 @@ all:
 release:
 	bash ./scripts/release.sh
 
-.PHONY: pre-release
-pre-release:
+.PHONY: create-pre-release
+create-pre-release:
 	bash ./scripts/pre-release.sh
+	git show
 
-.PHONY: remove-pre-release
-remove-pre-release:
+.PHONY: pre-release
+pre-release: create-pre-release
 	git rm -f ./lib/index.js
 	git commit -m "chore: remove lib/index.js"
