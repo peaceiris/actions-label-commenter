@@ -15,7 +15,7 @@ type Payload = IssuePayload | PullRequestPayload;
 type Id = string | undefined;
 
 interface RunContext {
-  readonly Id: Id;
+  readonly Id?: Id;
   readonly ConfigFilePath: string;
   readonly LabelName: string;
   readonly LabelEvent: string;
@@ -28,7 +28,7 @@ interface IContext {
   readonly context: Context;
   readonly payload: Payload;
 
-  readonly id: Id;
+  readonly id?: Id;
   readonly eventName: string;
   readonly eventType: string;
   readonly action: string;
@@ -60,7 +60,7 @@ class ContextLoader implements IContextLoader {
   readonly context: Context;
   readonly payload: Payload;
 
-  readonly id: Id;
+  readonly id?: Id;
   readonly eventName: string;
   readonly eventType: string;
   readonly action: string;

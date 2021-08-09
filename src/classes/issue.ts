@@ -20,7 +20,7 @@ type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam' | undefined;
 
 interface IIssue {
   readonly githubClient: InstanceType<typeof GitHub>;
-  readonly id: Id;
+  readonly id?: Id;
   readonly number: number;
   locked: boolean;
 }
@@ -35,7 +35,7 @@ interface IIssueProcessor extends IIssue {
 
 class Issue implements IIssueProcessor {
   readonly githubClient: InstanceType<typeof GitHub>;
-  readonly id: Id;
+  readonly id?: Id;
   readonly number: number;
   locked: boolean;
 
