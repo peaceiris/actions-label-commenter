@@ -12,7 +12,7 @@
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --ext .ts --fix .",
     "test": "jest --config jest.config.json",
-    "build": "ncc build ./src/index.ts -o lib --minify",
+    "build": "ncc build ./src/index.ts -o lib --minify --source-map",
     "tsc": "tsc --noEmit",
     "fmt": "prettier --write '**/*.ts'",
     "fmt:check": "prettier --check '**/*.ts'",

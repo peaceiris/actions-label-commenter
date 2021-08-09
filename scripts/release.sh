@@ -53,7 +53,7 @@ sed -i "s/Version: '.*'/Version: '${NEXT_VERSION}'/" ./src/constants.ts
 
 mkdir ./lib
 npm run build
-git add ./lib/index.js ./src/constants.ts
+git add ./lib/* ./src/constants.ts
 git commit -m "chore(release): Add build assets"
 
 npm run release -- --release-as "${RELEASE_TYPE}" --preset eslint

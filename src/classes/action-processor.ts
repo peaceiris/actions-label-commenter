@@ -72,7 +72,6 @@ class ActionProcessor implements IActionProcessor {
         this.issue.setLocked(true);
       }
     } catch (error) {
-      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }

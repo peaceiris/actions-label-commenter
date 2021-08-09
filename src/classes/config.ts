@@ -57,7 +57,6 @@ class ConfigLoader implements IConfigLoader {
       this.lockReason = this.getLockReason();
       this.draft = this.getDraft();
     } catch (error) {
-      groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
     }
   }

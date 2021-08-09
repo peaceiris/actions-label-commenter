@@ -7,7 +7,7 @@ import {ContextLoader} from './classes/context-loader';
 import {Inputs} from './classes/inputs';
 import {Issue} from './classes/issue';
 import {ActionInfo} from './constants';
-import {groupConsoleLog, info} from './logger';
+import {info} from './logger';
 
 export async function run(): Promise<void> {
   try {
@@ -30,7 +30,6 @@ export async function run(): Promise<void> {
     const actionProcessor = new ActionProcessor(configLoader.getConfig(), comment.render, issue);
     await actionProcessor.process();
   } catch (error) {
-    groupConsoleLog('Dump error.stack', error.stack);
     throw new Error(error.message);
   }
 }
