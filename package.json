@@ -11,7 +11,7 @@
     "postinstall": "npx husky install",
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --ext .ts --fix .",
-    "test": "jest --config jest.config.json",
+    "test": "env ACTIONS_LABEL_COMMENTER_TEST=true jest --config jest.config.json",
     "build": "ncc build ./src/index.ts -o lib --minify --source-map",
     "tsc": "tsc --noEmit",
     "fmt": "prettier --write '**/*.ts'",
