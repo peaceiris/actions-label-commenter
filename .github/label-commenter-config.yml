@@ -22,7 +22,7 @@ labels:
         action: open
       pr:
         body: Thank you for following the template. The repository owner will review this.
-        action: ready
+        action: close
   - name: forum
     labeled:
       issue:
