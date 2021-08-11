@@ -216,3 +216,28 @@ describe('Skip comment if body is empty', () => {
     });
   }
 });
+
+describe('Toggle draft status', () => {
+  const tests = [true, false];
+
+  for (const t of tests) {
+    test(`draft ${t}`, async () => {
+      const config: IConfig = {
+        parentFieldName: `labels.invalid.labeled.pr`,
+        labelIndex: '0',
+        action: undefined,
+        locking: undefined,
+        lockReason: undefined,
+        draft: t
+      };
+      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      await actionProcessor.process();
+      expect(issueMock.createComment).toBeCalledTimes(1);
+      expect(issueMock.updateState).toBeCalledTimes(0);
+      expect(issueMock.lock).toBeCalledTimes(0);
+      expect(issueMock.unlock).toBeCalledTimes(0);
+      expect(issueMock.markPullRequestReadyForReview).toBeCalledTimes(t ? 0 : 1);
+      expect(issueMock.convertPullRequestToDraft).toBeCalledTimes(t ? 1 : 0);
+    });
+  }
+});
