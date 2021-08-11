@@ -25,11 +25,12 @@ all:
 release:
 	bash ./scripts/release.sh
 
-.PHONY: pre-release
-pre-release:
+.PHONY: create-pre-release
+create-pre-release:
 	bash ./scripts/pre-release.sh
+	git rev-parse HEAD
 
-.PHONY: remove-pre-release
-remove-pre-release:
-	git rm -f ./lib/index.js
-	git commit -m "chore: remove lib/index.js"
+.PHONY: pre-release
+pre-release: create-pre-release
+	git rm -f ./lib/*
+	git commit -m "chore(release): Remove build assets [skip ci]"

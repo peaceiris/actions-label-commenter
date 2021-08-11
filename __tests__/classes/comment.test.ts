@@ -1,15 +1,9 @@
 import {context} from '@actions/github';
 import {Context} from '@actions/github/lib/context';
-import {
-  IssuesEvent,
-  IssuesLabeledEvent,
-  PullRequestEvent,
-  PullRequestLabeledEvent
-} from '@octokit/webhooks-types';
 
 import {Comment} from '../../src/classes/comment';
-import {Locking, Action, IConfig, IConfigLoader} from '../../src/classes/config';
-import {RunContext, IContext} from '../../src/classes/context-loader';
+import {Locking, Action, Draft, IConfig, IConfigLoader} from '../../src/classes/config';
+import {Payload, RunContext, IContext} from '../../src/classes/context-loader';
 import {Inputs} from '../../src/classes/inputs';
 import {LockReason} from '../../src/classes/issue';
 import {getDefaultInputs, cleanupEnvs} from '../../src/test-helper';
@@ -70,7 +64,9 @@ describe('getRawBody', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
-    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly payload: Payload;
+
+    readonly id: string;
     readonly eventName: string;
     readonly eventType: string;
     readonly action: string;
@@ -79,17 +75,16 @@ describe('getRawBody', () => {
     readonly userLogin: string;
     readonly senderLogin: string;
     readonly locked: boolean;
+
     readonly runContext: RunContext;
 
     constructor(inputs: Inputs, context: Context) {
       try {
         this.inputs = inputs;
         this.context = context;
-        this.payload = context.payload as
-          | IssuesEvent
-          | IssuesLabeledEvent
-          | PullRequestEvent
-          | PullRequestLabeledEvent;
+        this.payload = context.payload as Payload;
+
+        this.id = this.getId();
         this.eventName = this.getEventName();
         this.eventType = this.getEventType();
         this.action = this.getAction();
@@ -98,6 +93,7 @@ describe('getRawBody', () => {
         this.userLogin = this.getUserLogin();
         this.senderLogin = this.getSenderLogin();
         this.locked = this.getLocked();
+
         this.runContext = this.getRunContext();
       } catch (error) {
         throw new Error(error.message);
@@ -110,6 +106,7 @@ describe('getRawBody', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
+        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
         LabelEvent: this.action,
@@ -117,6 +114,10 @@ describe('getRawBody', () => {
         EventType: this.eventType
       };
       return runContext;
+    }
+
+    getId(): string {
+      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
     getEventName(): string {
@@ -158,9 +159,10 @@ describe('getRawBody', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly config: any;
     readonly labelIndex: string;
-    readonly locking: Locking;
     readonly action: Action;
+    readonly locking: Locking;
     readonly lockReason: LockReason;
+    readonly draft: Draft;
 
     constructor(runContext: RunContext) {
       try {
@@ -168,9 +170,10 @@ describe('getRawBody', () => {
         this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
-        this.locking = this.getLocking();
         this.action = this.getAction();
+        this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
+        this.draft = this.getDraft();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -210,6 +213,10 @@ describe('getRawBody', () => {
 
     getLockReason(): LockReason {
       return 'resolved';
+    }
+
+    getDraft(): Draft {
+      return undefined;
     }
   }
 
@@ -264,7 +271,9 @@ describe('Mustache issues', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
-    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly payload: Payload;
+
+    readonly id: string;
     readonly eventName: string;
     readonly eventType: string;
     readonly action: string;
@@ -273,17 +282,16 @@ describe('Mustache issues', () => {
     readonly userLogin: string;
     readonly senderLogin: string;
     readonly locked: boolean;
+
     readonly runContext: RunContext;
 
     constructor(inputs: Inputs, context: Context) {
       try {
         this.inputs = inputs;
         this.context = context;
-        this.payload = context.payload as
-          | IssuesEvent
-          | IssuesLabeledEvent
-          | PullRequestEvent
-          | PullRequestLabeledEvent;
+        this.payload = context.payload as Payload;
+
+        this.id = this.getId();
         this.eventName = this.getEventName();
         this.eventType = this.getEventType();
         this.action = this.getAction();
@@ -292,6 +300,7 @@ describe('Mustache issues', () => {
         this.userLogin = this.getUserLogin();
         this.senderLogin = this.getSenderLogin();
         this.locked = this.getLocked();
+
         this.runContext = this.getRunContext();
       } catch (error) {
         throw new Error(error.message);
@@ -304,6 +313,7 @@ describe('Mustache issues', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
+        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
         LabelEvent: this.action,
@@ -311,6 +321,10 @@ describe('Mustache issues', () => {
         EventType: this.eventType
       };
       return runContext;
+    }
+
+    getId(): string {
+      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
     getEventName(): string {
@@ -352,9 +366,10 @@ describe('Mustache issues', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly config: any;
     readonly labelIndex: string;
-    readonly locking: Locking;
     readonly action: Action;
+    readonly locking: Locking;
     readonly lockReason: LockReason;
+    readonly draft?: Draft;
 
     constructor(runContext: RunContext) {
       try {
@@ -362,9 +377,10 @@ describe('Mustache issues', () => {
         this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
-        this.locking = this.getLocking();
         this.action = this.getAction();
+        this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
+        this.draft = this.getDraft();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -405,6 +421,10 @@ describe('Mustache issues', () => {
     getLockReason(): LockReason {
       return 'resolved';
     }
+
+    getDraft(): Draft {
+      return false;
+    }
   }
 
   test('invalid.labeled.issue', () => {
@@ -433,7 +453,9 @@ describe('Mustache pull_request', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
-    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly payload: Payload;
+
+    readonly id: string;
     readonly eventName: string;
     readonly eventType: string;
     readonly action: string;
@@ -442,17 +464,16 @@ describe('Mustache pull_request', () => {
     readonly userLogin: string;
     readonly senderLogin: string;
     readonly locked: boolean;
+
     readonly runContext: RunContext;
 
     constructor(inputs: Inputs, context: Context) {
       try {
         this.inputs = inputs;
         this.context = context;
-        this.payload = context.payload as
-          | IssuesEvent
-          | IssuesLabeledEvent
-          | PullRequestEvent
-          | PullRequestLabeledEvent;
+        this.payload = context.payload as Payload;
+
+        this.id = this.getId();
         this.eventName = this.getEventName();
         this.eventType = this.getEventType();
         this.action = this.getAction();
@@ -461,6 +482,7 @@ describe('Mustache pull_request', () => {
         this.userLogin = this.getUserLogin();
         this.senderLogin = this.getSenderLogin();
         this.locked = this.getLocked();
+
         this.runContext = this.getRunContext();
       } catch (error) {
         throw new Error(error.message);
@@ -473,6 +495,7 @@ describe('Mustache pull_request', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
+        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
         LabelEvent: this.action,
@@ -480,6 +503,10 @@ describe('Mustache pull_request', () => {
         EventType: this.eventType
       };
       return runContext;
+    }
+
+    getId(): string {
+      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
     getEventName(): string {
@@ -521,9 +548,10 @@ describe('Mustache pull_request', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly config: any;
     readonly labelIndex: string;
-    readonly locking: Locking;
     readonly action: Action;
+    readonly locking: Locking;
     readonly lockReason: LockReason;
+    readonly draft?: Draft;
 
     constructor(runContext: RunContext) {
       try {
@@ -531,9 +559,10 @@ describe('Mustache pull_request', () => {
         this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
-        this.locking = this.getLocking();
         this.action = this.getAction();
+        this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
+        this.draft = this.getDraft();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -574,6 +603,10 @@ describe('Mustache pull_request', () => {
     getLockReason(): LockReason {
       return 'resolved';
     }
+
+    getDraft(): Draft {
+      return false;
+    }
   }
 
   test('invalid.labeled.pr', () => {
@@ -602,7 +635,9 @@ describe('Mustache pull_request_target', () => {
   class ContextLoaderMock implements IContext {
     readonly inputs: Inputs;
     readonly context: Context;
-    readonly payload: IssuesEvent | IssuesLabeledEvent | PullRequestEvent | PullRequestLabeledEvent;
+    readonly payload: Payload;
+
+    readonly id: string;
     readonly eventName: string;
     readonly eventType: string;
     readonly action: string;
@@ -611,17 +646,16 @@ describe('Mustache pull_request_target', () => {
     readonly userLogin: string;
     readonly senderLogin: string;
     readonly locked: boolean;
+
     readonly runContext: RunContext;
 
     constructor(inputs: Inputs, context: Context) {
       try {
         this.inputs = inputs;
         this.context = context;
-        this.payload = context.payload as
-          | IssuesEvent
-          | IssuesLabeledEvent
-          | PullRequestEvent
-          | PullRequestLabeledEvent;
+        this.payload = context.payload as Payload;
+
+        this.id = this.getId();
         this.eventName = this.getEventName();
         this.eventType = this.getEventType();
         this.action = this.getAction();
@@ -630,6 +664,7 @@ describe('Mustache pull_request_target', () => {
         this.userLogin = this.getUserLogin();
         this.senderLogin = this.getSenderLogin();
         this.locked = this.getLocked();
+
         this.runContext = this.getRunContext();
       } catch (error) {
         throw new Error(error.message);
@@ -642,6 +677,7 @@ describe('Mustache pull_request_target', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
+        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
         LabelEvent: this.action,
@@ -649,6 +685,10 @@ describe('Mustache pull_request_target', () => {
         EventType: this.eventType
       };
       return runContext;
+    }
+
+    getId(): string {
+      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
     getEventName(): string {
@@ -690,9 +730,10 @@ describe('Mustache pull_request_target', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly config: any;
     readonly labelIndex: string;
-    readonly locking: Locking;
     readonly action: Action;
+    readonly locking: Locking;
     readonly lockReason: LockReason;
+    readonly draft?: Draft;
 
     constructor(runContext: RunContext) {
       try {
@@ -700,9 +741,10 @@ describe('Mustache pull_request_target', () => {
         this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
-        this.locking = this.getLocking();
         this.action = this.getAction();
+        this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
+        this.draft = this.getDraft();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -742,6 +784,10 @@ describe('Mustache pull_request_target', () => {
 
     getLockReason(): LockReason {
       return 'resolved';
+    }
+
+    getDraft(): Draft {
+      return false;
     }
   }
 

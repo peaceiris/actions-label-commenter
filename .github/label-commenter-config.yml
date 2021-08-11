@@ -15,6 +15,7 @@ labels:
       pr:
         body: Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.
         action: close
+        draft: true
     unlabeled:
       issue:
         body: Thank you for following the template. The repository owner will reply.

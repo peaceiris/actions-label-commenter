@@ -51,6 +51,14 @@ class ActionProcessor implements IActionProcessor {
         this.issue.setLocked(false);
       }
 
+      await this.updateState();
+
+      if (this.config.draft) {
+        await this.issue.convertPullRequestToDraft();
+      } else if (this.config.draft === false) {
+        await this.issue.markPullRequestReadyForReview();
+      }
+
       if (this.issue.locked) {
         info(`Issue #${this.issue.number} is locked, skip creating comment`);
       } else if (!this.commentBody) {
@@ -58,8 +66,6 @@ class ActionProcessor implements IActionProcessor {
       } else {
         await this.issue.createComment(this.commentBody);
       }
-
-      await this.updateState();
 
       if (this.config.locking === 'lock') {
         await this.issue.lock(this.config.lockReason);

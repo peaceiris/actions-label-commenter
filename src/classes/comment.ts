@@ -134,6 +134,7 @@ class Comment implements ICommentGenerator {
   }
 
   get render(): string {
+    if (!this.main) return '';
     const renderedBody = Mustache.render(this.rawBody, this.view);
     groupConsoleLog('commentBodyRendered', renderedBody);
     return renderedBody;

@@ -11,8 +11,8 @@
     "postinstall": "npx husky install",
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --ext .ts --fix .",
-    "test": "jest --config jest.config.json",
-    "build": "ncc build ./src/index.ts -o lib --minify",
+    "test": "env ACTIONS_LABEL_COMMENTER_TEST=true jest --config jest.config.json",
+    "build": "ncc build ./src/index.ts -o lib --minify --source-map",
     "tsc": "tsc --noEmit",
     "fmt": "prettier --write '**/*.ts'",
     "fmt:check": "prettier --check '**/*.ts'",
@@ -48,6 +48,7 @@
   "dependencies": {
     "@actions/core": "^1.4.0",
     "@actions/github": "^5.0.0",
+    "@octokit/graphql": "^4.6.4",
     "@octokit/types": "^6.24.0",
     "@octokit/webhooks-types": "^4.3.0",
     "js-yaml": "^4.1.0",

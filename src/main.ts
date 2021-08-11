@@ -21,7 +21,12 @@ export async function run(): Promise<void> {
     const configLoader = new ConfigLoader(contextLoader.runContext);
     const comment = new Comment(contextLoader, configLoader);
     comment.dumpComponents();
-    const issue = new Issue(githubClient, contextLoader.issueNumber, contextLoader.locked);
+    const issue = new Issue(
+      githubClient,
+      contextLoader.runContext.Id,
+      contextLoader.issueNumber,
+      contextLoader.locked
+    );
     const actionProcessor = new ActionProcessor(configLoader.getConfig(), comment.render, issue);
     await actionProcessor.process();
   } catch (error) {

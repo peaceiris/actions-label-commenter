@@ -1,5 +1,7 @@
 import {context} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
+import type {GraphQlQueryResponseData} from '@octokit/graphql';
+import type {RequestParameters} from '@octokit/graphql/dist-types/types';
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 import {groupConsoleLog, info} from '../logger';
@@ -17,6 +19,7 @@ type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam' | undefined;
 
 interface IIssue {
   readonly githubClient: InstanceType<typeof GitHub>;
+  readonly id: string;
   readonly number: number;
   locked: boolean;
 }
@@ -31,11 +34,18 @@ interface IIssueProcessor extends IIssue {
 
 class Issue implements IIssueProcessor {
   readonly githubClient: InstanceType<typeof GitHub>;
+  readonly id: string;
   readonly number: number;
   locked: boolean;
 
-  constructor(githubClient: InstanceType<typeof GitHub>, number: number, locked: boolean) {
+  constructor(
+    githubClient: InstanceType<typeof GitHub>,
+    id: string,
+    number: number,
+    locked: boolean
+  ) {
     this.githubClient = githubClient;
+    this.id = id;
     this.number = number;
     this.locked = locked;
   }
@@ -45,77 +55,147 @@ class Issue implements IIssueProcessor {
   }
 
   async createComment(body: string): Promise<void> {
-    const ret: IssuesCreateCommentResponse = await this.githubClient.rest.issues.createComment({
-      issue_number: context.issue.number,
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      body: body
-    });
+    try {
+      const res: IssuesCreateCommentResponse = await this.githubClient.rest.issues.createComment({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: body
+      });
 
-    groupConsoleLog('IssuesCreateCommentResponse', ret);
+      groupConsoleLog('IssuesCreateCommentResponse', res);
 
-    if (ret.status === 201) {
-      info(`New comment has been created in issue #${this.number}`);
-      info(`Comment URL: ${ret.data.html_url}`);
-      return;
-    } else {
-      throw new Error(`IssuesCreateCommentResponse.status: ${ret.status}`);
+      if (res.status === 201) {
+        info(`New comment has been created in issue #${this.number}`);
+        info(`Comment URL: ${res.data.html_url}`);
+        return;
+      } else {
+        throw new Error(`IssuesCreateCommentResponse.status: ${res.status}`);
+      }
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
   async updateState(state: IssueState): Promise<void> {
-    const ret: IssuesUpdateResponse = await this.githubClient.rest.issues.update({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      issue_number: this.number,
-      state: state
-    });
+    try {
+      const res: IssuesUpdateResponse = await this.githubClient.rest.issues.update({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: this.number,
+        state: state
+      });
 
-    groupConsoleLog('IssuesUpdateResponse', ret);
+      groupConsoleLog('IssuesUpdateResponse', res);
 
-    if (ret.status === 200) {
-      if (state === 'closed') {
-        info(`Issue #${this.number} has been closed`);
-        return;
+      if (res.status === 200) {
+        if (state === 'closed') {
+          info(`Issue #${this.number} has been closed`);
+          return;
+        }
+        info(`Issue #${this.number} has been reopened`);
+      } else {
+        throw new Error(`IssuesUpdateResponse.status: ${res.status}`);
       }
-      info(`Issue #${this.number} has been reopened`);
-    } else {
-      throw new Error(`IssuesUpdateResponse.status: ${ret.status}`);
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
   async lock(reason: LockReason): Promise<void> {
-    const ret: IssuesLockResponse = await this.githubClient.rest.issues.lock({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      issue_number: this.number,
-      lock_reason: reason || 'resolved'
-    });
+    try {
+      const res: IssuesLockResponse = await this.githubClient.rest.issues.lock({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: this.number,
+        lock_reason: reason || 'resolved'
+      });
 
-    groupConsoleLog('IssuesLockResponse', ret);
+      groupConsoleLog('IssuesLockResponse', res);
 
-    if (ret.status === 204) {
-      info(`Issue #${this.number} has been locked`);
-      return;
-    } else {
-      throw new Error(`IssuesLockResponse.status: ${ret.status}`);
+      if (res.status === 204) {
+        info(`Issue #${this.number} has been locked`);
+        return;
+      } else {
+        throw new Error(`IssuesLockResponse.status: ${res.status}`);
+      }
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
   async unlock(): Promise<void> {
-    const ret: IssuesUnlockResponse = await this.githubClient.rest.issues.unlock({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      issue_number: this.number
-    });
+    try {
+      const res: IssuesUnlockResponse = await this.githubClient.rest.issues.unlock({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: this.number
+      });
 
-    groupConsoleLog('IssuesUnlockResponse', ret);
+      groupConsoleLog('IssuesUnlockResponse', res);
 
-    if (ret.status === 204) {
-      info(`Issue #${this.number} has been unlocked`);
-      return;
-    } else {
-      throw new Error(`IssuesUnlockResponse.status: ${ret.status}`);
+      if (res.status === 204) {
+        info(`Issue #${this.number} has been unlocked`);
+        return;
+      } else {
+        throw new Error(`IssuesUnlockResponse.status: ${res.status}`);
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async markPullRequestReadyForReview(): Promise<void> {
+    const query = `
+      mutation MarkPullRequestReadyForReview($input: MarkPullRequestReadyForReviewInput!) {
+        __typename
+        markPullRequestReadyForReview(input: $input) {
+          pullRequest {
+            isDraft
+          }
+        }
+      }
+    `;
+    const variables: RequestParameters = {
+      input: {
+        pullRequestId: this.id
+      }
+    };
+
+    try {
+      const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
+      info(`Pull-request #${this.number} has been marked as ready for review`);
+      groupConsoleLog('GraphQlQueryResponseData', res);
+    } catch (error) {
+      groupConsoleLog('Request failed', error.request);
+      throw new Error(error.message);
+    }
+  }
+
+  async convertPullRequestToDraft(): Promise<void> {
+    const query = `
+      mutation ConvertPullRequestToDraft($input: ConvertPullRequestToDraftInput!) {
+        __typename
+        convertPullRequestToDraft(input: $input) {
+          pullRequest {
+            isDraft
+          }
+        }
+      }
+    `;
+    const variables: RequestParameters = {
+      input: {
+        pullRequestId: this.id
+      }
+    };
+
+    try {
+      const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
+      info(`Pull-request #${this.number} has been converted to draft`);
+      groupConsoleLog('GraphQlQueryResponseData', res);
+    } catch (error) {
+      groupConsoleLog('Request failed', error.request);
+      throw new Error(error.message);
     }
   }
 }
