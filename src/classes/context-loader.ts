@@ -14,6 +14,7 @@ type PullRequestPayload = PullRequestLabeledEvent | PullRequestUnlabeledEvent;
 type Payload = IssuePayload | PullRequestPayload;
 type EventName = 'issues' | 'pull_request' | 'pull_request_target' | 'discussion';
 type EventAlias = 'issue' | 'pr' | 'discussion';
+type LabelEvent = 'labeled' | 'unlabeled';
 
 interface EventTypeTable {
   issues: EventAlias;
@@ -34,7 +35,7 @@ interface RunContext {
   readonly Id: string;
   readonly ConfigFilePath: string;
   readonly LabelName: string;
-  readonly LabelEvent: string;
+  readonly LabelEvent: LabelEvent;
   readonly EventName: EventName;
   readonly EventAlias: EventAlias;
 }
@@ -47,7 +48,7 @@ interface IContext {
   readonly id: string;
   readonly eventName: EventName;
   readonly eventAlias: EventAlias;
-  readonly labelEvent: string;
+  readonly labelEvent: LabelEvent;
   readonly labelName: string | undefined;
   readonly issueNumber: number;
   readonly userLogin: string;
@@ -63,7 +64,7 @@ interface IContextLoader extends IContext {
   getId(): string;
   getEventName(): EventName;
   getEventAlias(): EventAlias;
-  getLabelEvent(): string;
+  getLabelEvent(): LabelEvent;
   getLabelName(): string | undefined;
   getIssueNumber(): number;
   getUserLogin(): string;
@@ -79,7 +80,7 @@ class ContextLoader implements IContextLoader {
   readonly id: string;
   readonly eventName: EventName;
   readonly eventAlias: EventAlias;
-  readonly labelEvent: string;
+  readonly labelEvent: LabelEvent;
   readonly labelName: string | undefined;
   readonly issueNumber: number;
   readonly userLogin: string;
@@ -150,7 +151,7 @@ class ContextLoader implements IContextLoader {
     return eventType(this.eventName);
   }
 
-  getLabelEvent(): string {
+  getLabelEvent(): LabelEvent {
     return this.payload.action;
   }
 
@@ -195,4 +196,4 @@ class ContextLoader implements IContextLoader {
   }
 }
 
-export {Payload, EventName, EventAlias, RunContext, IContext, ContextLoader};
+export {Payload, EventName, EventAlias, LabelEvent, RunContext, IContext, ContextLoader};

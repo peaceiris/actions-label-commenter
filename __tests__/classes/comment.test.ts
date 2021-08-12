@@ -7,6 +7,7 @@ import {
   Payload,
   EventName,
   EventAlias,
+  LabelEvent,
   RunContext,
   IContext
 } from '../../src/classes/context-loader';
@@ -75,7 +76,7 @@ describe('getRawBody', () => {
     readonly id: string;
     readonly eventName: EventName;
     readonly eventAlias: EventAlias;
-    readonly labelEvent: string;
+    readonly labelEvent: LabelEvent;
     readonly labelName: string | undefined;
     readonly issueNumber: number;
     readonly userLogin: string;
@@ -134,7 +135,7 @@ describe('getRawBody', () => {
       return 'issue';
     }
 
-    getLabelEvent(): string {
+    getLabelEvent(): LabelEvent {
       return 'labeled';
     }
 
@@ -282,7 +283,7 @@ describe('Mustache issues', () => {
     readonly id: string;
     readonly eventName: EventName;
     readonly eventAlias: EventAlias;
-    readonly labelEvent: string;
+    readonly labelEvent: LabelEvent;
     readonly labelName: string | undefined;
     readonly issueNumber: number;
     readonly userLogin: string;
@@ -341,7 +342,7 @@ describe('Mustache issues', () => {
       return 'issue';
     }
 
-    getLabelEvent(): string {
+    getLabelEvent(): LabelEvent {
       return 'labeled';
     }
 
@@ -464,7 +465,7 @@ describe('Mustache pull_request', () => {
     readonly id: string;
     readonly eventName: EventName;
     readonly eventAlias: EventAlias;
-    readonly labelEvent: string;
+    readonly labelEvent: LabelEvent;
     readonly labelName: string | undefined;
     readonly issueNumber: number;
     readonly userLogin: string;
@@ -523,7 +524,7 @@ describe('Mustache pull_request', () => {
       return 'pr';
     }
 
-    getLabelEvent(): string {
+    getLabelEvent(): LabelEvent {
       return 'labeled';
     }
 
@@ -646,7 +647,7 @@ describe('Mustache pull_request_target', () => {
     readonly id: string;
     readonly eventName: EventName;
     readonly eventAlias: EventAlias;
-    readonly labelEvent: string;
+    readonly labelEvent: LabelEvent;
     readonly labelName: string | undefined;
     readonly issueNumber: number;
     readonly userLogin: string;
@@ -705,7 +706,7 @@ describe('Mustache pull_request_target', () => {
       return 'pr';
     }
 
-    getLabelEvent(): string {
+    getLabelEvent(): LabelEvent {
       return 'labeled';
     }
 
