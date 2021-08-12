@@ -61,7 +61,7 @@ class Comment implements ICommentGenerator {
   getMain(): string {
     return get(
       this.config.config.labels[this.config.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.body`
+      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.body`
     );
   }
 

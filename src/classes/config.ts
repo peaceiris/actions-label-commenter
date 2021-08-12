@@ -49,7 +49,7 @@ class ConfigLoader implements IConfigLoader {
   constructor(runContext: RunContext) {
     try {
       this.runContext = runContext;
-      this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
+      this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
       this.config = this.loadConfig();
       this.labelIndex = this.getLabelIndex();
       this.action = this.getAction();
@@ -97,7 +97,7 @@ class ConfigLoader implements IConfigLoader {
   getLocking(): Locking {
     const locking = get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.locking`
+      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.locking`
     );
 
     if (locking === 'lock' || locking === 'unlock') {
@@ -112,21 +112,21 @@ class ConfigLoader implements IConfigLoader {
   getAction(): Action {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.action`
+      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.action`
     );
   }
 
   getLockReason(): LockReason {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.lock_reason`
+      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.lock_reason`
     );
   }
 
   getDraft(): Draft {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.draft`
+      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.draft`
     );
   }
 }

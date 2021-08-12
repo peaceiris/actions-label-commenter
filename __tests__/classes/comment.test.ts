@@ -3,7 +3,13 @@ import {Context} from '@actions/github/lib/context';
 
 import {Comment} from '../../src/classes/comment';
 import {Locking, Action, Draft, IConfig, IConfigLoader} from '../../src/classes/config';
-import {Payload, RunContext, IContext} from '../../src/classes/context-loader';
+import {
+  Payload,
+  EventName,
+  EventAlias,
+  RunContext,
+  IContext
+} from '../../src/classes/context-loader';
 import {Inputs} from '../../src/classes/inputs';
 import {LockReason} from '../../src/classes/issue';
 import {getDefaultInputs, cleanupEnvs} from '../../src/test-helper';
@@ -67,9 +73,9 @@ describe('getRawBody', () => {
     readonly payload: Payload;
 
     readonly id: string;
-    readonly eventName: string;
-    readonly eventType: string;
-    readonly action: string;
+    readonly eventName: EventName;
+    readonly eventAlias: EventAlias;
+    readonly labelEvent: string;
     readonly labelName: string | undefined;
     readonly issueNumber: number;
     readonly userLogin: string;
@@ -86,8 +92,8 @@ describe('getRawBody', () => {
 
         this.id = this.getId();
         this.eventName = this.getEventName();
-        this.eventType = this.getEventType();
-        this.action = this.getAction();
+        this.eventAlias = this.getEventAlias();
+        this.labelEvent = this.getLabelEvent();
         this.labelName = this.getLabelName();
         this.issueNumber = this.getIssueNumber();
         this.userLogin = this.getUserLogin();
@@ -109,9 +115,9 @@ describe('getRawBody', () => {
         Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
-        LabelEvent: this.action,
+        LabelEvent: this.labelEvent,
         EventName: this.eventName,
-        EventType: this.eventType
+        EventAlias: this.eventAlias
       };
       return runContext;
     }
@@ -120,15 +126,15 @@ describe('getRawBody', () => {
       return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
-    getEventName(): string {
+    getEventName(): EventName {
       return 'issues';
     }
 
-    getEventType(): string {
+    getEventAlias(): EventAlias {
       return 'issue';
     }
 
-    getAction(): string {
+    getLabelEvent(): string {
       return 'labeled';
     }
 
@@ -167,7 +173,7 @@ describe('getRawBody', () => {
     constructor(runContext: RunContext) {
       try {
         this.runContext = runContext;
-        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
+        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
         this.action = this.getAction();
@@ -274,9 +280,9 @@ describe('Mustache issues', () => {
     readonly payload: Payload;
 
     readonly id: string;
-    readonly eventName: string;
-    readonly eventType: string;
-    readonly action: string;
+    readonly eventName: EventName;
+    readonly eventAlias: EventAlias;
+    readonly labelEvent: string;
     readonly labelName: string | undefined;
     readonly issueNumber: number;
     readonly userLogin: string;
@@ -293,8 +299,8 @@ describe('Mustache issues', () => {
 
         this.id = this.getId();
         this.eventName = this.getEventName();
-        this.eventType = this.getEventType();
-        this.action = this.getAction();
+        this.eventAlias = this.getEventAlias();
+        this.labelEvent = this.getLabelEvent();
         this.labelName = this.getLabelName();
         this.issueNumber = this.getIssueNumber();
         this.userLogin = this.getUserLogin();
@@ -316,9 +322,9 @@ describe('Mustache issues', () => {
         Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
-        LabelEvent: this.action,
+        LabelEvent: this.labelEvent,
         EventName: this.eventName,
-        EventType: this.eventType
+        EventAlias: this.eventAlias
       };
       return runContext;
     }
@@ -327,15 +333,15 @@ describe('Mustache issues', () => {
       return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
-    getEventName(): string {
+    getEventName(): EventName {
       return 'issues';
     }
 
-    getEventType(): string {
+    getEventAlias(): EventAlias {
       return 'issue';
     }
 
-    getAction(): string {
+    getLabelEvent(): string {
       return 'labeled';
     }
 
@@ -374,7 +380,7 @@ describe('Mustache issues', () => {
     constructor(runContext: RunContext) {
       try {
         this.runContext = runContext;
-        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
+        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
         this.action = this.getAction();
@@ -456,9 +462,9 @@ describe('Mustache pull_request', () => {
     readonly payload: Payload;
 
     readonly id: string;
-    readonly eventName: string;
-    readonly eventType: string;
-    readonly action: string;
+    readonly eventName: EventName;
+    readonly eventAlias: EventAlias;
+    readonly labelEvent: string;
     readonly labelName: string | undefined;
     readonly issueNumber: number;
     readonly userLogin: string;
@@ -475,8 +481,8 @@ describe('Mustache pull_request', () => {
 
         this.id = this.getId();
         this.eventName = this.getEventName();
-        this.eventType = this.getEventType();
-        this.action = this.getAction();
+        this.eventAlias = this.getEventAlias();
+        this.labelEvent = this.getLabelEvent();
         this.labelName = this.getLabelName();
         this.issueNumber = this.getIssueNumber();
         this.userLogin = this.getUserLogin();
@@ -498,9 +504,9 @@ describe('Mustache pull_request', () => {
         Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
-        LabelEvent: this.action,
+        LabelEvent: this.labelEvent,
         EventName: this.eventName,
-        EventType: this.eventType
+        EventAlias: this.eventAlias
       };
       return runContext;
     }
@@ -509,15 +515,15 @@ describe('Mustache pull_request', () => {
       return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
-    getEventName(): string {
+    getEventName(): EventName {
       return 'pull_request';
     }
 
-    getEventType(): string {
+    getEventAlias(): EventAlias {
       return 'pr';
     }
 
-    getAction(): string {
+    getLabelEvent(): string {
       return 'labeled';
     }
 
@@ -556,7 +562,7 @@ describe('Mustache pull_request', () => {
     constructor(runContext: RunContext) {
       try {
         this.runContext = runContext;
-        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
+        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
         this.action = this.getAction();
@@ -638,9 +644,9 @@ describe('Mustache pull_request_target', () => {
     readonly payload: Payload;
 
     readonly id: string;
-    readonly eventName: string;
-    readonly eventType: string;
-    readonly action: string;
+    readonly eventName: EventName;
+    readonly eventAlias: EventAlias;
+    readonly labelEvent: string;
     readonly labelName: string | undefined;
     readonly issueNumber: number;
     readonly userLogin: string;
@@ -657,8 +663,8 @@ describe('Mustache pull_request_target', () => {
 
         this.id = this.getId();
         this.eventName = this.getEventName();
-        this.eventType = this.getEventType();
-        this.action = this.getAction();
+        this.eventAlias = this.getEventAlias();
+        this.labelEvent = this.getLabelEvent();
         this.labelName = this.getLabelName();
         this.issueNumber = this.getIssueNumber();
         this.userLogin = this.getUserLogin();
@@ -680,9 +686,9 @@ describe('Mustache pull_request_target', () => {
         Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
         LabelName: this.labelName as string,
-        LabelEvent: this.action,
+        LabelEvent: this.labelEvent,
         EventName: this.eventName,
-        EventType: this.eventType
+        EventAlias: this.eventAlias
       };
       return runContext;
     }
@@ -691,15 +697,15 @@ describe('Mustache pull_request_target', () => {
       return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
     }
 
-    getEventName(): string {
+    getEventName(): EventName {
       return 'pull_request_target';
     }
 
-    getEventType(): string {
+    getEventAlias(): EventAlias {
       return 'pr';
     }
 
-    getAction(): string {
+    getLabelEvent(): string {
       return 'labeled';
     }
 
@@ -738,7 +744,7 @@ describe('Mustache pull_request_target', () => {
     constructor(runContext: RunContext) {
       try {
         this.runContext = runContext;
-        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
+        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
         this.config = this.loadConfig();
         this.labelIndex = this.getLabelIndex();
         this.action = this.getAction();

@@ -18,6 +18,7 @@ export async function run(): Promise<void> {
     const inputs = new Inputs();
     const githubClient = getOctokit(inputs.GithubToken);
     const contextLoader = new ContextLoader(inputs, context);
+    contextLoader.dumpContext();
     const configLoader = new ConfigLoader(contextLoader.runContext);
     const comment = new Comment(contextLoader, configLoader);
     comment.dumpComponents();
