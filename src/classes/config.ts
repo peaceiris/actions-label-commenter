@@ -10,6 +10,7 @@ import {LockReason} from './issue';
 type Locking = 'lock' | 'unlock' | undefined;
 type Action = 'close' | 'open' | undefined;
 type Draft = boolean | undefined;
+type Answer = boolean | undefined;
 
 interface IConfig {
   readonly parentFieldName: string;
@@ -18,6 +19,7 @@ interface IConfig {
   readonly locking: Locking;
   readonly lockReason: LockReason;
   readonly draft?: Draft;
+  readonly answer?: Answer;
 }
 
 interface IConfigLoader extends IConfig {
@@ -33,6 +35,7 @@ interface IConfigLoader extends IConfig {
   getLocking(): Locking;
   getAction(): Action;
   getLockReason(): LockReason;
+  getAnswer(): Answer;
 }
 
 class ConfigLoader implements IConfigLoader {
@@ -45,6 +48,7 @@ class ConfigLoader implements IConfigLoader {
   readonly locking: Locking;
   readonly lockReason: LockReason;
   readonly draft?: Draft;
+  readonly answer?: Answer;
 
   constructor(runContext: RunContext) {
     try {
@@ -56,6 +60,7 @@ class ConfigLoader implements IConfigLoader {
       this.locking = this.getLocking();
       this.lockReason = this.getLockReason();
       this.draft = this.getDraft();
+      this.answer = this.getAnswer();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -68,7 +73,8 @@ class ConfigLoader implements IConfigLoader {
       action: this.action,
       locking: this.locking,
       lockReason: this.lockReason,
-      draft: this.draft
+      draft: this.draft,
+      answer: this.answer
     };
     return config;
   }
@@ -129,6 +135,13 @@ class ConfigLoader implements IConfigLoader {
       `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.draft`
     );
   }
+
+  getAnswer(): Answer {
+    return get(
+      this.config.labels[this.labelIndex as string],
+      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.answer`
+    );
+  }
 }
 
-export {Locking, Action, Draft, IConfig, IConfigLoader, ConfigLoader};
+export {Locking, Action, Draft, Answer, IConfig, IConfigLoader, ConfigLoader};

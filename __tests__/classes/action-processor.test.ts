@@ -19,7 +19,8 @@ const issueMock: Issue = {
   convertPullRequestToDraft: jest.fn(),
   addDiscussionComment: jest.fn(),
   lockLockable: jest.fn(),
-  unlockLockable: jest.fn()
+  unlockLockable: jest.fn(),
+  markDiscussionCommentAsAnswer: jest.fn()
 };
 const tests = ['issue', 'pr'];
 
@@ -39,7 +40,8 @@ describe('Comment and close', () => {
         labelIndex: '0',
         action: 'close',
         locking: undefined,
-        lockReason: undefined
+        lockReason: undefined,
+        answer: undefined
       };
       const actionProcessor = new ActionProcessor(
         t as EventAlias,
@@ -67,7 +69,8 @@ describe('Comment, close, and lock without lockReason', () => {
         labelIndex: '0',
         action: 'close',
         locking: 'lock',
-        lockReason: undefined
+        lockReason: undefined,
+        answer: undefined
       };
       const actionProcessor = new ActionProcessor(
         t as EventAlias,
@@ -95,7 +98,8 @@ describe('Comment, close, and lock with lockReason', () => {
         labelIndex: '0',
         action: 'close',
         locking: 'lock',
-        lockReason: 'spam'
+        lockReason: 'spam',
+        answer: undefined
       };
       const actionProcessor = new ActionProcessor(
         t as EventAlias,
@@ -124,7 +128,8 @@ describe('Unlock, open and comment', () => {
         labelIndex: '0',
         action: 'open',
         locking: 'unlock',
-        lockReason: undefined
+        lockReason: undefined,
+        answer: undefined
       };
       const actionProcessor = new ActionProcessor(
         t as EventAlias,
@@ -153,7 +158,8 @@ describe('Comment and open', () => {
         labelIndex: '0',
         action: 'open',
         locking: undefined,
-        lockReason: undefined
+        lockReason: undefined,
+        answer: undefined
       };
       const actionProcessor = new ActionProcessor(
         t as EventAlias,
@@ -181,7 +187,8 @@ describe('Open without comment if the issue is locked', () => {
         labelIndex: '0',
         action: 'open',
         locking: undefined,
-        lockReason: undefined
+        lockReason: undefined,
+        answer: undefined
       };
       const issueMock: Issue = {
         githubClient: githubClient,
@@ -195,7 +202,8 @@ describe('Open without comment if the issue is locked', () => {
         convertPullRequestToDraft: jest.fn(),
         addDiscussionComment: jest.fn(),
         lockLockable: jest.fn(),
-        unlockLockable: jest.fn()
+        unlockLockable: jest.fn(),
+        markDiscussionCommentAsAnswer: jest.fn()
       };
       const actionProcessor = new ActionProcessor(
         t as EventAlias,
@@ -222,7 +230,8 @@ describe('Skip all actions for a label that has no configuration', () => {
         labelIndex: '',
         action: undefined,
         locking: undefined,
-        lockReason: undefined
+        lockReason: undefined,
+        answer: undefined
       };
       const actionProcessor = new ActionProcessor(
         t as EventAlias,
@@ -248,7 +257,8 @@ describe('Skip comment if body is empty', () => {
         labelIndex: '1',
         action: 'close',
         locking: 'lock',
-        lockReason: 'spam'
+        lockReason: 'spam',
+        answer: undefined
       };
       const commentBody = '';
       const actionProcessor = new ActionProcessor(
@@ -280,7 +290,8 @@ describe('Toggle draft status', () => {
         action: undefined,
         locking: undefined,
         lockReason: undefined,
-        draft: t
+        draft: t,
+        answer: undefined
       };
       const actionProcessor = new ActionProcessor('pr', config, commentBody, issueMock, false);
       await actionProcessor.process();

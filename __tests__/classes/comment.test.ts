@@ -2,7 +2,7 @@ import {context} from '@actions/github';
 import {Context} from '@actions/github/lib/context';
 
 import {Comment} from '../../src/classes/comment';
-import {Locking, Action, Draft, IConfig, IConfigLoader} from '../../src/classes/config';
+import {Locking, Action, Draft, Answer, IConfig, IConfigLoader} from '../../src/classes/config';
 import {
   Payload,
   EventName,
@@ -170,7 +170,8 @@ describe('getRawBody', () => {
     readonly action: Action;
     readonly locking: Locking;
     readonly lockReason: LockReason;
-    readonly draft: Draft;
+    readonly draft?: Draft;
+    readonly answer?: Answer;
 
     constructor(runContext: RunContext) {
       try {
@@ -182,6 +183,7 @@ describe('getRawBody', () => {
         this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
         this.draft = this.getDraft();
+        this.answer = this.getAnswer();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -224,6 +226,10 @@ describe('getRawBody', () => {
     }
 
     getDraft(): Draft {
+      return undefined;
+    }
+
+    getAnswer(): Answer {
       return undefined;
     }
   }
@@ -379,6 +385,7 @@ describe('Mustache issues', () => {
     readonly locking: Locking;
     readonly lockReason: LockReason;
     readonly draft?: Draft;
+    readonly answer?: Answer;
 
     constructor(runContext: RunContext) {
       try {
@@ -390,6 +397,7 @@ describe('Mustache issues', () => {
         this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
         this.draft = this.getDraft();
+        this.answer = this.getAnswer();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -433,6 +441,10 @@ describe('Mustache issues', () => {
 
     getDraft(): Draft {
       return false;
+    }
+
+    getAnswer(): Answer {
+      return undefined;
     }
   }
 
@@ -562,6 +574,7 @@ describe('Mustache pull_request', () => {
     readonly locking: Locking;
     readonly lockReason: LockReason;
     readonly draft?: Draft;
+    readonly answer?: Answer;
 
     constructor(runContext: RunContext) {
       try {
@@ -573,6 +586,7 @@ describe('Mustache pull_request', () => {
         this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
         this.draft = this.getDraft();
+        this.answer = this.getAnswer();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -616,6 +630,10 @@ describe('Mustache pull_request', () => {
 
     getDraft(): Draft {
       return false;
+    }
+
+    getAnswer(): Answer {
+      return undefined;
     }
   }
 
@@ -745,6 +763,7 @@ describe('Mustache pull_request_target', () => {
     readonly locking: Locking;
     readonly lockReason: LockReason;
     readonly draft?: Draft;
+    readonly answer?: Answer;
 
     constructor(runContext: RunContext) {
       try {
@@ -756,6 +775,7 @@ describe('Mustache pull_request_target', () => {
         this.locking = this.getLocking();
         this.lockReason = this.getLockReason();
         this.draft = this.getDraft();
+        this.answer = this.getAnswer();
       } catch (error) {
         throw new Error(error.message);
       }
@@ -799,6 +819,10 @@ describe('Mustache pull_request_target', () => {
 
     getDraft(): Draft {
       return false;
+    }
+
+    getAnswer(): Answer {
+      return undefined;
     }
   }
 

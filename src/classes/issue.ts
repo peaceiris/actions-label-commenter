@@ -34,9 +34,10 @@ interface IIssueProcessor extends IIssue {
   unlock(): Promise<void>;
   markPullRequestReadyForReview(): Promise<void>;
   convertPullRequestToDraft(): Promise<void>;
-  addDiscussionComment(body: string): Promise<void>;
+  addDiscussionComment(body: string): Promise<string>;
   lockLockable(reason: LockReason): Promise<void>;
   unlockLockable(): Promise<void>;
+  markDiscussionCommentAsAnswer(id: string): Promise<void>;
 }
 
 class Issue implements IIssueProcessor {
@@ -195,7 +196,7 @@ class Issue implements IIssueProcessor {
     }
   }
 
-  async addDiscussionComment(body: string): Promise<void> {
+  async addDiscussionComment(body: string): Promise<string> {
     const query = `
       mutation AddDiscussionComment($input: AddDiscussionCommentInput!) {
         __typename
@@ -219,6 +220,7 @@ class Issue implements IIssueProcessor {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
       info(`Add comment to #${this.number}, ${res.addDiscussionComment.comment.url}`);
       groupConsoleLog('GraphQlQueryResponseData', res);
+      return res.addDiscussionComment.comment.id;
     } catch (error) {
       groupConsoleLog('Request failed', error.request);
       throw new Error(error.message);
@@ -274,6 +276,33 @@ class Issue implements IIssueProcessor {
     try {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
       info(`Unlocked #${this.number}`);
+      groupConsoleLog('GraphQlQueryResponseData', res);
+    } catch (error) {
+      groupConsoleLog('Request failed', error.request);
+      throw new Error(error.message);
+    }
+  }
+
+  async markDiscussionCommentAsAnswer(id: string): Promise<void> {
+    const query = `
+      mutation MarkDiscussionCommentAsAnswer($input: MarkDiscussionCommentAsAnswerInput!) {
+        __typename
+        markDiscussionCommentAsAnswer(input: $input) {
+          discussion {
+            id
+          }
+        }
+      }
+    `;
+    const variables: RequestParameters = {
+      input: {
+        id: id
+      }
+    };
+
+    try {
+      const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
+      info(`Mark the discussion comment as answer`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       groupConsoleLog('Request failed', error.request);

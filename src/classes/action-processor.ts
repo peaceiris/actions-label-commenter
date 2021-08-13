@@ -89,7 +89,10 @@ class ActionProcessor implements IActionProcessor {
         info(`body is empty, skip creating comment`);
       } else {
         if (this.eventAlias === 'discussion') {
-          await this.issue.addDiscussionComment(this.commentBody);
+          const id = await this.issue.addDiscussionComment(this.commentBody);
+          if (this.config.answer) {
+            await this.issue.markDiscussionCommentAsAnswer(id);
+          }
         } else {
           await this.issue.createComment(this.commentBody);
         }
