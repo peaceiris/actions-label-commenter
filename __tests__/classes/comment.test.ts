@@ -113,12 +113,13 @@ describe('getRawBody', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
-        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
-        LabelName: this.labelName as string,
-        LabelEvent: this.labelEvent,
         EventName: this.eventName,
-        EventAlias: this.eventAlias
+        Id: this.id,
+        EventAlias: this.eventAlias,
+        LabelEvent: this.labelEvent,
+        LabelName: this.labelName as string,
+        IssueNumber: this.issueNumber
       };
       return runContext;
     }
@@ -320,12 +321,13 @@ describe('Mustache issues', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
-        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
-        LabelName: this.labelName as string,
-        LabelEvent: this.labelEvent,
         EventName: this.eventName,
-        EventAlias: this.eventAlias
+        Id: this.id,
+        EventAlias: this.eventAlias,
+        LabelEvent: this.labelEvent,
+        LabelName: this.labelName as string,
+        IssueNumber: this.issueNumber
       };
       return runContext;
     }
@@ -502,12 +504,13 @@ describe('Mustache pull_request', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
-        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
-        LabelName: this.labelName as string,
-        LabelEvent: this.labelEvent,
         EventName: this.eventName,
-        EventAlias: this.eventAlias
+        Id: this.id,
+        EventAlias: this.eventAlias,
+        LabelEvent: this.labelEvent,
+        LabelName: this.labelName as string,
+        IssueNumber: this.issueNumber
       };
       return runContext;
     }
@@ -684,12 +687,13 @@ describe('Mustache pull_request_target', () => {
 
     getRunContext(): RunContext {
       const runContext: RunContext = {
-        Id: this.id,
         ConfigFilePath: this.inputs.ConfigFilePath,
-        LabelName: this.labelName as string,
-        LabelEvent: this.labelEvent,
         EventName: this.eventName,
-        EventAlias: this.eventAlias
+        Id: this.id,
+        EventAlias: this.eventAlias,
+        LabelEvent: this.labelEvent,
+        LabelName: this.labelName as string,
+        IssueNumber: this.issueNumber
       };
       return runContext;
     }

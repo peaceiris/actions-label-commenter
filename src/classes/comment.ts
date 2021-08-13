@@ -105,6 +105,11 @@ class Comment implements ICommentGenerator {
   get view(): any {
     if (this.runContext.EventName === 'issues') {
       return {
+        eventName: this.runContext.EventName,
+        number: this.runContext.IssueNumber,
+        labelName: this.runContext.LabelName,
+        author: this.contextLoader.userLogin,
+        labeler: this.contextLoader.senderLogin,
         issue: {
           user: {
             login: this.contextLoader.userLogin
@@ -116,6 +121,11 @@ class Comment implements ICommentGenerator {
       };
     } else if (this.runContext.EventName === 'discussion') {
       return {
+        eventName: this.runContext.EventName,
+        number: this.runContext.IssueNumber,
+        labelName: this.runContext.LabelName,
+        author: this.contextLoader.userLogin,
+        labeler: this.contextLoader.senderLogin,
         discussion: {
           user: {
             login: this.contextLoader.userLogin
@@ -130,6 +140,11 @@ class Comment implements ICommentGenerator {
       this.runContext.EventName === 'pull_request_target'
     ) {
       return {
+        eventName: this.runContext.EventName,
+        number: this.runContext.IssueNumber,
+        labelName: this.runContext.LabelName,
+        author: this.contextLoader.userLogin,
+        labeler: this.contextLoader.senderLogin,
         pull_request: {
           user: {
             login: this.contextLoader.userLogin

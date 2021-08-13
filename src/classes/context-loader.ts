@@ -35,12 +35,14 @@ const eventType = (eventName: EventName): EventAlias =>
   eventTypeTable[eventName as keyof EventTypeTable];
 
 interface RunContext {
-  readonly Id: string;
   readonly ConfigFilePath: string;
-  readonly LabelName: string;
-  readonly LabelEvent: LabelEvent;
+
   readonly EventName: EventName;
+  readonly Id: string;
   readonly EventAlias: EventAlias;
+  readonly LabelEvent: LabelEvent;
+  readonly LabelName: string;
+  readonly IssueNumber: number;
 }
 
 interface IContext {
@@ -122,12 +124,13 @@ class ContextLoader implements IContextLoader {
 
   getRunContext(): RunContext {
     const runContext: RunContext = {
-      Id: this.id,
       ConfigFilePath: this.inputs.ConfigFilePath,
-      LabelName: this.labelName as string,
-      LabelEvent: this.labelEvent,
       EventName: this.eventName,
-      EventAlias: this.eventAlias
+      Id: this.id,
+      EventAlias: this.eventAlias,
+      LabelEvent: this.labelEvent,
+      LabelName: this.labelName as string,
+      IssueNumber: this.issueNumber
     };
     groupConsoleLog('Dump runContext', runContext);
     return runContext;

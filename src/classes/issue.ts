@@ -202,6 +202,8 @@ class Issue implements IIssueProcessor {
         addDiscussionComment(input: $input) {
           comment {
             body
+            id
+            url
           }
         }
       }
@@ -215,7 +217,7 @@ class Issue implements IIssueProcessor {
 
     try {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
-      info(`Add comment to #${this.number}`);
+      info(`Add comment to #${this.number}, ${res.addDiscussionComment.comment.url}`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       groupConsoleLog('Request failed', error.request);
