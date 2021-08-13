@@ -86,8 +86,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: main # Set your default branch
 
       - name: Label Commenter
         uses: peaceiris/actions-label-commenter@v1
