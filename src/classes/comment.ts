@@ -114,6 +114,17 @@ class Comment implements ICommentGenerator {
           login: this.contextLoader.senderLogin
         }
       };
+    } else if (this.runContext.EventName === 'discussion') {
+      return {
+        discussion: {
+          user: {
+            login: this.contextLoader.userLogin
+          }
+        },
+        sender: {
+          login: this.contextLoader.senderLogin
+        }
+      };
     } else if (
       this.runContext.EventName === 'pull_request' ||
       this.runContext.EventName === 'pull_request_target'

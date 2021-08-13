@@ -3,7 +3,9 @@ import {
   IssuesLabeledEvent,
   IssuesUnlabeledEvent,
   PullRequestLabeledEvent,
-  PullRequestUnlabeledEvent
+  PullRequestUnlabeledEvent,
+  DiscussionLabeledEvent,
+  DiscussionUnlabeledEvent
 } from '@octokit/webhooks-types';
 
 import {groupConsoleLog, info} from '../logger';
@@ -11,7 +13,8 @@ import {Inputs} from './inputs';
 
 type IssuePayload = IssuesLabeledEvent | IssuesUnlabeledEvent;
 type PullRequestPayload = PullRequestLabeledEvent | PullRequestUnlabeledEvent;
-type Payload = IssuePayload | PullRequestPayload;
+type DiscussionPayload = DiscussionLabeledEvent | DiscussionUnlabeledEvent;
+type Payload = IssuePayload | PullRequestPayload | DiscussionPayload;
 type EventName = 'issues' | 'pull_request' | 'pull_request_target' | 'discussion';
 type EventAlias = 'issue' | 'pr' | 'discussion';
 type LabelEvent = 'labeled' | 'unlabeled';
@@ -45,8 +48,8 @@ interface IContext {
   readonly context: Context;
   readonly payload: Payload;
 
-  readonly id: string;
   readonly eventName: EventName;
+  readonly id: string;
   readonly eventAlias: EventAlias;
   readonly labelEvent: LabelEvent;
   readonly labelName: string | undefined;
@@ -77,8 +80,8 @@ class ContextLoader implements IContextLoader {
   readonly context: Context;
   readonly payload: Payload;
 
-  readonly id: string;
   readonly eventName: EventName;
+  readonly id: string;
   readonly eventAlias: EventAlias;
   readonly labelEvent: LabelEvent;
   readonly labelName: string | undefined;
@@ -95,8 +98,8 @@ class ContextLoader implements IContextLoader {
       this.context = context;
       this.payload = context.payload as Payload;
 
-      this.id = this.getId();
       this.eventName = this.getEventName();
+      this.id = this.getId();
       this.eventAlias = this.getEventAlias();
       this.labelEvent = this.getLabelEvent();
       this.labelName = this.getLabelName();
@@ -133,6 +136,8 @@ class ContextLoader implements IContextLoader {
   getId(): string {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).issue?.node_id;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).discussion?.node_id;
     }
     return (this.payload as PullRequestPayload).pull_request?.node_id;
   }
@@ -158,6 +163,8 @@ class ContextLoader implements IContextLoader {
   getLabelName(): string | undefined {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).label?.name;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).label?.name;
     }
 
     return (this.payload as PullRequestPayload).label?.name;
@@ -166,6 +173,8 @@ class ContextLoader implements IContextLoader {
   getIssueNumber(): number {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).issue.number;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).discussion.number;
     }
 
     return (this.payload as PullRequestPayload).number;
@@ -174,6 +183,8 @@ class ContextLoader implements IContextLoader {
   getUserLogin(): string {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).issue.user.login;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).discussion.user.login;
     }
 
     return (this.payload as PullRequestPayload).pull_request.user.login;
@@ -182,6 +193,8 @@ class ContextLoader implements IContextLoader {
   getSenderLogin(): string {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).sender.login;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).sender.login;
     }
 
     return (this.payload as PullRequestPayload).sender.login;
@@ -190,6 +203,8 @@ class ContextLoader implements IContextLoader {
   getLocked(): boolean {
     if (this.eventName === 'issues') {
       return Boolean((this.payload as IssuePayload).issue.locked);
+    } else if (this.eventName === 'discussion') {
+      return Boolean((this.payload as DiscussionPayload).discussion.locked);
     }
 
     return Boolean((this.payload as PullRequestPayload).pull_request.locked);

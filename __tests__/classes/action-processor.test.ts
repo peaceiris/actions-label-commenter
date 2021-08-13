@@ -2,6 +2,7 @@ import {getOctokit} from '@actions/github';
 
 import {ActionProcessor} from '../../src/classes/action-processor';
 import {IConfig} from '../../src/classes/config';
+import {EventAlias} from '../../src/classes/context-loader';
 import {Issue} from '../../src/classes/issue';
 
 const commentBody = `hello`;
@@ -10,14 +11,15 @@ const issueMock: Issue = {
   githubClient: githubClient,
   id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
   number: 1,
-  locked: false,
-  setLocked: jest.fn(),
   createComment: jest.fn(),
   updateState: jest.fn(),
   lock: jest.fn(),
   unlock: jest.fn(),
   markPullRequestReadyForReview: jest.fn(),
-  convertPullRequestToDraft: jest.fn()
+  convertPullRequestToDraft: jest.fn(),
+  addDiscussionComment: jest.fn(),
+  lockLockable: jest.fn(),
+  unlockLockable: jest.fn()
 };
 const tests = ['issue', 'pr'];
 
@@ -39,7 +41,13 @@ describe('Comment and close', () => {
         locking: undefined,
         lockReason: undefined
       };
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor(
+        t as EventAlias,
+        config,
+        commentBody,
+        issueMock,
+        false
+      );
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.createComment).toBeCalledWith(commentBody);
@@ -61,7 +69,13 @@ describe('Comment, close, and lock without lockReason', () => {
         locking: 'lock',
         lockReason: undefined
       };
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor(
+        t as EventAlias,
+        config,
+        commentBody,
+        issueMock,
+        false
+      );
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.createComment).toBeCalledWith(commentBody);
@@ -83,7 +97,13 @@ describe('Comment, close, and lock with lockReason', () => {
         locking: 'lock',
         lockReason: 'spam'
       };
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor(
+        t as EventAlias,
+        config,
+        commentBody,
+        issueMock,
+        false
+      );
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.createComment).toBeCalledWith(commentBody);
@@ -106,14 +126,21 @@ describe('Unlock, open and comment', () => {
         locking: 'unlock',
         lockReason: undefined
       };
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor(
+        t as EventAlias,
+        config,
+        commentBody,
+        issueMock,
+        true
+      );
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(1);
-      expect(issueMock.createComment).toBeCalledWith(commentBody);
+      expect(issueMock.unlock).toBeCalledTimes(1);
       expect(issueMock.updateState).toBeCalledTimes(1);
       expect(issueMock.updateState).toBeCalledWith('open');
+      expect(issueMock.createComment).toBeCalledTimes(1);
+      expect(issueMock.createComment).toBeCalledWith(commentBody);
+
       expect(issueMock.lock).toBeCalledTimes(0);
-      expect(issueMock.unlock).toBeCalledTimes(1);
     });
   }
 });
@@ -128,7 +155,13 @@ describe('Comment and open', () => {
         locking: undefined,
         lockReason: undefined
       };
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor(
+        t as EventAlias,
+        config,
+        commentBody,
+        issueMock,
+        false
+      );
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.createComment).toBeCalledWith(commentBody);
@@ -154,16 +187,23 @@ describe('Open without comment if the issue is locked', () => {
         githubClient: githubClient,
         id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
         number: 1,
-        locked: true,
-        setLocked: jest.fn(),
         createComment: jest.fn(),
         updateState: jest.fn(),
         lock: jest.fn(),
         unlock: jest.fn(),
         markPullRequestReadyForReview: jest.fn(),
-        convertPullRequestToDraft: jest.fn()
+        convertPullRequestToDraft: jest.fn(),
+        addDiscussionComment: jest.fn(),
+        lockLockable: jest.fn(),
+        unlockLockable: jest.fn()
       };
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor(
+        t as EventAlias,
+        config,
+        commentBody,
+        issueMock,
+        true
+      );
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(0);
       expect(issueMock.updateState).toBeCalledTimes(1);
@@ -184,7 +224,13 @@ describe('Skip all actions for a label that has no configuration', () => {
         locking: undefined,
         lockReason: undefined
       };
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor(
+        t as EventAlias,
+        config,
+        commentBody,
+        issueMock,
+        false
+      );
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(0);
       expect(issueMock.updateState).toBeCalledTimes(0);
@@ -205,7 +251,13 @@ describe('Skip comment if body is empty', () => {
         lockReason: 'spam'
       };
       const commentBody = '';
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor(
+        t as EventAlias,
+        config,
+        commentBody,
+        issueMock,
+        false
+      );
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(0);
       expect(issueMock.updateState).toBeCalledTimes(1);
@@ -230,7 +282,7 @@ describe('Toggle draft status', () => {
         lockReason: undefined,
         draft: t
       };
-      const actionProcessor = new ActionProcessor(config, commentBody, issueMock);
+      const actionProcessor = new ActionProcessor('pr', config, commentBody, issueMock, false);
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.updateState).toBeCalledTimes(0);
