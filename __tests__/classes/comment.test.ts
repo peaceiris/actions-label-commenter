@@ -24,11 +24,6 @@ afterEach(() => {
 });
 
 const config = {
-  comment: {
-    header: 'Hi, there.',
-    footer:
-      "---\n\n> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.\n\n[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter"
-  },
   labels: [
     {
       name: 'invalid',
@@ -44,53 +39,79 @@ const config = {
           action: 'close',
           locking: 'lock'
         }
-      },
-      unlabeled: {
-        issue: {
-          body: 'Thank you for following the template. The repository owner will reply.',
-          action: 'open'
-        }
       }
     },
     {
       name: 'proposal',
       labeled: {
         discussion: {
-          body: 'Thank you @{{ author }} for suggesting this.'
+          body: 'Thank you @{{ author }} for suggesting this. @{{ labeler }} will reply.'
         }
       }
     },
     {
       name: 'locked (spam)',
       labeled: {
-        discussion: {
-          body: 'This {{ eventName }} \\#{{ number }} has been **LOCKED** with the label {{ labelName }}!\n\nPlease do not spam messages on this project. You may get blocked from this repository for doing so.\n',
+        pr: {
+          body: 'This {{ eventName }} #{{ number }} has been **LOCKED** with the label {{ labelName }}!\n\nPlease do not spam messages on this project. You may get blocked from this repository for doing so.\n',
+          action: 'close',
           locking: 'lock',
-          lock_reason: 'spam',
-          answer: true
-        }
-      }
-    },
-    {
-      name: 'locked (heated)',
-      labeled: {
-        discussion: {
-          body: "This discussion has been **LOCKED** because of heated conversation!\n\nWe appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.\n",
-          locking: 'lock',
-          lock_reason: 'too heated'
-        }
-      },
-      unlabeled: {
-        discussion: {
-          body: 'This discussion has been unlocked now.\n',
-          locking: 'unlock'
+          lock_reason: 'spam'
         }
       }
     }
   ]
 };
 
-describe('getRawBody', () => {
+describe('header and footer', () => {
+  const configWithComment = {
+    comment: {
+      header: 'Hi, there.',
+      footer:
+        "---\n\n> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.\n\n[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter"
+    },
+    ...config
+  };
+  const ctx: RunContext = {
+    configFilePath: '.github/label-commenter-config.yml',
+    eventName: 'issues',
+    id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
+    eventAlias: 'issue',
+    labelEvent: 'labeled',
+    labelName: 'invalid',
+    issueNumber: 1,
+    userLogin: 'userLogin',
+    senderLogin: 'senderLogin',
+    locked: false
+  };
+  const cfg: IConfig = {
+    config: configWithComment,
+    parentFieldName: 'labels.invalid.labeled.issue',
+    labelIndex: '0',
+    locking: 'unlock',
+    action: 'close',
+    lockReason: 'resolved'
+  };
+
+  test('comment.render returns expected comment with header and footer', () => {
+    const comment: Comment = new Comment(ctx, cfg);
+    expect(comment.render).toBe(`\
+Hi, there.
+
+Thank you @userLogin for suggesting this. Please follow the issue templates.
+
+---
+
+> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
+
+[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
+
+<!-- peaceiris/actions-label-commenter -->
+`);
+  });
+});
+
+describe('isDebug', () => {
   const ctx: RunContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'issues',
@@ -112,37 +133,29 @@ describe('getRawBody', () => {
     lockReason: 'resolved'
   };
 
-  test('isDebug is false', () => {
+  test('comment.render returns expected comment if isDebug is false', () => {
     const comment: Comment = new Comment(ctx, cfg);
     expect(comment.render).toBe(`\
-Hi, there.
+
 
 Thank you @userLogin for suggesting this. Please follow the issue templates.
 
----
 
-> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
-
-[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
 
 <!-- peaceiris/actions-label-commenter -->
 `);
   });
 
-  test('isDebug is true', () => {
+  test('comment.render returns expected comment if isDebug is true', () => {
     process.env['RUNNER_DEBUG'] = '1';
     const comment: Comment = new Comment(ctx, cfg);
 
     expect(comment.render).toBe(`\
-Hi, there.
+
 
 Thank you @userLogin for suggesting this. Please follow the issue templates.
 
----
 
-> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
-
-[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
 
 <div align="right"><a href="https://github.com/peaceiris/actions-label-commenter/actions/runs/123456789">Log</a> | <a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a></div>
 
@@ -151,7 +164,7 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
   });
 });
 
-describe('Mustache issues', () => {
+describe('invalid.labeled.issue', () => {
   const ctx: RunContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'issues',
@@ -174,24 +187,20 @@ describe('Mustache issues', () => {
   };
   const comment: Comment = new Comment(ctx, cfg);
 
-  test('invalid.labeled.issue', () => {
+  test('comment.render returns expected comment', () => {
     expect(comment.render).toBe(`\
-Hi, there.
+
 
 Thank you @userLogin for suggesting this. Please follow the issue templates.
 
----
 
-> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
-
-[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
 
 <!-- peaceiris/actions-label-commenter -->
 `);
   });
 });
 
-describe('Mustache pull_request', () => {
+describe('invalid.labeled.pr pull_request', () => {
   const ctx: RunContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'pull_request',
@@ -214,24 +223,20 @@ describe('Mustache pull_request', () => {
   };
   const comment: Comment = new Comment(ctx, cfg);
 
-  test('invalid.labeled.pr', () => {
+  test('comment.render returns expected comment', () => {
     expect(comment.render).toBe(`\
-Hi, there.
+
 
 Thank you @userLogin for suggesting this. Please follow the pull request templates.
 
----
 
-> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
-
-[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
 
 <!-- peaceiris/actions-label-commenter -->
 `);
   });
 });
 
-describe('Mustache pull_request_target', () => {
+describe('invalid.labeled.pr pull_request_target', () => {
   const ctx: RunContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'pull_request_target',
@@ -254,17 +259,82 @@ describe('Mustache pull_request_target', () => {
   };
   const comment: Comment = new Comment(ctx, cfg);
 
-  test('invalid.labeled.pr', () => {
+  test('comment.render returns expected comment', () => {
     expect(comment.render).toBe(`\
-Hi, there.
+
 
 Thank you @userLogin for suggesting this. Please follow the pull request templates.
 
----
 
-> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.
 
-[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
+<!-- peaceiris/actions-label-commenter -->
+`);
+  });
+});
+
+describe('placeholders', () => {
+  test('comment.render returns expected comment, author', () => {
+    const ctx: RunContext = {
+      configFilePath: '.github/label-commenter-config.yml',
+      eventName: 'discussion',
+      id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
+      eventAlias: 'discussion',
+      labelEvent: 'labeled',
+      labelName: 'proposal',
+      issueNumber: 1,
+      userLogin: 'userLogin',
+      senderLogin: 'senderLogin',
+      locked: false
+    };
+    const cfg: IConfig = {
+      config: config,
+      parentFieldName: 'labels.invalid.labeled.discussion',
+      labelIndex: '1',
+      locking: undefined,
+      action: undefined,
+      lockReason: undefined
+    };
+    const comment: Comment = new Comment(ctx, cfg);
+    expect(comment.render).toBe(`\
+
+
+Thank you @userLogin for suggesting this. @senderLogin will reply.
+
+
+
+<!-- peaceiris/actions-label-commenter -->
+`);
+  });
+
+  test('comment.render returns expected comment, eventName, number, labelName', () => {
+    const ctx: RunContext = {
+      configFilePath: '.github/label-commenter-config.yml',
+      eventName: 'pull_request',
+      id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
+      eventAlias: 'pr',
+      labelEvent: 'labeled',
+      labelName: 'locked (spam)',
+      issueNumber: 1,
+      userLogin: 'userLogin',
+      senderLogin: 'senderLogin',
+      locked: false
+    };
+    const cfg: IConfig = {
+      config: config,
+      parentFieldName: 'labels.locked (spam).labeled.pr',
+      labelIndex: '2',
+      locking: 'lock',
+      action: 'close',
+      lockReason: 'spam'
+    };
+    const comment: Comment = new Comment(ctx, cfg);
+    expect(comment.render).toBe(`\
+
+
+This pull request #1 has been **LOCKED** with the label locked (spam)!\n\nPlease do not spam messages on this project. You may get blocked from this repository for doing so.
+
+
+
 
 <!-- peaceiris/actions-label-commenter -->
 `);

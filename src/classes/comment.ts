@@ -111,7 +111,7 @@ class Comment implements ICommentGenerator {
       }
     };
 
-    if (this.runContext.eventName === 'issues') {
+    if (this.runContext.eventAlias === 'issue') {
       return {
         eventName: eventName,
         number: this.runContext.issueNumber,
@@ -127,7 +127,7 @@ class Comment implements ICommentGenerator {
           login: this.runContext.senderLogin
         }
       };
-    } else if (this.runContext.eventName === 'discussion') {
+    } else if (this.runContext.eventAlias === 'discussion') {
       return {
         eventName: eventName,
         number: this.runContext.issueNumber,
@@ -143,10 +143,7 @@ class Comment implements ICommentGenerator {
           login: this.runContext.senderLogin
         }
       };
-    } else if (
-      this.runContext.eventName === 'pull_request' ||
-      this.runContext.eventName === 'pull_request_target'
-    ) {
+    } else if (this.runContext.eventAlias === 'pr') {
       return {
         eventName: eventName,
         number: this.runContext.issueNumber,
