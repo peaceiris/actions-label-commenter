@@ -53,8 +53,8 @@ class ConfigLoader implements IConfigLoader {
 
   constructor(runContext: RunContext) {
     try {
-      this.config = this.loadConfig();
       this.runContext = runContext;
+      this.config = this.loadConfig();
       this.parentFieldName = `labels.${this.runContext.labelName}.${this.runContext.labelEvent}.${this.runContext.eventAlias}`;
       this.labelIndex = this.getLabelIndex();
       this.action = this.getAction();
