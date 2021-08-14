@@ -103,9 +103,20 @@ class Comment implements ICommentGenerator {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get view(): any {
+    const eventName = () => {
+      switch (this.runContext.EventAlias) {
+        case 'issue':
+          return this.runContext.EventAlias;
+        case 'pr':
+          return 'pull request';
+        default:
+          return 'discussion';
+      }
+    };
+
     if (this.runContext.EventName === 'issues') {
       return {
-        eventName: this.runContext.EventName,
+        eventName: eventName,
         number: this.runContext.IssueNumber,
         labelName: this.runContext.LabelName,
         author: this.contextLoader.userLogin,
@@ -121,7 +132,7 @@ class Comment implements ICommentGenerator {
       };
     } else if (this.runContext.EventName === 'discussion') {
       return {
-        eventName: this.runContext.EventName,
+        eventName: eventName,
         number: this.runContext.IssueNumber,
         labelName: this.runContext.LabelName,
         author: this.contextLoader.userLogin,
@@ -140,7 +151,7 @@ class Comment implements ICommentGenerator {
       this.runContext.EventName === 'pull_request_target'
     ) {
       return {
-        eventName: this.runContext.EventName,
+        eventName: eventName,
         number: this.runContext.IssueNumber,
         labelName: this.runContext.LabelName,
         author: this.contextLoader.userLogin,
