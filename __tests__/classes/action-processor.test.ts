@@ -22,7 +22,7 @@ const issueMock: Issue = {
   unlockLockable: jest.fn(),
   markDiscussionCommentAsAnswer: jest.fn()
 };
-const tests = ['issue', 'pr'];
+const tests: Array<EventAlias> = ['issue', 'pr'];
 
 // beforeAll(() => {
 // });
@@ -43,13 +43,7 @@ describe('Comment and close', () => {
         lockReason: undefined,
         answer: undefined
       };
-      const actionProcessor = new ActionProcessor(
-        t as EventAlias,
-        config,
-        commentBody,
-        issueMock,
-        false
-      );
+      const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.createComment).toBeCalledWith(commentBody);
@@ -61,7 +55,7 @@ describe('Comment and close', () => {
   }
 });
 
-describe('Comment, close, and lock without lockReason', () => {
+describe('Comment, close, and lock without reason', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
@@ -72,19 +66,14 @@ describe('Comment, close, and lock without lockReason', () => {
         lockReason: undefined,
         answer: undefined
       };
-      const actionProcessor = new ActionProcessor(
-        t as EventAlias,
-        config,
-        commentBody,
-        issueMock,
-        false
-      );
+      const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.createComment).toBeCalledWith(commentBody);
       expect(issueMock.updateState).toBeCalledTimes(1);
       expect(issueMock.updateState).toBeCalledWith('closed');
       expect(issueMock.lock).toBeCalledTimes(1);
+      expect(issueMock.lock).toBeCalledWith(config.lockReason);
       expect(issueMock.unlock).toBeCalledTimes(0);
     });
   }
@@ -101,20 +90,14 @@ describe('Comment, close, and lock with lockReason', () => {
         lockReason: 'spam',
         answer: undefined
       };
-      const actionProcessor = new ActionProcessor(
-        t as EventAlias,
-        config,
-        commentBody,
-        issueMock,
-        false
-      );
+      const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.createComment).toBeCalledWith(commentBody);
       expect(issueMock.updateState).toBeCalledTimes(1);
       expect(issueMock.updateState).toBeCalledWith('closed');
       expect(issueMock.lock).toBeCalledTimes(1);
-      expect(issueMock.lock).toBeCalledWith('spam');
+      expect(issueMock.lock).toBeCalledWith(config.lockReason);
       expect(issueMock.unlock).toBeCalledTimes(0);
     });
   }
@@ -131,13 +114,7 @@ describe('Unlock, open and comment', () => {
         lockReason: undefined,
         answer: undefined
       };
-      const actionProcessor = new ActionProcessor(
-        t as EventAlias,
-        config,
-        commentBody,
-        issueMock,
-        true
-      );
+      const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, true);
       await actionProcessor.process();
       expect(issueMock.unlock).toBeCalledTimes(1);
       expect(issueMock.updateState).toBeCalledTimes(1);
@@ -161,13 +138,7 @@ describe('Comment and open', () => {
         lockReason: undefined,
         answer: undefined
       };
-      const actionProcessor = new ActionProcessor(
-        t as EventAlias,
-        config,
-        commentBody,
-        issueMock,
-        false
-      );
+      const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(1);
       expect(issueMock.createComment).toBeCalledWith(commentBody);
@@ -205,13 +176,7 @@ describe('Open without comment if the issue is locked', () => {
         unlockLockable: jest.fn(),
         markDiscussionCommentAsAnswer: jest.fn()
       };
-      const actionProcessor = new ActionProcessor(
-        t as EventAlias,
-        config,
-        commentBody,
-        issueMock,
-        true
-      );
+      const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, true);
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(0);
       expect(issueMock.updateState).toBeCalledTimes(1);
@@ -233,18 +198,18 @@ describe('Skip all actions for a label that has no configuration', () => {
         lockReason: undefined,
         answer: undefined
       };
-      const actionProcessor = new ActionProcessor(
-        t as EventAlias,
-        config,
-        commentBody,
-        issueMock,
-        false
-      );
+      const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(0);
       expect(issueMock.updateState).toBeCalledTimes(0);
       expect(issueMock.lock).toBeCalledTimes(0);
       expect(issueMock.unlock).toBeCalledTimes(0);
+      expect(issueMock.markPullRequestReadyForReview).toBeCalledTimes(0);
+      expect(issueMock.convertPullRequestToDraft).toBeCalledTimes(0);
+      expect(issueMock.addDiscussionComment).toBeCalledTimes(0);
+      expect(issueMock.lockLockable).toBeCalledTimes(0);
+      expect(issueMock.unlockLockable).toBeCalledTimes(0);
+      expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
     });
   }
 });
@@ -261,13 +226,7 @@ describe('Skip comment if body is empty', () => {
         answer: undefined
       };
       const commentBody = '';
-      const actionProcessor = new ActionProcessor(
-        t as EventAlias,
-        config,
-        commentBody,
-        issueMock,
-        false
-      );
+      const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
       expect(issueMock.createComment).toBeCalledTimes(0);
       expect(issueMock.updateState).toBeCalledTimes(1);
@@ -303,4 +262,100 @@ describe('Toggle draft status', () => {
       expect(issueMock.convertPullRequestToDraft).toBeCalledTimes(t ? 1 : 0);
     });
   }
+});
+
+describe('discussion', () => {
+  const t: EventAlias = 'discussion';
+
+  test(`Comment`, async () => {
+    const config: IConfig = {
+      parentFieldName: `labels.invalid.labeled.${t}`,
+      labelIndex: '0',
+      action: undefined,
+      locking: undefined,
+      lockReason: undefined,
+      answer: undefined
+    };
+    const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
+    await actionProcessor.process();
+    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
+    expect(issueMock.lockLockable).toBeCalledTimes(0);
+    expect(issueMock.unlockLockable).toBeCalledTimes(0);
+    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+  });
+
+  test(`Comment and lock`, async () => {
+    const config: IConfig = {
+      parentFieldName: `labels.invalid.labeled.${t}`,
+      labelIndex: '0',
+      action: undefined,
+      locking: 'lock',
+      lockReason: 'spam',
+      answer: undefined
+    };
+    const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
+    await actionProcessor.process();
+    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
+    expect(issueMock.lockLockable).toBeCalledTimes(1);
+    expect(issueMock.lockLockable).toBeCalledWith(config.lockReason);
+    expect(issueMock.unlockLockable).toBeCalledTimes(0);
+    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+  });
+
+  test(`Comment and lock without reason`, async () => {
+    const config: IConfig = {
+      parentFieldName: `labels.invalid.labeled.${t}`,
+      labelIndex: '0',
+      action: undefined,
+      locking: 'lock',
+      lockReason: undefined,
+      answer: undefined
+    };
+    const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
+    await actionProcessor.process();
+    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
+    expect(issueMock.lockLockable).toBeCalledTimes(1);
+    expect(issueMock.lockLockable).toBeCalledWith(config.lockReason);
+    expect(issueMock.unlockLockable).toBeCalledTimes(0);
+    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+  });
+
+  test(`Comment and unlock`, async () => {
+    const config: IConfig = {
+      parentFieldName: `labels.invalid.labeled.${t}`,
+      labelIndex: '0',
+      action: undefined,
+      locking: 'unlock',
+      lockReason: undefined,
+      answer: undefined
+    };
+    const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, true);
+    await actionProcessor.process();
+    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
+    expect(issueMock.lockLockable).toBeCalledTimes(0);
+    expect(issueMock.unlockLockable).toBeCalledTimes(1);
+    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+  });
+
+  test(`Comment and mark as answer`, async () => {
+    const config: IConfig = {
+      parentFieldName: `labels.invalid.labeled.${t}`,
+      labelIndex: '0',
+      action: undefined,
+      locking: undefined,
+      lockReason: undefined,
+      answer: true
+    };
+    const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
+    await actionProcessor.process();
+    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
+    expect(issueMock.lockLockable).toBeCalledTimes(0);
+    expect(issueMock.unlockLockable).toBeCalledTimes(0);
+    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(1);
+  });
 });
