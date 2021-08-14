@@ -63,8 +63,7 @@ class Issue implements IIssueProcessor {
       groupConsoleLog('IssuesCreateCommentResponse', res);
 
       if (res.status === 201) {
-        info(`New comment has been created in issue #${this.number}`);
-        info(`Comment URL: ${res.data.html_url}`);
+        info(`New comment has been created in issue #${this.number}, ${res.data.html_url}`);
         return;
       } else {
         throw new Error(`IssuesCreateCommentResponse.status: ${res.status}`);
