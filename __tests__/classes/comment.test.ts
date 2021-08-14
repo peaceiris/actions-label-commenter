@@ -1,18 +1,6 @@
-import {context} from '@actions/github';
-import {Context} from '@actions/github/lib/context';
-
 import {Comment} from '../../src/classes/comment';
-import {Locking, Action, Draft, Answer, IConfig, IConfigLoader} from '../../src/classes/config';
-import {
-  Payload,
-  EventName,
-  EventAlias,
-  LabelEvent,
-  RunContext,
-  IContext
-} from '../../src/classes/context-loader';
-import {Inputs} from '../../src/classes/inputs';
-import {LockReason} from '../../src/classes/issue';
+import {IConfig} from '../../src/classes/config';
+import {RunContext} from '../../src/classes/context-loader';
 import {getDefaultInputs, cleanupEnvs} from '../../src/test-helper';
 
 beforeEach(() => {
@@ -63,183 +51,69 @@ const config = {
           action: 'open'
         }
       }
+    },
+    {
+      name: 'proposal',
+      labeled: {
+        discussion: {
+          body: 'Thank you @{{ author }} for suggesting this.'
+        }
+      }
+    },
+    {
+      name: 'locked (spam)',
+      labeled: {
+        discussion: {
+          body: 'This {{ eventName }} \\#{{ number }} has been **LOCKED** with the label {{ labelName }}!\n\nPlease do not spam messages on this project. You may get blocked from this repository for doing so.\n',
+          locking: 'lock',
+          lock_reason: 'spam',
+          answer: true
+        }
+      }
+    },
+    {
+      name: 'locked (heated)',
+      labeled: {
+        discussion: {
+          body: "This discussion has been **LOCKED** because of heated conversation!\n\nWe appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.\n",
+          locking: 'lock',
+          lock_reason: 'too heated'
+        }
+      },
+      unlabeled: {
+        discussion: {
+          body: 'This discussion has been unlocked now.\n',
+          locking: 'unlock'
+        }
+      }
     }
   ]
 };
 
 describe('getRawBody', () => {
-  class ContextLoaderMock implements IContext {
-    readonly inputs: Inputs;
-    readonly context: Context;
-    readonly payload: Payload;
-
-    readonly id: string;
-    readonly eventName: EventName;
-    readonly eventAlias: EventAlias;
-    readonly labelEvent: LabelEvent;
-    readonly labelName: string | undefined;
-    readonly issueNumber: number;
-    readonly userLogin: string;
-    readonly senderLogin: string;
-    readonly locked: boolean;
-
-    readonly runContext: RunContext;
-
-    constructor(inputs: Inputs, context: Context) {
-      try {
-        this.inputs = inputs;
-        this.context = context;
-        this.payload = context.payload as Payload;
-
-        this.id = this.getId();
-        this.eventName = this.getEventName();
-        this.eventAlias = this.getEventAlias();
-        this.labelEvent = this.getLabelEvent();
-        this.labelName = this.getLabelName();
-        this.issueNumber = this.getIssueNumber();
-        this.userLogin = this.getUserLogin();
-        this.senderLogin = this.getSenderLogin();
-        this.locked = this.getLocked();
-
-        this.runContext = this.getRunContext();
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    dumpContext(): void {
-      return;
-    }
-
-    getRunContext(): RunContext {
-      const runContext: RunContext = {
-        ConfigFilePath: this.inputs.ConfigFilePath,
-        EventName: this.eventName,
-        Id: this.id,
-        EventAlias: this.eventAlias,
-        LabelEvent: this.labelEvent,
-        LabelName: this.labelName as string,
-        IssueNumber: this.issueNumber
-      };
-      return runContext;
-    }
-
-    getId(): string {
-      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
-    }
-
-    getEventName(): EventName {
-      return 'issues';
-    }
-
-    getEventAlias(): EventAlias {
-      return 'issue';
-    }
-
-    getLabelEvent(): LabelEvent {
-      return 'labeled';
-    }
-
-    getLabelName(): string | undefined {
-      return 'invalid';
-    }
-
-    getIssueNumber(): number {
-      return 1;
-    }
-
-    getUserLogin(): string {
-      return 'userLogin';
-    }
-
-    getSenderLogin(): string {
-      return 'senderLogin';
-    }
-
-    getLocked(): boolean {
-      return false;
-    }
-  }
-
-  class ConfigMock implements IConfigLoader {
-    readonly runContext: RunContext;
-    readonly parentFieldName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    readonly config: any;
-    readonly labelIndex: string;
-    readonly action: Action;
-    readonly locking: Locking;
-    readonly lockReason: LockReason;
-    readonly draft?: Draft;
-    readonly answer?: Answer;
-
-    constructor(runContext: RunContext) {
-      try {
-        this.runContext = runContext;
-        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
-        this.config = this.loadConfig();
-        this.labelIndex = this.getLabelIndex();
-        this.action = this.getAction();
-        this.locking = this.getLocking();
-        this.lockReason = this.getLockReason();
-        this.draft = this.getDraft();
-        this.answer = this.getAnswer();
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    getConfig(): IConfig {
-      const config: IConfig = {
-        parentFieldName: this.parentFieldName,
-        labelIndex: this.labelIndex,
-        locking: this.locking,
-        action: this.action,
-        lockReason: this.lockReason
-      };
-      return config;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    loadConfig(): any {
-      return config;
-    }
-
-    dumpConfig(): void {
-      return;
-    }
-
-    getLabelIndex(): string {
-      return '0';
-    }
-
-    getLocking(): Locking {
-      return 'unlock';
-    }
-
-    getAction(): Action {
-      return 'close';
-    }
-
-    getLockReason(): LockReason {
-      return 'resolved';
-    }
-
-    getDraft(): Draft {
-      return undefined;
-    }
-
-    getAnswer(): Answer {
-      return undefined;
-    }
-  }
+  const ctx: RunContext = {
+    configFilePath: '.github/label-commenter-config.yml',
+    eventName: 'issues',
+    id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
+    eventAlias: 'issue',
+    labelEvent: 'labeled',
+    labelName: 'invalid',
+    issueNumber: 1,
+    userLogin: 'userLogin',
+    senderLogin: 'senderLogin',
+    locked: false
+  };
+  const cfg: IConfig = {
+    config: config,
+    parentFieldName: 'labels.invalid.labeled.issue',
+    labelIndex: '0',
+    locking: 'unlock',
+    action: 'close',
+    lockReason: 'resolved'
+  };
 
   test('isDebug is false', () => {
-    const inputs: Inputs = new Inputs();
-    const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
-    const config: ConfigMock = new ConfigMock(contextLoader.runContext);
-    const comment: Comment = new Comment(contextLoader, config);
-
+    const comment: Comment = new Comment(ctx, cfg);
     expect(comment.render).toBe(`\
 Hi, there.
 
@@ -257,11 +131,7 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 
   test('isDebug is true', () => {
     process.env['RUNNER_DEBUG'] = '1';
-
-    const inputs: Inputs = new Inputs();
-    const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
-    const config: ConfigMock = new ConfigMock(contextLoader.runContext);
-    const comment: Comment = new Comment(contextLoader, config);
+    const comment: Comment = new Comment(ctx, cfg);
 
     expect(comment.render).toBe(`\
 Hi, there.
@@ -282,178 +152,29 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 });
 
 describe('Mustache issues', () => {
-  class ContextLoaderMock implements IContext {
-    readonly inputs: Inputs;
-    readonly context: Context;
-    readonly payload: Payload;
-
-    readonly id: string;
-    readonly eventName: EventName;
-    readonly eventAlias: EventAlias;
-    readonly labelEvent: LabelEvent;
-    readonly labelName: string | undefined;
-    readonly issueNumber: number;
-    readonly userLogin: string;
-    readonly senderLogin: string;
-    readonly locked: boolean;
-
-    readonly runContext: RunContext;
-
-    constructor(inputs: Inputs, context: Context) {
-      try {
-        this.inputs = inputs;
-        this.context = context;
-        this.payload = context.payload as Payload;
-
-        this.id = this.getId();
-        this.eventName = this.getEventName();
-        this.eventAlias = this.getEventAlias();
-        this.labelEvent = this.getLabelEvent();
-        this.labelName = this.getLabelName();
-        this.issueNumber = this.getIssueNumber();
-        this.userLogin = this.getUserLogin();
-        this.senderLogin = this.getSenderLogin();
-        this.locked = this.getLocked();
-
-        this.runContext = this.getRunContext();
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    dumpContext(): void {
-      return;
-    }
-
-    getRunContext(): RunContext {
-      const runContext: RunContext = {
-        ConfigFilePath: this.inputs.ConfigFilePath,
-        EventName: this.eventName,
-        Id: this.id,
-        EventAlias: this.eventAlias,
-        LabelEvent: this.labelEvent,
-        LabelName: this.labelName as string,
-        IssueNumber: this.issueNumber
-      };
-      return runContext;
-    }
-
-    getId(): string {
-      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
-    }
-
-    getEventName(): EventName {
-      return 'issues';
-    }
-
-    getEventAlias(): EventAlias {
-      return 'issue';
-    }
-
-    getLabelEvent(): LabelEvent {
-      return 'labeled';
-    }
-
-    getLabelName(): string | undefined {
-      return 'invalid';
-    }
-
-    getIssueNumber(): number {
-      return 1;
-    }
-
-    getUserLogin(): string {
-      return 'userLogin';
-    }
-
-    getSenderLogin(): string {
-      return 'senderLogin';
-    }
-
-    getLocked(): boolean {
-      return false;
-    }
-  }
-
-  class ConfigMock implements IConfigLoader {
-    readonly runContext: RunContext;
-    readonly parentFieldName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    readonly config: any;
-    readonly labelIndex: string;
-    readonly action: Action;
-    readonly locking: Locking;
-    readonly lockReason: LockReason;
-    readonly draft?: Draft;
-    readonly answer?: Answer;
-
-    constructor(runContext: RunContext) {
-      try {
-        this.runContext = runContext;
-        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
-        this.config = this.loadConfig();
-        this.labelIndex = this.getLabelIndex();
-        this.action = this.getAction();
-        this.locking = this.getLocking();
-        this.lockReason = this.getLockReason();
-        this.draft = this.getDraft();
-        this.answer = this.getAnswer();
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    getConfig(): IConfig {
-      const config: IConfig = {
-        parentFieldName: this.parentFieldName,
-        labelIndex: this.labelIndex,
-        locking: this.locking,
-        action: this.action,
-        lockReason: this.lockReason
-      };
-      return config;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    loadConfig(): any {
-      return config;
-    }
-
-    dumpConfig(): void {
-      return;
-    }
-
-    getLabelIndex(): string {
-      return '0';
-    }
-
-    getLocking(): Locking {
-      return undefined;
-    }
-
-    getAction(): Action {
-      return 'close';
-    }
-
-    getLockReason(): LockReason {
-      return 'resolved';
-    }
-
-    getDraft(): Draft {
-      return false;
-    }
-
-    getAnswer(): Answer {
-      return undefined;
-    }
-  }
+  const ctx: RunContext = {
+    configFilePath: '.github/label-commenter-config.yml',
+    eventName: 'issues',
+    id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
+    eventAlias: 'issue',
+    labelEvent: 'labeled',
+    labelName: 'invalid',
+    issueNumber: 1,
+    userLogin: 'userLogin',
+    senderLogin: 'senderLogin',
+    locked: false
+  };
+  const cfg: IConfig = {
+    config: config,
+    parentFieldName: 'labels.invalid.labeled.issue',
+    labelIndex: '0',
+    locking: undefined,
+    action: 'close',
+    lockReason: 'resolved'
+  };
+  const comment: Comment = new Comment(ctx, cfg);
 
   test('invalid.labeled.issue', () => {
-    const inputs: Inputs = new Inputs();
-    const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
-    const config: ConfigMock = new ConfigMock(contextLoader.runContext);
-    const comment: Comment = new Comment(contextLoader, config);
-
     expect(comment.render).toBe(`\
 Hi, there.
 
@@ -471,178 +192,29 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 });
 
 describe('Mustache pull_request', () => {
-  class ContextLoaderMock implements IContext {
-    readonly inputs: Inputs;
-    readonly context: Context;
-    readonly payload: Payload;
-
-    readonly id: string;
-    readonly eventName: EventName;
-    readonly eventAlias: EventAlias;
-    readonly labelEvent: LabelEvent;
-    readonly labelName: string | undefined;
-    readonly issueNumber: number;
-    readonly userLogin: string;
-    readonly senderLogin: string;
-    readonly locked: boolean;
-
-    readonly runContext: RunContext;
-
-    constructor(inputs: Inputs, context: Context) {
-      try {
-        this.inputs = inputs;
-        this.context = context;
-        this.payload = context.payload as Payload;
-
-        this.id = this.getId();
-        this.eventName = this.getEventName();
-        this.eventAlias = this.getEventAlias();
-        this.labelEvent = this.getLabelEvent();
-        this.labelName = this.getLabelName();
-        this.issueNumber = this.getIssueNumber();
-        this.userLogin = this.getUserLogin();
-        this.senderLogin = this.getSenderLogin();
-        this.locked = this.getLocked();
-
-        this.runContext = this.getRunContext();
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    dumpContext(): void {
-      return;
-    }
-
-    getRunContext(): RunContext {
-      const runContext: RunContext = {
-        ConfigFilePath: this.inputs.ConfigFilePath,
-        EventName: this.eventName,
-        Id: this.id,
-        EventAlias: this.eventAlias,
-        LabelEvent: this.labelEvent,
-        LabelName: this.labelName as string,
-        IssueNumber: this.issueNumber
-      };
-      return runContext;
-    }
-
-    getId(): string {
-      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
-    }
-
-    getEventName(): EventName {
-      return 'pull_request';
-    }
-
-    getEventAlias(): EventAlias {
-      return 'pr';
-    }
-
-    getLabelEvent(): LabelEvent {
-      return 'labeled';
-    }
-
-    getLabelName(): string | undefined {
-      return 'invalid';
-    }
-
-    getIssueNumber(): number {
-      return 1;
-    }
-
-    getUserLogin(): string {
-      return 'userLogin';
-    }
-
-    getSenderLogin(): string {
-      return 'senderLogin';
-    }
-
-    getLocked(): boolean {
-      return false;
-    }
-  }
-
-  class ConfigMock implements IConfigLoader {
-    readonly runContext: RunContext;
-    readonly parentFieldName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    readonly config: any;
-    readonly labelIndex: string;
-    readonly action: Action;
-    readonly locking: Locking;
-    readonly lockReason: LockReason;
-    readonly draft?: Draft;
-    readonly answer?: Answer;
-
-    constructor(runContext: RunContext) {
-      try {
-        this.runContext = runContext;
-        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
-        this.config = this.loadConfig();
-        this.labelIndex = this.getLabelIndex();
-        this.action = this.getAction();
-        this.locking = this.getLocking();
-        this.lockReason = this.getLockReason();
-        this.draft = this.getDraft();
-        this.answer = this.getAnswer();
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    getConfig(): IConfig {
-      const config: IConfig = {
-        parentFieldName: this.parentFieldName,
-        labelIndex: this.labelIndex,
-        locking: this.locking,
-        action: this.action,
-        lockReason: this.lockReason
-      };
-      return config;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    loadConfig(): any {
-      return config;
-    }
-
-    dumpConfig(): void {
-      return;
-    }
-
-    getLabelIndex(): string {
-      return '0';
-    }
-
-    getLocking(): Locking {
-      return undefined;
-    }
-
-    getAction(): Action {
-      return 'close';
-    }
-
-    getLockReason(): LockReason {
-      return 'resolved';
-    }
-
-    getDraft(): Draft {
-      return false;
-    }
-
-    getAnswer(): Answer {
-      return undefined;
-    }
-  }
+  const ctx: RunContext = {
+    configFilePath: '.github/label-commenter-config.yml',
+    eventName: 'pull_request',
+    id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
+    eventAlias: 'pr',
+    labelEvent: 'labeled',
+    labelName: 'invalid',
+    issueNumber: 1,
+    userLogin: 'userLogin',
+    senderLogin: 'senderLogin',
+    locked: false
+  };
+  const cfg: IConfig = {
+    config: config,
+    parentFieldName: 'labels.invalid.labeled.issue',
+    labelIndex: '0',
+    locking: undefined,
+    action: 'close',
+    lockReason: undefined
+  };
+  const comment: Comment = new Comment(ctx, cfg);
 
   test('invalid.labeled.pr', () => {
-    const inputs: Inputs = new Inputs();
-    const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
-    const config: ConfigMock = new ConfigMock(contextLoader.runContext);
-    const comment: Comment = new Comment(contextLoader, config);
-
     expect(comment.render).toBe(`\
 Hi, there.
 
@@ -660,178 +232,29 @@ Thank you @userLogin for suggesting this. Please follow the pull request templat
 });
 
 describe('Mustache pull_request_target', () => {
-  class ContextLoaderMock implements IContext {
-    readonly inputs: Inputs;
-    readonly context: Context;
-    readonly payload: Payload;
-
-    readonly id: string;
-    readonly eventName: EventName;
-    readonly eventAlias: EventAlias;
-    readonly labelEvent: LabelEvent;
-    readonly labelName: string | undefined;
-    readonly issueNumber: number;
-    readonly userLogin: string;
-    readonly senderLogin: string;
-    readonly locked: boolean;
-
-    readonly runContext: RunContext;
-
-    constructor(inputs: Inputs, context: Context) {
-      try {
-        this.inputs = inputs;
-        this.context = context;
-        this.payload = context.payload as Payload;
-
-        this.id = this.getId();
-        this.eventName = this.getEventName();
-        this.eventAlias = this.getEventAlias();
-        this.labelEvent = this.getLabelEvent();
-        this.labelName = this.getLabelName();
-        this.issueNumber = this.getIssueNumber();
-        this.userLogin = this.getUserLogin();
-        this.senderLogin = this.getSenderLogin();
-        this.locked = this.getLocked();
-
-        this.runContext = this.getRunContext();
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    dumpContext(): void {
-      return;
-    }
-
-    getRunContext(): RunContext {
-      const runContext: RunContext = {
-        ConfigFilePath: this.inputs.ConfigFilePath,
-        EventName: this.eventName,
-        Id: this.id,
-        EventAlias: this.eventAlias,
-        LabelEvent: this.labelEvent,
-        LabelName: this.labelName as string,
-        IssueNumber: this.issueNumber
-      };
-      return runContext;
-    }
-
-    getId(): string {
-      return 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0';
-    }
-
-    getEventName(): EventName {
-      return 'pull_request_target';
-    }
-
-    getEventAlias(): EventAlias {
-      return 'pr';
-    }
-
-    getLabelEvent(): LabelEvent {
-      return 'labeled';
-    }
-
-    getLabelName(): string | undefined {
-      return 'invalid';
-    }
-
-    getIssueNumber(): number {
-      return 1;
-    }
-
-    getUserLogin(): string {
-      return 'userLogin';
-    }
-
-    getSenderLogin(): string {
-      return 'senderLogin';
-    }
-
-    getLocked(): boolean {
-      return false;
-    }
-  }
-
-  class ConfigMock implements IConfigLoader {
-    readonly runContext: RunContext;
-    readonly parentFieldName: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    readonly config: any;
-    readonly labelIndex: string;
-    readonly action: Action;
-    readonly locking: Locking;
-    readonly lockReason: LockReason;
-    readonly draft?: Draft;
-    readonly answer?: Answer;
-
-    constructor(runContext: RunContext) {
-      try {
-        this.runContext = runContext;
-        this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
-        this.config = this.loadConfig();
-        this.labelIndex = this.getLabelIndex();
-        this.action = this.getAction();
-        this.locking = this.getLocking();
-        this.lockReason = this.getLockReason();
-        this.draft = this.getDraft();
-        this.answer = this.getAnswer();
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    getConfig(): IConfig {
-      const config: IConfig = {
-        parentFieldName: this.parentFieldName,
-        labelIndex: this.labelIndex,
-        locking: this.locking,
-        action: this.action,
-        lockReason: this.lockReason
-      };
-      return config;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    loadConfig(): any {
-      return config;
-    }
-
-    dumpConfig(): void {
-      return;
-    }
-
-    getLabelIndex(): string {
-      return '0';
-    }
-
-    getLocking(): Locking {
-      return undefined;
-    }
-
-    getAction(): Action {
-      return 'close';
-    }
-
-    getLockReason(): LockReason {
-      return 'resolved';
-    }
-
-    getDraft(): Draft {
-      return false;
-    }
-
-    getAnswer(): Answer {
-      return undefined;
-    }
-  }
+  const ctx: RunContext = {
+    configFilePath: '.github/label-commenter-config.yml',
+    eventName: 'pull_request_target',
+    id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
+    eventAlias: 'pr',
+    labelEvent: 'labeled',
+    labelName: 'invalid',
+    issueNumber: 1,
+    userLogin: 'userLogin',
+    senderLogin: 'senderLogin',
+    locked: false
+  };
+  const cfg: IConfig = {
+    config: config,
+    parentFieldName: 'labels.invalid.labeled.issue',
+    labelIndex: '0',
+    locking: undefined,
+    action: 'close',
+    lockReason: undefined
+  };
+  const comment: Comment = new Comment(ctx, cfg);
 
   test('invalid.labeled.pr', () => {
-    const inputs: Inputs = new Inputs();
-    const contextLoader: ContextLoaderMock = new ContextLoaderMock(inputs, context);
-    const config: ConfigMock = new ConfigMock(contextLoader.runContext);
-    const comment: Comment = new Comment(contextLoader, config);
-
     expect(comment.render).toBe(`\
 Hi, there.
 

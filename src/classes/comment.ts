@@ -4,12 +4,11 @@ import Mustache from 'mustache';
 
 import {ActionInfo} from '../constants';
 import {groupConsoleLog, info} from '../logger';
-import {ConfigLoader} from './config';
-import {RunContext, ContextLoader} from './context-loader';
+import {IConfig} from './config';
+import {RunContext} from './context-loader';
 
 interface IComment {
-  readonly contextLoader: ContextLoader;
-  readonly config: ConfigLoader;
+  readonly config: IConfig;
   readonly runContext: RunContext;
 
   readonly main: string;
@@ -33,8 +32,7 @@ interface ICommentGenerator extends IComment {
 }
 
 class Comment implements ICommentGenerator {
-  readonly contextLoader: ContextLoader;
-  readonly config: ConfigLoader;
+  readonly config: IConfig;
   readonly runContext: RunContext;
 
   readonly main: string;
@@ -43,10 +41,9 @@ class Comment implements ICommentGenerator {
   readonly footerLinks: string;
   readonly rawBody: string;
 
-  constructor(contextParser: ContextLoader, config: ConfigLoader) {
-    this.contextLoader = contextParser;
+  constructor(runContext: RunContext, config: IConfig) {
     this.config = config;
-    this.runContext = this.contextLoader.runContext;
+    this.runContext = runContext;
     this.main = this.getMain();
     this.header = this.getHeader();
     this.footer = this.getFooter();
@@ -61,7 +58,7 @@ class Comment implements ICommentGenerator {
   getMain(): string {
     return get(
       this.config.config.labels[this.config.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.body`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.body`
     );
   }
 
@@ -104,9 +101,9 @@ class Comment implements ICommentGenerator {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get view(): any {
     const eventName = () => {
-      switch (this.runContext.EventAlias) {
+      switch (this.runContext.eventAlias) {
         case 'issue':
-          return this.runContext.EventAlias;
+          return this.runContext.eventAlias;
         case 'pr':
           return 'pull request';
         default:
@@ -114,55 +111,55 @@ class Comment implements ICommentGenerator {
       }
     };
 
-    if (this.runContext.EventName === 'issues') {
+    if (this.runContext.eventName === 'issues') {
       return {
         eventName: eventName,
-        number: this.runContext.IssueNumber,
-        labelName: this.runContext.LabelName,
-        author: this.contextLoader.userLogin,
-        labeler: this.contextLoader.senderLogin,
+        number: this.runContext.issueNumber,
+        labelName: this.runContext.labelName,
+        author: this.runContext.userLogin,
+        labeler: this.runContext.senderLogin,
         issue: {
           user: {
-            login: this.contextLoader.userLogin
+            login: this.runContext.userLogin
           }
         },
         sender: {
-          login: this.contextLoader.senderLogin
+          login: this.runContext.senderLogin
         }
       };
-    } else if (this.runContext.EventName === 'discussion') {
+    } else if (this.runContext.eventName === 'discussion') {
       return {
         eventName: eventName,
-        number: this.runContext.IssueNumber,
-        labelName: this.runContext.LabelName,
-        author: this.contextLoader.userLogin,
-        labeler: this.contextLoader.senderLogin,
+        number: this.runContext.issueNumber,
+        labelName: this.runContext.labelName,
+        author: this.runContext.userLogin,
+        labeler: this.runContext.senderLogin,
         discussion: {
           user: {
-            login: this.contextLoader.userLogin
+            login: this.runContext.userLogin
           }
         },
         sender: {
-          login: this.contextLoader.senderLogin
+          login: this.runContext.senderLogin
         }
       };
     } else if (
-      this.runContext.EventName === 'pull_request' ||
-      this.runContext.EventName === 'pull_request_target'
+      this.runContext.eventName === 'pull_request' ||
+      this.runContext.eventName === 'pull_request_target'
     ) {
       return {
         eventName: eventName,
-        number: this.runContext.IssueNumber,
-        labelName: this.runContext.LabelName,
-        author: this.contextLoader.userLogin,
-        labeler: this.contextLoader.senderLogin,
+        number: this.runContext.issueNumber,
+        labelName: this.runContext.labelName,
+        author: this.runContext.userLogin,
+        labeler: this.runContext.senderLogin,
         pull_request: {
           user: {
-            login: this.contextLoader.userLogin
+            login: this.runContext.userLogin
           }
         },
         sender: {
-          login: this.contextLoader.senderLogin
+          login: this.runContext.senderLogin
         }
       };
     } else {

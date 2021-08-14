@@ -20,11 +20,11 @@ export async function run(): Promise<void> {
     const contextLoader = new ContextLoader(inputs, context);
     contextLoader.dumpContext();
     const configLoader = new ConfigLoader(contextLoader.runContext);
-    const comment = new Comment(contextLoader, configLoader);
+    const comment = new Comment(contextLoader.runContext, configLoader);
     comment.dumpComponents();
-    const issue = new Issue(githubClient, contextLoader.runContext.Id, contextLoader.issueNumber);
+    const issue = new Issue(githubClient, contextLoader.runContext.id, contextLoader.issueNumber);
     const actionProcessor = new ActionProcessor(
-      contextLoader.runContext.EventAlias,
+      contextLoader.runContext.eventAlias,
       configLoader.getConfig(),
       comment.render,
       issue,

@@ -35,30 +35,23 @@ const eventType = (eventName: EventName): EventAlias =>
   eventTypeTable[eventName as keyof EventTypeTable];
 
 interface RunContext {
-  readonly ConfigFilePath: string;
+  readonly configFilePath: string;
 
-  readonly EventName: EventName;
-  readonly Id: string;
-  readonly EventAlias: EventAlias;
-  readonly LabelEvent: LabelEvent;
-  readonly LabelName: string;
-  readonly IssueNumber: number;
+  readonly eventName: EventName;
+  readonly id: string;
+  readonly eventAlias: EventAlias;
+  readonly labelEvent: LabelEvent;
+  readonly labelName: string;
+  readonly issueNumber: number;
+  readonly userLogin: string;
+  readonly senderLogin: string;
+  readonly locked: boolean;
 }
 
 interface IContext {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: Payload;
-
-  readonly eventName: EventName;
-  readonly id: string;
-  readonly eventAlias: EventAlias;
-  readonly labelEvent: LabelEvent;
-  readonly labelName: string | undefined;
-  readonly issueNumber: number;
-  readonly userLogin: string;
-  readonly senderLogin: string;
-  readonly locked: boolean;
 
   readonly runContext: RunContext;
 }
@@ -124,13 +117,16 @@ class ContextLoader implements IContextLoader {
 
   getRunContext(): RunContext {
     const runContext: RunContext = {
-      ConfigFilePath: this.inputs.ConfigFilePath,
-      EventName: this.eventName,
-      Id: this.id,
-      EventAlias: this.eventAlias,
-      LabelEvent: this.labelEvent,
-      LabelName: this.labelName as string,
-      IssueNumber: this.issueNumber
+      configFilePath: this.inputs.ConfigFilePath,
+      eventName: this.eventName,
+      id: this.id,
+      eventAlias: this.eventAlias,
+      labelEvent: this.labelEvent,
+      labelName: this.labelName as string,
+      issueNumber: this.issueNumber,
+      userLogin: this.userLogin,
+      senderLogin: this.senderLogin,
+      locked: this.locked
     };
     groupConsoleLog('Dump runContext', runContext);
     return runContext;

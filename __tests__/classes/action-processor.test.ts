@@ -36,6 +36,7 @@ describe('Comment and close', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.invalid.labeled.${t}`,
         labelIndex: '0',
         action: 'close',
@@ -59,6 +60,7 @@ describe('Comment, close, and lock without reason', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.locked (resolved).labeled.${t}`,
         labelIndex: '0',
         action: 'close',
@@ -83,6 +85,7 @@ describe('Comment, close, and lock with lockReason', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.locked (spam).labeled.${t}`,
         labelIndex: '0',
         action: 'close',
@@ -107,6 +110,7 @@ describe('Unlock, open and comment', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.locked (heated).labeled.${t}`,
         labelIndex: '0',
         action: 'open',
@@ -131,6 +135,7 @@ describe('Comment and open', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.invalid.labeled.${t}`,
         labelIndex: '0',
         action: 'open',
@@ -154,6 +159,7 @@ describe('Open without comment if the issue is locked', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.invalid.labeled.${t}`,
         labelIndex: '0',
         action: 'open',
@@ -191,6 +197,7 @@ describe('Skip all actions for a label that has no configuration', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.unknown.labeled.${t}`,
         labelIndex: '',
         action: undefined,
@@ -218,6 +225,7 @@ describe('Skip comment if body is empty', () => {
   for (const t of tests) {
     test(`${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.spam.labeled.${t}`,
         labelIndex: '1',
         action: 'close',
@@ -244,6 +252,7 @@ describe('Toggle draft status', () => {
   for (const t of tests) {
     test(`draft ${t}`, async () => {
       const config: IConfig = {
+        config: {},
         parentFieldName: `labels.invalid.labeled.pr`,
         labelIndex: '0',
         action: undefined,
@@ -269,6 +278,7 @@ describe('discussion', () => {
 
   test(`Comment`, async () => {
     const config: IConfig = {
+      config: {},
       parentFieldName: `labels.invalid.labeled.${t}`,
       labelIndex: '0',
       action: undefined,
@@ -287,6 +297,7 @@ describe('discussion', () => {
 
   test(`Comment and lock`, async () => {
     const config: IConfig = {
+      config: {},
       parentFieldName: `labels.invalid.labeled.${t}`,
       labelIndex: '0',
       action: undefined,
@@ -306,6 +317,7 @@ describe('discussion', () => {
 
   test(`Comment and lock without reason`, async () => {
     const config: IConfig = {
+      config: {},
       parentFieldName: `labels.invalid.labeled.${t}`,
       labelIndex: '0',
       action: undefined,
@@ -325,6 +337,7 @@ describe('discussion', () => {
 
   test(`Comment and unlock`, async () => {
     const config: IConfig = {
+      config: {},
       parentFieldName: `labels.invalid.labeled.${t}`,
       labelIndex: '0',
       action: undefined,
@@ -343,6 +356,7 @@ describe('discussion', () => {
 
   test(`Comment and mark as answer`, async () => {
     const config: IConfig = {
+      config: {},
       parentFieldName: `labels.invalid.labeled.${t}`,
       labelIndex: '0',
       action: undefined,

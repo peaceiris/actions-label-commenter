@@ -13,6 +13,8 @@ type Draft = boolean | undefined;
 type Answer = boolean | undefined;
 
 interface IConfig {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  readonly config: any;
   readonly parentFieldName: string;
   readonly labelIndex: string;
   readonly action: Action;
@@ -24,8 +26,6 @@ interface IConfig {
 
 interface IConfigLoader extends IConfig {
   readonly runContext: RunContext;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly config: any;
 
   getConfig(): IConfig;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,9 +40,10 @@ interface IConfigLoader extends IConfig {
 
 class ConfigLoader implements IConfigLoader {
   readonly runContext: RunContext;
-  readonly parentFieldName: string;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
+  readonly parentFieldName: string;
   readonly labelIndex: string;
   readonly action: Action;
   readonly locking: Locking;
@@ -52,9 +53,9 @@ class ConfigLoader implements IConfigLoader {
 
   constructor(runContext: RunContext) {
     try {
-      this.runContext = runContext;
-      this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventAlias}`;
       this.config = this.loadConfig();
+      this.runContext = runContext;
+      this.parentFieldName = `labels.${this.runContext.labelName}.${this.runContext.labelEvent}.${this.runContext.eventAlias}`;
       this.labelIndex = this.getLabelIndex();
       this.action = this.getAction();
       this.locking = this.getLocking();
@@ -68,6 +69,7 @@ class ConfigLoader implements IConfigLoader {
 
   getConfig(): IConfig {
     const config: IConfig = {
+      config: this.config,
       parentFieldName: this.parentFieldName,
       labelIndex: this.labelIndex,
       action: this.action,
@@ -81,7 +83,7 @@ class ConfigLoader implements IConfigLoader {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadConfig(): any {
-    return yaml.load(fs.readFileSync(this.runContext.ConfigFilePath, 'utf8'));
+    return yaml.load(fs.readFileSync(this.runContext.configFilePath, 'utf8'));
   }
 
   dumpConfig(): void {
@@ -91,7 +93,7 @@ class ConfigLoader implements IConfigLoader {
   getLabelIndex(): string {
     let labelIndex = '';
     Object.keys(this.config.labels).forEach(label => {
-      if (this.config.labels[label].name === this.runContext.LabelName) {
+      if (this.config.labels[label].name === this.runContext.labelName) {
         if (labelIndex === '') {
           labelIndex = label;
         }
@@ -103,7 +105,7 @@ class ConfigLoader implements IConfigLoader {
   getLocking(): Locking {
     const locking = get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.locking`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.locking`
     );
 
     if (locking === 'lock' || locking === 'unlock') {
@@ -118,28 +120,28 @@ class ConfigLoader implements IConfigLoader {
   getAction(): Action {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.action`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.action`
     );
   }
 
   getLockReason(): LockReason {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.lock_reason`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.lock_reason`
     );
   }
 
   getDraft(): Draft {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.draft`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.draft`
     );
   }
 
   getAnswer(): Answer {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventAlias}.answer`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.answer`
     );
   }
 }
