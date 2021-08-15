@@ -18,16 +18,18 @@ export async function run(): Promise<void> {
     const inputs = new Inputs();
     const githubClient = getOctokit(inputs.GithubToken);
     const contextLoader = new ContextLoader(inputs, context);
+    contextLoader.dumpContext();
     const configLoader = new ConfigLoader(contextLoader.runContext);
-    const comment = new Comment(contextLoader, configLoader);
+    const comment = new Comment(contextLoader.runContext, configLoader);
     comment.dumpComponents();
-    const issue = new Issue(
-      githubClient,
-      contextLoader.runContext.Id,
-      contextLoader.issueNumber,
+    const issue = new Issue(githubClient, contextLoader.runContext.id, contextLoader.issueNumber);
+    const actionProcessor = new ActionProcessor(
+      contextLoader.runContext.eventAlias,
+      configLoader.getConfig(),
+      comment.render,
+      issue,
       contextLoader.locked
     );
-    const actionProcessor = new ActionProcessor(configLoader.getConfig(), comment.render, issue);
     await actionProcessor.process();
   } catch (error) {
     throw new Error(error.message);

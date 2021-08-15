@@ -4,13 +4,12 @@ import Mustache from 'mustache';
 
 import {ActionInfo} from '../constants';
 import {groupConsoleLog, info} from '../logger';
-import {ConfigLoader} from './config';
-import {RunContext, ContextLoader} from './context-loader';
+import {IConfig} from './config';
+import {IContext} from './context-loader';
 
 interface IComment {
-  readonly contextLoader: ContextLoader;
-  readonly config: ConfigLoader;
-  readonly runContext: RunContext;
+  readonly config: IConfig;
+  readonly runContext: IContext;
 
   readonly main: string;
   readonly header: string;
@@ -33,9 +32,8 @@ interface ICommentGenerator extends IComment {
 }
 
 class Comment implements ICommentGenerator {
-  readonly contextLoader: ContextLoader;
-  readonly config: ConfigLoader;
-  readonly runContext: RunContext;
+  readonly config: IConfig;
+  readonly runContext: IContext;
 
   readonly main: string;
   readonly header: string;
@@ -43,10 +41,9 @@ class Comment implements ICommentGenerator {
   readonly footerLinks: string;
   readonly rawBody: string;
 
-  constructor(contextParser: ContextLoader, config: ConfigLoader) {
-    this.contextLoader = contextParser;
+  constructor(runContext: IContext, config: IConfig) {
     this.config = config;
-    this.runContext = this.contextLoader.runContext;
+    this.runContext = runContext;
     this.main = this.getMain();
     this.header = this.getHeader();
     this.footer = this.getFooter();
@@ -61,7 +58,7 @@ class Comment implements ICommentGenerator {
   getMain(): string {
     return get(
       this.config.config.labels[this.config.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.body`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.body`
     );
   }
 
@@ -85,7 +82,7 @@ class Comment implements ICommentGenerator {
   }
 
   getRawBody(): string {
-    const rawBody = `${this.header}\n\n${this.main}\n\n${this.footer}`;
+    const rawBody = `${this.header}\n\n${this.main}\n\n${this.footer}`.trim();
     const identifier = `\n<!-- ${ActionInfo.Owner}/${ActionInfo.Name} -->\n`;
     if (isDebug()) {
       return `${rawBody}\n\n${this.footerLinks}${identifier}`;
@@ -103,29 +100,63 @@ class Comment implements ICommentGenerator {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get view(): any {
-    if (this.runContext.EventName === 'issues') {
+    const eventName = () => {
+      switch (this.runContext.eventAlias) {
+        case 'issue':
+          return this.runContext.eventAlias;
+        case 'pr':
+          return 'pull request';
+        default:
+          return 'discussion';
+      }
+    };
+
+    if (this.runContext.eventAlias === 'issue') {
       return {
+        eventName: eventName,
+        number: this.runContext.issueNumber,
+        labelName: this.runContext.labelName,
+        author: this.runContext.userLogin,
+        labeler: this.runContext.senderLogin,
         issue: {
           user: {
-            login: this.contextLoader.userLogin
+            login: this.runContext.userLogin
           }
         },
         sender: {
-          login: this.contextLoader.senderLogin
+          login: this.runContext.senderLogin
         }
       };
-    } else if (
-      this.runContext.EventName === 'pull_request' ||
-      this.runContext.EventName === 'pull_request_target'
-    ) {
+    } else if (this.runContext.eventAlias === 'discussion') {
       return {
-        pull_request: {
+        eventName: eventName,
+        number: this.runContext.issueNumber,
+        labelName: this.runContext.labelName,
+        author: this.runContext.userLogin,
+        labeler: this.runContext.senderLogin,
+        discussion: {
           user: {
-            login: this.contextLoader.userLogin
+            login: this.runContext.userLogin
           }
         },
         sender: {
-          login: this.contextLoader.senderLogin
+          login: this.runContext.senderLogin
+        }
+      };
+    } else if (this.runContext.eventAlias === 'pr') {
+      return {
+        eventName: eventName,
+        number: this.runContext.issueNumber,
+        labelName: this.runContext.labelName,
+        author: this.runContext.userLogin,
+        labeler: this.runContext.senderLogin,
+        pull_request: {
+          user: {
+            login: this.runContext.userLogin
+          }
+        },
+        sender: {
+          login: this.runContext.senderLogin
         }
       };
     } else {

@@ -3,7 +3,9 @@ import {
   IssuesLabeledEvent,
   IssuesUnlabeledEvent,
   PullRequestLabeledEvent,
-  PullRequestUnlabeledEvent
+  PullRequestUnlabeledEvent,
+  DiscussionLabeledEvent,
+  DiscussionUnlabeledEvent
 } from '@octokit/webhooks-types';
 
 import {groupConsoleLog, info} from '../logger';
@@ -11,42 +13,53 @@ import {Inputs} from './inputs';
 
 type IssuePayload = IssuesLabeledEvent | IssuesUnlabeledEvent;
 type PullRequestPayload = PullRequestLabeledEvent | PullRequestUnlabeledEvent;
-type Payload = IssuePayload | PullRequestPayload;
+type DiscussionPayload = DiscussionLabeledEvent | DiscussionUnlabeledEvent;
+type Payload = IssuePayload | PullRequestPayload | DiscussionPayload;
+type EventName = 'issues' | 'pull_request' | 'pull_request_target' | 'discussion';
+type EventAlias = 'issue' | 'pr' | 'discussion';
+type LabelEvent = 'labeled' | 'unlabeled';
 
-interface RunContext {
-  readonly Id: string;
-  readonly ConfigFilePath: string;
-  readonly LabelName: string;
-  readonly LabelEvent: string;
-  readonly EventName: string;
-  readonly EventType: string;
+interface EventTypeTable {
+  issues: EventAlias;
+  pull_request: EventAlias;
+  pull_request_target: EventAlias;
+  discussion: EventAlias;
 }
+const eventTypeTable: EventTypeTable = {
+  issues: 'issue',
+  pull_request: 'pr',
+  pull_request_target: 'pr',
+  discussion: 'discussion'
+};
+const eventType = (eventName: EventName): EventAlias =>
+  eventTypeTable[eventName as keyof EventTypeTable];
 
 interface IContext {
-  readonly inputs: Inputs;
-  readonly context: Context;
-  readonly payload: Payload;
+  readonly configFilePath: string;
 
+  readonly eventName: EventName;
   readonly id: string;
-  readonly eventName: string;
-  readonly eventType: string;
-  readonly action: string;
+  readonly eventAlias: EventAlias;
+  readonly labelEvent: LabelEvent;
   readonly labelName: string | undefined;
   readonly issueNumber: number;
   readonly userLogin: string;
   readonly senderLogin: string;
   readonly locked: boolean;
-
-  readonly runContext: RunContext;
 }
 
 interface IContextLoader extends IContext {
+  readonly inputs: Inputs;
+  readonly context: Context;
+  readonly payload: Payload;
+  readonly runContext: IContext;
+
   dumpContext(): void;
-  getRunContext(): RunContext;
+  getRunContext(): IContext;
   getId(): string;
-  getEventName(): string;
-  getEventType(): string;
-  getAction(): string;
+  getEventName(): EventName;
+  getEventAlias(): EventAlias;
+  getLabelEvent(): LabelEvent;
   getLabelName(): string | undefined;
   getIssueNumber(): number;
   getUserLogin(): string;
@@ -58,18 +71,19 @@ class ContextLoader implements IContextLoader {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: Payload;
+  readonly runContext: IContext;
 
+  readonly configFilePath: string;
+
+  readonly eventName: EventName;
   readonly id: string;
-  readonly eventName: string;
-  readonly eventType: string;
-  readonly action: string;
+  readonly eventAlias: EventAlias;
+  readonly labelEvent: LabelEvent;
   readonly labelName: string | undefined;
   readonly issueNumber: number;
   readonly userLogin: string;
   readonly senderLogin: string;
   readonly locked: boolean;
-
-  readonly runContext: RunContext;
 
   constructor(inputs: Inputs, context: Context) {
     try {
@@ -77,10 +91,12 @@ class ContextLoader implements IContextLoader {
       this.context = context;
       this.payload = context.payload as Payload;
 
-      this.id = this.getId();
+      this.configFilePath = this.inputs.ConfigFilePath;
+
       this.eventName = this.getEventName();
-      this.eventType = this.getEventType();
-      this.action = this.getAction();
+      this.id = this.getId();
+      this.eventAlias = this.getEventAlias();
+      this.labelEvent = this.getLabelEvent();
       this.labelName = this.getLabelName();
       this.issueNumber = this.getIssueNumber();
       this.userLogin = this.getUserLogin();
@@ -99,14 +115,18 @@ class ContextLoader implements IContextLoader {
     info(`Issue number: ${this.issueNumber}`);
   }
 
-  getRunContext(): RunContext {
-    const runContext: RunContext = {
-      Id: this.id,
-      ConfigFilePath: this.inputs.ConfigFilePath,
-      LabelName: this.labelName as string,
-      LabelEvent: this.action,
-      EventName: this.eventName,
-      EventType: this.eventType
+  getRunContext(): IContext {
+    const runContext: IContext = {
+      configFilePath: this.inputs.ConfigFilePath,
+      eventName: this.eventName,
+      id: this.id,
+      eventAlias: this.eventAlias,
+      labelEvent: this.labelEvent,
+      labelName: this.labelName as string,
+      issueNumber: this.issueNumber,
+      userLogin: this.userLogin,
+      senderLogin: this.senderLogin,
+      locked: this.locked
     };
     groupConsoleLog('Dump runContext', runContext);
     return runContext;
@@ -115,43 +135,35 @@ class ContextLoader implements IContextLoader {
   getId(): string {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).issue?.node_id;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).discussion?.node_id;
     }
     return (this.payload as PullRequestPayload).pull_request?.node_id;
   }
 
-  getEventName(): string {
-    const eventName: string = this.context.eventName;
+  getEventName(): EventName {
+    const eventName = this.context.eventName as EventName;
     info(`Event name: ${eventName}`);
-    if (
-      eventName === 'issues' ||
-      eventName === 'pull_request' ||
-      eventName === 'pull_request_target'
-    ) {
+    if (eventType(eventName)) {
       return eventName;
-    } else if (eventName === 'discussion' || eventName === 'discussion_comment') {
-      throw new Error(
-        `Unsupported event: ${eventName}, Please subscribe issue https://github.com/peaceiris/actions-label-commenter/issues/444`
-      );
     } else {
       throw new Error(`Unsupported event: ${eventName}`);
     }
   }
 
-  getEventType(): string {
-    if (this.eventName === 'issues') {
-      return 'issue';
-    }
-
-    return 'pr';
+  getEventAlias(): EventAlias {
+    return eventType(this.eventName);
   }
 
-  getAction(): string {
+  getLabelEvent(): LabelEvent {
     return this.payload.action;
   }
 
   getLabelName(): string | undefined {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).label?.name;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).label?.name;
     }
 
     return (this.payload as PullRequestPayload).label?.name;
@@ -160,6 +172,8 @@ class ContextLoader implements IContextLoader {
   getIssueNumber(): number {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).issue.number;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).discussion.number;
     }
 
     return (this.payload as PullRequestPayload).number;
@@ -168,6 +182,8 @@ class ContextLoader implements IContextLoader {
   getUserLogin(): string {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).issue.user.login;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).discussion.user.login;
     }
 
     return (this.payload as PullRequestPayload).pull_request.user.login;
@@ -176,6 +192,8 @@ class ContextLoader implements IContextLoader {
   getSenderLogin(): string {
     if (this.eventName === 'issues') {
       return (this.payload as IssuePayload).sender.login;
+    } else if (this.eventName === 'discussion') {
+      return (this.payload as DiscussionPayload).sender.login;
     }
 
     return (this.payload as PullRequestPayload).sender.login;
@@ -184,10 +202,12 @@ class ContextLoader implements IContextLoader {
   getLocked(): boolean {
     if (this.eventName === 'issues') {
       return Boolean((this.payload as IssuePayload).issue.locked);
+    } else if (this.eventName === 'discussion') {
+      return Boolean((this.payload as DiscussionPayload).discussion.locked);
     }
 
     return Boolean((this.payload as PullRequestPayload).pull_request.locked);
   }
 }
 
-export {Payload, RunContext, IContext, ContextLoader};
+export {Payload, EventName, EventAlias, LabelEvent, IContext, ContextLoader};

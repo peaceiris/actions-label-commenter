@@ -1,11 +1,14 @@
 import {groupConsoleLog, info} from '../logger';
 import {IConfig} from './config';
+import {EventAlias} from './context-loader';
 import {Issue} from './issue';
 
 interface IAction {
+  readonly eventAlias: EventAlias;
   readonly config: IConfig;
   readonly commentBody: string;
   readonly issue: Issue;
+  locked: boolean;
 }
 
 interface IActionProcessor extends IAction {
@@ -13,17 +16,32 @@ interface IActionProcessor extends IAction {
 }
 
 class ActionProcessor implements IActionProcessor {
+  readonly eventAlias: EventAlias;
   readonly config: IConfig;
   readonly commentBody: string;
   readonly issue: Issue;
+  locked: boolean;
 
-  constructor(config: IConfig, commentBody: string, issue: Issue) {
+  constructor(
+    eventAlias: EventAlias,
+    config: IConfig,
+    commentBody: string,
+    issue: Issue,
+    locked: boolean
+  ) {
+    this.eventAlias = eventAlias;
     this.config = config;
     this.commentBody = commentBody;
     this.issue = issue;
+    this.locked = locked;
+  }
+
+  setLocked(locked: boolean): void {
+    this.locked = locked;
   }
 
   async updateState(): Promise<void> {
+    // TODO: v2 Replace action with state
     if (this.config.action === 'close') {
       await this.issue.updateState('closed');
     } else if (this.config.action === 'open') {
@@ -46,30 +64,47 @@ class ActionProcessor implements IActionProcessor {
     }
 
     try {
-      if (this.config.locking === 'unlock') {
-        await this.issue.unlock();
-        this.issue.setLocked(false);
+      if (this.locked && this.config.locking === 'unlock') {
+        if (this.eventAlias === 'discussion') {
+          await this.issue.unlockLockable();
+        } else {
+          await this.issue.unlock();
+        }
+        this.setLocked(false);
       }
 
-      await this.updateState();
+      if (this.eventAlias !== 'discussion') {
+        await this.updateState();
+      }
 
-      if (this.config.draft) {
+      if (this.eventAlias === 'pr' && this.config.draft) {
         await this.issue.convertPullRequestToDraft();
       } else if (this.config.draft === false) {
         await this.issue.markPullRequestReadyForReview();
       }
 
-      if (this.issue.locked) {
+      if (this.locked) {
         info(`Issue #${this.issue.number} is locked, skip creating comment`);
       } else if (!this.commentBody) {
         info(`body is empty, skip creating comment`);
       } else {
-        await this.issue.createComment(this.commentBody);
+        if (this.eventAlias === 'discussion') {
+          const id = await this.issue.addDiscussionComment(this.commentBody);
+          if (this.config.answer) {
+            await this.issue.markDiscussionCommentAsAnswer(id);
+          }
+        } else {
+          await this.issue.createComment(this.commentBody);
+        }
       }
 
-      if (this.config.locking === 'lock') {
-        await this.issue.lock(this.config.lockReason);
-        this.issue.setLocked(true);
+      if (!this.locked && this.config.locking === 'lock') {
+        if (this.eventAlias === 'discussion') {
+          await this.issue.lockLockable(this.config.lockReason);
+        } else {
+          await this.issue.lock(this.config.lockReason);
+        }
+        this.setLocked(true);
       }
     } catch (error) {
       throw new Error(error.message);

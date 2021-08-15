@@ -4,26 +4,28 @@ import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
 import {groupConsoleLog} from '../logger';
-import {RunContext} from './context-loader';
+import {IContext} from './context-loader';
 import {LockReason} from './issue';
 
 type Locking = 'lock' | 'unlock' | undefined;
 type Action = 'close' | 'open' | undefined;
 type Draft = boolean | undefined;
+type Answer = boolean | undefined;
 
 interface IConfig {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  readonly config: any;
   readonly parentFieldName: string;
   readonly labelIndex: string;
   readonly action: Action;
   readonly locking: Locking;
   readonly lockReason: LockReason;
   readonly draft?: Draft;
+  readonly answer?: Answer;
 }
 
 interface IConfigLoader extends IConfig {
-  readonly runContext: RunContext;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly config: any;
+  readonly runContext: IContext;
 
   getConfig(): IConfig;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,29 +35,33 @@ interface IConfigLoader extends IConfig {
   getLocking(): Locking;
   getAction(): Action;
   getLockReason(): LockReason;
+  getAnswer(): Answer;
 }
 
 class ConfigLoader implements IConfigLoader {
-  readonly runContext: RunContext;
-  readonly parentFieldName: string;
+  readonly runContext: IContext;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
+  readonly parentFieldName: string;
   readonly labelIndex: string;
   readonly action: Action;
   readonly locking: Locking;
   readonly lockReason: LockReason;
   readonly draft?: Draft;
+  readonly answer?: Answer;
 
-  constructor(runContext: RunContext) {
+  constructor(runContext: IContext) {
     try {
       this.runContext = runContext;
-      this.parentFieldName = `labels.${this.runContext.LabelName}.${this.runContext.LabelEvent}.${this.runContext.EventType}`;
       this.config = this.loadConfig();
+      this.parentFieldName = `labels.${this.runContext.labelName}.${this.runContext.labelEvent}.${this.runContext.eventAlias}`;
       this.labelIndex = this.getLabelIndex();
       this.action = this.getAction();
       this.locking = this.getLocking();
       this.lockReason = this.getLockReason();
       this.draft = this.getDraft();
+      this.answer = this.getAnswer();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -63,19 +69,21 @@ class ConfigLoader implements IConfigLoader {
 
   getConfig(): IConfig {
     const config: IConfig = {
+      config: this.config,
       parentFieldName: this.parentFieldName,
       labelIndex: this.labelIndex,
       action: this.action,
       locking: this.locking,
       lockReason: this.lockReason,
-      draft: this.draft
+      draft: this.draft,
+      answer: this.answer
     };
     return config;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadConfig(): any {
-    return yaml.load(fs.readFileSync(this.runContext.ConfigFilePath, 'utf8'));
+    return yaml.load(fs.readFileSync(this.runContext.configFilePath, 'utf8'));
   }
 
   dumpConfig(): void {
@@ -85,7 +93,7 @@ class ConfigLoader implements IConfigLoader {
   getLabelIndex(): string {
     let labelIndex = '';
     Object.keys(this.config.labels).forEach(label => {
-      if (this.config.labels[label].name === this.runContext.LabelName) {
+      if (this.config.labels[label].name === this.runContext.labelName) {
         if (labelIndex === '') {
           labelIndex = label;
         }
@@ -97,7 +105,7 @@ class ConfigLoader implements IConfigLoader {
   getLocking(): Locking {
     const locking = get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.locking`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.locking`
     );
 
     if (locking === 'lock' || locking === 'unlock') {
@@ -112,23 +120,30 @@ class ConfigLoader implements IConfigLoader {
   getAction(): Action {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.action`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.action`
     );
   }
 
   getLockReason(): LockReason {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.lock_reason`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.lock_reason`
     );
   }
 
   getDraft(): Draft {
     return get(
       this.config.labels[this.labelIndex as string],
-      `${this.runContext.LabelEvent}.${this.runContext.EventType}.draft`
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.draft`
+    );
+  }
+
+  getAnswer(): Answer {
+    return get(
+      this.config.labels[this.labelIndex as string],
+      `${this.runContext.labelEvent}.${this.runContext.eventAlias}.answer`
     );
   }
 }
 
-export {Locking, Action, Draft, IConfig, IConfigLoader, ConfigLoader};
+export {Locking, Action, Draft, Answer, IConfig, IConfigLoader, ConfigLoader};
