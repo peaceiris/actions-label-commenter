@@ -5,11 +5,11 @@ import Mustache from 'mustache';
 import {ActionInfo} from '../constants';
 import {groupConsoleLog, info} from '../logger';
 import {IConfig} from './config';
-import {RunContext} from './context-loader';
+import {IContext} from './context-loader';
 
 interface IComment {
   readonly config: IConfig;
-  readonly runContext: RunContext;
+  readonly runContext: IContext;
 
   readonly main: string;
   readonly header: string;
@@ -33,7 +33,7 @@ interface ICommentGenerator extends IComment {
 
 class Comment implements ICommentGenerator {
   readonly config: IConfig;
-  readonly runContext: RunContext;
+  readonly runContext: IContext;
 
   readonly main: string;
   readonly header: string;
@@ -41,7 +41,7 @@ class Comment implements ICommentGenerator {
   readonly footerLinks: string;
   readonly rawBody: string;
 
-  constructor(runContext: RunContext, config: IConfig) {
+  constructor(runContext: IContext, config: IConfig) {
     this.config = config;
     this.runContext = runContext;
     this.main = this.getMain();

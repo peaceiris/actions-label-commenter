@@ -34,31 +34,28 @@ const eventTypeTable: EventTypeTable = {
 const eventType = (eventName: EventName): EventAlias =>
   eventTypeTable[eventName as keyof EventTypeTable];
 
-interface RunContext {
+interface IContext {
   readonly configFilePath: string;
 
   readonly eventName: EventName;
   readonly id: string;
   readonly eventAlias: EventAlias;
   readonly labelEvent: LabelEvent;
-  readonly labelName: string;
+  readonly labelName: string | undefined;
   readonly issueNumber: number;
   readonly userLogin: string;
   readonly senderLogin: string;
   readonly locked: boolean;
 }
 
-interface IContext {
+interface IContextLoader extends IContext {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: Payload;
+  readonly runContext: IContext;
 
-  readonly runContext: RunContext;
-}
-
-interface IContextLoader extends IContext {
   dumpContext(): void;
-  getRunContext(): RunContext;
+  getRunContext(): IContext;
   getId(): string;
   getEventName(): EventName;
   getEventAlias(): EventAlias;
@@ -74,6 +71,9 @@ class ContextLoader implements IContextLoader {
   readonly inputs: Inputs;
   readonly context: Context;
   readonly payload: Payload;
+  readonly runContext: IContext;
+
+  readonly configFilePath: string;
 
   readonly eventName: EventName;
   readonly id: string;
@@ -85,13 +85,13 @@ class ContextLoader implements IContextLoader {
   readonly senderLogin: string;
   readonly locked: boolean;
 
-  readonly runContext: RunContext;
-
   constructor(inputs: Inputs, context: Context) {
     try {
       this.inputs = inputs;
       this.context = context;
       this.payload = context.payload as Payload;
+
+      this.configFilePath = this.inputs.ConfigFilePath;
 
       this.eventName = this.getEventName();
       this.id = this.getId();
@@ -115,8 +115,8 @@ class ContextLoader implements IContextLoader {
     info(`Issue number: ${this.issueNumber}`);
   }
 
-  getRunContext(): RunContext {
-    const runContext: RunContext = {
+  getRunContext(): IContext {
+    const runContext: IContext = {
       configFilePath: this.inputs.ConfigFilePath,
       eventName: this.eventName,
       id: this.id,
@@ -210,4 +210,4 @@ class ContextLoader implements IContextLoader {
   }
 }
 
-export {Payload, EventName, EventAlias, LabelEvent, RunContext, IContext, ContextLoader};
+export {Payload, EventName, EventAlias, LabelEvent, IContext, ContextLoader};

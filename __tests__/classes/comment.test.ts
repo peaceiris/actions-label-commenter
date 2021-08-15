@@ -1,6 +1,6 @@
 import {Comment} from '../../src/classes/comment';
 import {IConfig} from '../../src/classes/config';
-import {RunContext} from '../../src/classes/context-loader';
+import {IContext} from '../../src/classes/context-loader';
 import {getDefaultInputs, cleanupEnvs} from '../../src/test-helper';
 
 beforeEach(() => {
@@ -72,7 +72,7 @@ describe('header and footer', () => {
     },
     ...config
   };
-  const ctx: RunContext = {
+  const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
@@ -112,7 +112,7 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 });
 
 describe('isDebug', () => {
-  const ctx: RunContext = {
+  const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
@@ -157,7 +157,7 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 });
 
 describe('invalid.labeled.issue', () => {
-  const ctx: RunContext = {
+  const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
@@ -189,7 +189,7 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 });
 
 describe('invalid.labeled.pr pull_request', () => {
-  const ctx: RunContext = {
+  const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'pull_request',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
@@ -221,7 +221,7 @@ Thank you @userLogin for suggesting this. Please follow the pull request templat
 });
 
 describe('invalid.labeled.pr pull_request_target', () => {
-  const ctx: RunContext = {
+  const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
     eventName: 'pull_request_target',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
@@ -254,7 +254,7 @@ Thank you @userLogin for suggesting this. Please follow the pull request templat
 
 describe('placeholders', () => {
   test('comment.render returns expected comment, author', () => {
-    const ctx: RunContext = {
+    const ctx: IContext = {
       configFilePath: '.github/label-commenter-config.yml',
       eventName: 'discussion',
       id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
@@ -283,7 +283,7 @@ Thank you @userLogin for suggesting this. @senderLogin will reply.
   });
 
   test('comment.render returns expected comment, eventName, number, labelName', () => {
-    const ctx: RunContext = {
+    const ctx: IContext = {
       configFilePath: '.github/label-commenter-config.yml',
       eventName: 'pull_request',
       id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',

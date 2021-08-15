@@ -4,7 +4,7 @@ import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
 import {groupConsoleLog} from '../logger';
-import {RunContext} from './context-loader';
+import {IContext} from './context-loader';
 import {LockReason} from './issue';
 
 type Locking = 'lock' | 'unlock' | undefined;
@@ -25,7 +25,7 @@ interface IConfig {
 }
 
 interface IConfigLoader extends IConfig {
-  readonly runContext: RunContext;
+  readonly runContext: IContext;
 
   getConfig(): IConfig;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,7 +39,7 @@ interface IConfigLoader extends IConfig {
 }
 
 class ConfigLoader implements IConfigLoader {
-  readonly runContext: RunContext;
+  readonly runContext: IContext;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
@@ -51,7 +51,7 @@ class ConfigLoader implements IConfigLoader {
   readonly draft?: Draft;
   readonly answer?: Answer;
 
-  constructor(runContext: RunContext) {
+  constructor(runContext: IContext) {
     try {
       this.runContext = runContext;
       this.config = this.loadConfig();
