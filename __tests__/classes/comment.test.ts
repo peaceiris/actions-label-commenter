@@ -136,11 +136,7 @@ describe('isDebug', () => {
   test('comment.render returns expected comment if isDebug is false', () => {
     const comment: Comment = new Comment(ctx, cfg);
     expect(comment.render).toBe(`\
-
-
 Thank you @userLogin for suggesting this. Please follow the issue templates.
-
-
 
 <!-- peaceiris/actions-label-commenter -->
 `);
@@ -151,11 +147,7 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
     const comment: Comment = new Comment(ctx, cfg);
 
     expect(comment.render).toBe(`\
-
-
 Thank you @userLogin for suggesting this. Please follow the issue templates.
-
-
 
 <div align="right"><a href="https://github.com/peaceiris/actions-label-commenter/actions/runs/123456789">Log</a> | <a href="https://github.com/peaceiris/actions-label-commenter#readme">Bot Usage</a></div>
 
@@ -189,11 +181,7 @@ describe('invalid.labeled.issue', () => {
 
   test('comment.render returns expected comment', () => {
     expect(comment.render).toBe(`\
-
-
 Thank you @userLogin for suggesting this. Please follow the issue templates.
-
-
 
 <!-- peaceiris/actions-label-commenter -->
 `);
@@ -225,11 +213,7 @@ describe('invalid.labeled.pr pull_request', () => {
 
   test('comment.render returns expected comment', () => {
     expect(comment.render).toBe(`\
-
-
 Thank you @userLogin for suggesting this. Please follow the pull request templates.
-
-
 
 <!-- peaceiris/actions-label-commenter -->
 `);
@@ -261,11 +245,7 @@ describe('invalid.labeled.pr pull_request_target', () => {
 
   test('comment.render returns expected comment', () => {
     expect(comment.render).toBe(`\
-
-
 Thank you @userLogin for suggesting this. Please follow the pull request templates.
-
-
 
 <!-- peaceiris/actions-label-commenter -->
 `);
@@ -296,11 +276,7 @@ describe('placeholders', () => {
     };
     const comment: Comment = new Comment(ctx, cfg);
     expect(comment.render).toBe(`\
-
-
 Thank you @userLogin for suggesting this. @senderLogin will reply.
-
-
 
 <!-- peaceiris/actions-label-commenter -->
 `);
@@ -329,12 +305,7 @@ Thank you @userLogin for suggesting this. @senderLogin will reply.
     };
     const comment: Comment = new Comment(ctx, cfg);
     expect(comment.render).toBe(`\
-
-
 This pull request #1 has been **LOCKED** with the label locked (spam)!\n\nPlease do not spam messages on this project. You may get blocked from this repository for doing so.
-
-
-
 
 <!-- peaceiris/actions-label-commenter -->
 `);

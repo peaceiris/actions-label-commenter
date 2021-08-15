@@ -82,7 +82,7 @@ class Comment implements ICommentGenerator {
   }
 
   getRawBody(): string {
-    const rawBody = `${this.header}\n\n${this.main}\n\n${this.footer}`;
+    const rawBody = `${this.header}\n\n${this.main}\n\n${this.footer}`.trim();
     const identifier = `\n<!-- ${ActionInfo.Owner}/${ActionInfo.Name} -->\n`;
     if (isDebug()) {
       return `${rawBody}\n\n${this.footerLinks}${identifier}`;
