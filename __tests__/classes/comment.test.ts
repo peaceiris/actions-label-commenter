@@ -29,13 +29,13 @@ const config = {
       name: 'invalid',
       labeled: {
         issue: {
-          body: 'Thank you @{{ issue.user.login }} for suggesting this. Please follow the issue templates.',
+          body: 'Thank you @{{ issue.user.login }} for suggesting this. Please follow the {{ eventName }} templates.',
           action: 'close',
           locking: 'lock',
           lock_reason: 'resolved'
         },
         pr: {
-          body: 'Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.',
+          body: 'Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the {{ eventName }} templates.',
           action: 'close',
           locking: 'lock'
         }
@@ -45,7 +45,7 @@ const config = {
       name: 'proposal',
       labeled: {
         discussion: {
-          body: 'Thank you @{{ author }} for suggesting this. @{{ labeler }} will reply.'
+          body: 'Thank you @{{ author }} for suggesting this. @{{ labeler }} will reply to this {{ eventName }}.'
         }
       }
     },
@@ -276,7 +276,7 @@ describe('placeholders', () => {
     };
     const comment: Comment = new Comment(ctx, cfg);
     expect(comment.render).toBe(`\
-Thank you @userLogin for suggesting this. @senderLogin will reply.
+Thank you @userLogin for suggesting this. @senderLogin will reply to this discussion.
 
 <!-- peaceiris/actions-label-commenter -->
 `);
