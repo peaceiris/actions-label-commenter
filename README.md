@@ -326,31 +326,31 @@ Scenario:
 
 ### Comment and Close Invalid Format Issue or Pull Request
 
-[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L10-L24)
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/v1.10.0/.github/label-commenter-config.yml#L11-L18)
 
 ![Comment and Close Invalid Format Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202643-711fdd80-e2af-11eb-9277-3f58be5fb0b7.jpg)
 
 ### Reopen Issue or Pull Request
 
-[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L10-L24)
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/v1.10.0/.github/label-commenter-config.yml#L19-L25)
 
 ![Reopen Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202646-73823780-e2af-11eb-9487-e7ab68d7e2dd.jpg)
 
 ### Comment and Close Wontfix Issue or Pull Request
 
-[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L32-L40)
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/v1.10.0/.github/label-commenter-config.yml#L33-L41)
 
 ![Comment and Close Wontfix Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202647-73823780-e2af-11eb-96ba-3977c08ea8a7.jpg)
 
 ### Comment and Close Duplicate Issue or Pull Request
 
-[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L41-L45)
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/v1.10.0/.github/label-commenter-config.yml#L42-L46)
 
 ![Comment and Close Duplicate Issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202649-741ace00-e2af-11eb-9176-a35af80491b1.jpg)
 
 ### Comment Multiple Line
 
-[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L25-L31)
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/v1.10.0/.github/label-commenter-config.yml#L26-L32)
 
 ![Comment Multiple Line - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202650-74b36480-e2af-11eb-9e21-e9014087eed2.jpg)
 
@@ -366,7 +366,7 @@ Multiple issues will be closed.
 
 ### Lock or Unlock issue or Pull Request
 
-[Source](https://github.com/peaceiris/actions-label-commenter/blob/main/.github/label-commenter-config.yml#L72-L96)
+[Source](https://github.com/peaceiris/actions-label-commenter/blob/v1.10.0/.github/label-commenter-config.yml#L73-L97)
 
 ![Lock or Unlock issue or Pull Request - peaceiris/actions-label-commenter GitHub Action](https://user-images.githubusercontent.com/30958501/125202657-75e49180-e2af-11eb-8358-64aa65459a8d.jpg)
 
