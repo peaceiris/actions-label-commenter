@@ -111,63 +111,15 @@ class Comment implements ICommentGenerator {
       }
     };
 
-    if (this.runContext.eventAlias === 'issue') {
-      return {
-        owner: this.runContext.owner,
-        repo: this.runContext.repo,
-        eventName: eventName,
-        number: this.runContext.issueNumber,
-        labelName: this.runContext.labelName,
-        author: this.runContext.userLogin,
-        labeler: this.runContext.senderLogin,
-        issue: {
-          user: {
-            login: this.runContext.userLogin
-          }
-        },
-        sender: {
-          login: this.runContext.senderLogin
-        }
-      };
-    } else if (this.runContext.eventAlias === 'discussion') {
-      return {
-        owner: this.runContext.owner,
-        repo: this.runContext.repo,
-        eventName: eventName,
-        number: this.runContext.issueNumber,
-        labelName: this.runContext.labelName,
-        author: this.runContext.userLogin,
-        labeler: this.runContext.senderLogin,
-        discussion: {
-          user: {
-            login: this.runContext.userLogin
-          }
-        },
-        sender: {
-          login: this.runContext.senderLogin
-        }
-      };
-    } else if (this.runContext.eventAlias === 'pr') {
-      return {
-        owner: this.runContext.owner,
-        repo: this.runContext.repo,
-        eventName: eventName,
-        number: this.runContext.issueNumber,
-        labelName: this.runContext.labelName,
-        author: this.runContext.userLogin,
-        labeler: this.runContext.senderLogin,
-        pull_request: {
-          user: {
-            login: this.runContext.userLogin
-          }
-        },
-        sender: {
-          login: this.runContext.senderLogin
-        }
-      };
-    } else {
-      return {};
-    }
+    return {
+      owner: this.runContext.owner,
+      repo: this.runContext.repo,
+      eventName: eventName,
+      number: this.runContext.issueNumber,
+      labelName: this.runContext.labelName,
+      author: this.runContext.userLogin,
+      labeler: this.runContext.senderLogin
+    };
   }
 
   get render(): string {

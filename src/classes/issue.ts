@@ -71,9 +71,14 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesCreateCommentResponse.status: ${res.status}`);
       }
     } catch (error) {
+<<<<<<< HEAD
       if (error instanceof Error) {
         throw new Error(error.message);
       }
+=======
+      groupConsoleLog('Dump error.stack', error.stack);
+      throw new Error(error.message);
+>>>>>>> 4ff1a82 (Deprecate (issue|pull_request|discussion).user.login and sender.login)
     }
   }
 
@@ -98,9 +103,14 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesUpdateResponse.status: ${res.status}`);
       }
     } catch (error) {
+<<<<<<< HEAD
       if (error instanceof Error) {
         throw new Error(error.message);
       }
+=======
+      groupConsoleLog('Dump error.stack', error.stack);
+      throw new Error(error.message);
+>>>>>>> 4ff1a82 (Deprecate (issue|pull_request|discussion).user.login and sender.login)
     }
   }
 
@@ -122,9 +132,14 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesLockResponse.status: ${res.status}`);
       }
     } catch (error) {
+<<<<<<< HEAD
       if (error instanceof Error) {
         throw new Error(error.message);
       }
+=======
+      groupConsoleLog('Dump error.stack', error.stack);
+      throw new Error(error.message);
+>>>>>>> 4ff1a82 (Deprecate (issue|pull_request|discussion).user.login and sender.login)
     }
   }
 
@@ -145,9 +160,14 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesUnlockResponse.status: ${res.status}`);
       }
     } catch (error) {
+<<<<<<< HEAD
       if (error instanceof Error) {
         throw new Error(error.message);
       }
+=======
+      groupConsoleLog('Dump error.stack', error.stack);
+      throw new Error(error.message);
+>>>>>>> 4ff1a82 (Deprecate (issue|pull_request|discussion).user.login and sender.login)
     }
   }
 

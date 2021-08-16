@@ -29,13 +29,13 @@ const config = {
       name: 'invalid',
       labeled: {
         issue: {
-          body: 'Thank you @{{ issue.user.login }} for suggesting this. Please follow the {{ eventName }} templates.',
+          body: 'Thank you @{{ author }} for suggesting this. Please follow the {{ eventName }} templates.',
           action: 'close',
           locking: 'lock',
           lock_reason: 'resolved'
         },
         pr: {
-          body: 'Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the {{ eventName }} templates.',
+          body: 'Thank you @{{ author }} for suggesting this. Please follow the {{ eventName }} templates.',
           action: 'close',
           locking: 'lock'
         }
@@ -68,7 +68,7 @@ describe('header and footer', () => {
     comment: {
       header: 'Hi, there.',
       footer:
-        "---\n\n> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.\n\n[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter"
+        "---\n\n> This is an automated comment created by the [{{ owner }}/{{ repo }}]. Responding to the bot or mentioning it won't have any effect.\n\n[{{ owner }}/{{ repo }}]: https://github.com/{{ owner }}/{{ repo }}"
     },
     ...config
   };

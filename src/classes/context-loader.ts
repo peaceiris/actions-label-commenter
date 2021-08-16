@@ -57,7 +57,6 @@ interface IContextLoader extends IContext {
   readonly payload: Payload;
   readonly runContext: IContext;
 
-  dumpContext(): void;
   getRunContext(): IContext;
   getId(): string;
   getEventName(): EventName;
@@ -92,6 +91,7 @@ class ContextLoader implements IContextLoader {
   readonly locked: boolean;
 
   constructor(inputs: Inputs, context: Context) {
+    groupConsoleLog('Dump GitHub context', context);
     try {
       this.inputs = inputs;
       this.context = context;
@@ -119,11 +119,6 @@ class ContextLoader implements IContextLoader {
         throw new Error(error.message);
       }
     }
-  }
-
-  dumpContext(): void {
-    groupConsoleLog('Dump GitHub context', this.context);
-    info(`Issue number: ${this.issueNumber}`);
   }
 
   getRunContext(): IContext {

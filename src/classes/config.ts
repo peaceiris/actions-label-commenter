@@ -2,7 +2,7 @@ import {GitHub} from '@actions/github/lib/utils';
 import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
-import {groupConsoleLog} from '../logger';
+import {groupConsoleLog, info} from '../logger';
 import {IContext} from './context-loader';
 import {LockReason} from './issue';
 
@@ -13,7 +13,7 @@ type Answer = boolean | undefined;
 
 interface IConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly config: any;
+  readonly config?: any;
   readonly parentFieldName: string;
   labelIndex: string;
   action: Action;
@@ -24,8 +24,9 @@ interface IConfig {
 }
 
 interface IConfigLoaderConstructor {
-  new (runContext: IContext): IConfigLoader;
-  build(runContext: IContext): Promise<IConfigLoader>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  new (runContext: IContext, config?: any): IConfigLoader;
+  build(runContext: IContext, githubClient: InstanceType<typeof GitHub>): Promise<IConfigLoader>;
 }
 
 interface IConfigLoader extends IConfig {
@@ -33,8 +34,7 @@ interface IConfigLoader extends IConfig {
 
   getConfig(): IConfig;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  loadConfig(githubClient: InstanceType<typeof GitHub>): any;
-  dumpConfig(): void;
+  loadConfig(runContext: IContext, githubClient: InstanceType<typeof GitHub>): any;
   getLabelIndex(): string;
   getLocking(): Locking;
   getAction(): Action;
@@ -46,7 +46,7 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
   readonly runContext: IContext;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly config: any;
+  readonly config?: any;
   readonly parentFieldName: string;
   labelIndex: string;
   action: Action;
@@ -55,12 +55,13 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
   draft?: Draft;
   answer?: Answer;
 
-  constructor(runContext: IContext) {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+  constructor(runContext: IContext, config?: any) {
     try {
       this.runContext = runContext;
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.config = {} as any;
+      this.config = config;
       this.parentFieldName = `labels.${this.runContext.labelName}.${this.runContext.labelEvent}.${this.runContext.eventAlias}`;
       this.labelIndex = this.getLabelIndex();
       this.action = this.getAction();
@@ -75,8 +76,27 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
     }
   }
 
-  static async build(runContext: IContext): Promise<IConfigLoader> {
-    return new ConfigLoader(runContext);
+  static async build(
+    runContext: IContext,
+    githubClient: InstanceType<typeof GitHub>
+  ): Promise<IConfigLoader> {
+    const configPlaceholder = {
+      labels: [
+        {
+          name: 'invalid',
+          labeled: {
+            issue: {
+              body: 'body placeholder'
+            }
+          }
+        }
+      ]
+    };
+    const config = await new ConfigLoader(runContext, configPlaceholder).loadConfig(
+      runContext,
+      githubClient
+    );
+    return new ConfigLoader(runContext, config);
   }
 
   getConfig(): IConfig {
@@ -94,20 +114,25 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async loadConfig(githubClient: InstanceType<typeof GitHub>): Promise<any> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response: any = await githubClient.rest.repos.getContent({
-      owner: this.runContext.owner,
-      repo: this.runContext.repo,
-      path: this.runContext.configFilePath,
-      ref: this.runContext.sha
-    });
+  async loadConfig(runContext: IContext, githubClient: InstanceType<typeof GitHub>): Promise<any> {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response: any = await githubClient.rest.repos.getContent({
+        owner: runContext.owner,
+        repo: runContext.repo,
+        path: runContext.configFilePath,
+        ref: runContext.sha
+      });
+      groupConsoleLog('Dump githubClient.rest.repos.getContent response', response);
+      info(
+        `Fetched ${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/blob/${runContext.sha}/${runContext.configFilePath}`
+      );
 
-    return yaml.load(Buffer.from(response.data.content, response.data.encoding).toString());
-  }
-
-  dumpConfig(): void {
-    groupConsoleLog('Dump config', this.config);
+      return yaml.load(Buffer.from(response.data.content, response.data.encoding).toString());
+    } catch (error) {
+      groupConsoleLog('Dump error.stack', error.stack);
+      throw new Error(error.message);
+    }
   }
 
   getLabelIndex(): string {
