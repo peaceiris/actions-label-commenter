@@ -74,6 +74,9 @@ describe('header and footer', () => {
   };
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'issue',
@@ -114,6 +117,9 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 describe('isDebug', () => {
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'issue',
@@ -159,6 +165,9 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 describe('invalid.labeled.issue', () => {
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'issue',
@@ -191,6 +200,9 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 describe('invalid.labeled.pr pull_request', () => {
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'pull_request',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'pr',
@@ -223,6 +235,9 @@ Thank you @userLogin for suggesting this. Please follow the pull request templat
 describe('invalid.labeled.pr pull_request_target', () => {
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'pull_request_target',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'pr',
@@ -256,6 +271,9 @@ describe('placeholders', () => {
   test('comment.render returns expected comment, author', () => {
     const ctx: IContext = {
       configFilePath: '.github/label-commenter-config.yml',
+      sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+      owner: 'peaceiris',
+      repo: 'actions-label-commenter',
       eventName: 'discussion',
       id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
       eventAlias: 'discussion',
@@ -285,6 +303,9 @@ Thank you @userLogin for suggesting this. @senderLogin will reply to this discus
   test('comment.render returns expected comment, eventName, number, labelName', () => {
     const ctx: IContext = {
       configFilePath: '.github/label-commenter-config.yml',
+      sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+      owner: 'peaceiris',
+      repo: 'actions-label-commenter',
       eventName: 'pull_request',
       id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
       eventAlias: 'pr',

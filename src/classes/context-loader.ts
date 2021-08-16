@@ -36,6 +36,9 @@ const eventType = (eventName: EventName): EventAlias =>
 
 interface IContext {
   readonly configFilePath: string;
+  readonly sha: string;
+  readonly owner: string;
+  readonly repo: string;
 
   readonly eventName: EventName;
   readonly id: string;
@@ -74,6 +77,9 @@ class ContextLoader implements IContextLoader {
   readonly runContext: IContext;
 
   readonly configFilePath: string;
+  readonly sha: string;
+  readonly owner: string;
+  readonly repo: string;
 
   readonly eventName: EventName;
   readonly id: string;
@@ -92,6 +98,9 @@ class ContextLoader implements IContextLoader {
       this.payload = context.payload as Payload;
 
       this.configFilePath = this.inputs.ConfigFilePath;
+      this.sha = this.context.sha;
+      this.owner = this.context.repo.owner;
+      this.repo = this.context.repo.repo;
 
       this.eventName = this.getEventName();
       this.id = this.getId();
@@ -120,6 +129,9 @@ class ContextLoader implements IContextLoader {
   getRunContext(): IContext {
     const runContext: IContext = {
       configFilePath: this.inputs.ConfigFilePath,
+      sha: this.sha,
+      owner: this.owner,
+      repo: this.repo,
       eventName: this.eventName,
       id: this.id,
       eventAlias: this.eventAlias,

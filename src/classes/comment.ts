@@ -113,6 +113,8 @@ class Comment implements ICommentGenerator {
 
     if (this.runContext.eventAlias === 'issue') {
       return {
+        owner: this.runContext.owner,
+        repo: this.runContext.repo,
         eventName: eventName,
         number: this.runContext.issueNumber,
         labelName: this.runContext.labelName,
@@ -129,6 +131,8 @@ class Comment implements ICommentGenerator {
       };
     } else if (this.runContext.eventAlias === 'discussion') {
       return {
+        owner: this.runContext.owner,
+        repo: this.runContext.repo,
         eventName: eventName,
         number: this.runContext.issueNumber,
         labelName: this.runContext.labelName,
@@ -145,6 +149,8 @@ class Comment implements ICommentGenerator {
       };
     } else if (this.runContext.eventAlias === 'pr') {
       return {
+        owner: this.runContext.owner,
+        repo: this.runContext.repo,
         eventName: eventName,
         number: this.runContext.issueNumber,
         labelName: this.runContext.labelName,

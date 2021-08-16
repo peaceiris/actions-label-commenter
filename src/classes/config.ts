@@ -1,5 +1,4 @@
-import fs from 'fs';
-
+import {GitHub} from '@actions/github/lib/utils';
 import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
@@ -16,12 +15,17 @@ interface IConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
   readonly parentFieldName: string;
-  readonly labelIndex: string;
-  readonly action: Action;
-  readonly locking: Locking;
-  readonly lockReason: LockReason;
-  readonly draft?: Draft;
-  readonly answer?: Answer;
+  labelIndex: string;
+  action: Action;
+  locking: Locking;
+  lockReason: LockReason;
+  draft?: Draft;
+  answer?: Answer;
+}
+
+interface IConfigLoaderConstructor {
+  new (runContext: IContext): IConfigLoader;
+  build(runContext: IContext): Promise<IConfigLoader>;
 }
 
 interface IConfigLoader extends IConfig {
@@ -29,7 +33,7 @@ interface IConfigLoader extends IConfig {
 
   getConfig(): IConfig;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  loadConfig(): any;
+  loadConfig(githubClient: InstanceType<typeof GitHub>): any;
   dumpConfig(): void;
   getLabelIndex(): string;
   getLocking(): Locking;
@@ -38,23 +42,25 @@ interface IConfigLoader extends IConfig {
   getAnswer(): Answer;
 }
 
-class ConfigLoader implements IConfigLoader {
+const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements IConfigLoader {
   readonly runContext: IContext;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly config: any;
   readonly parentFieldName: string;
-  readonly labelIndex: string;
-  readonly action: Action;
-  readonly locking: Locking;
-  readonly lockReason: LockReason;
-  readonly draft?: Draft;
-  readonly answer?: Answer;
+  labelIndex: string;
+  action: Action;
+  locking: Locking;
+  lockReason: LockReason;
+  draft?: Draft;
+  answer?: Answer;
 
   constructor(runContext: IContext) {
     try {
       this.runContext = runContext;
-      this.config = this.loadConfig();
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.config = {} as any;
       this.parentFieldName = `labels.${this.runContext.labelName}.${this.runContext.labelEvent}.${this.runContext.eventAlias}`;
       this.labelIndex = this.getLabelIndex();
       this.action = this.getAction();
@@ -67,6 +73,10 @@ class ConfigLoader implements IConfigLoader {
         throw new Error(error.message);
       }
     }
+  }
+
+  static async build(runContext: IContext): Promise<IConfigLoader> {
+    return new ConfigLoader(runContext);
   }
 
   getConfig(): IConfig {
@@ -84,8 +94,16 @@ class ConfigLoader implements IConfigLoader {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  loadConfig(): any {
-    return yaml.load(fs.readFileSync(this.runContext.configFilePath, 'utf8'));
+  async loadConfig(githubClient: InstanceType<typeof GitHub>): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response: any = await githubClient.rest.repos.getContent({
+      owner: this.runContext.owner,
+      repo: this.runContext.repo,
+      path: this.runContext.configFilePath,
+      ref: this.runContext.sha
+    });
+
+    return yaml.load(Buffer.from(response.data.content, response.data.encoding).toString());
   }
 
   dumpConfig(): void {
@@ -146,6 +164,6 @@ class ConfigLoader implements IConfigLoader {
       `${this.runContext.labelEvent}.${this.runContext.eventAlias}.answer`
     );
   }
-}
+};
 
 export {Locking, Action, Draft, Answer, IConfig, IConfigLoader, ConfigLoader};
