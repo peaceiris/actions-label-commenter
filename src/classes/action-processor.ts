@@ -111,7 +111,7 @@ class ActionProcessor implements IActionProcessor {
       await this.updateState();
 
       if (this.locked) {
-        info(`Issue #${this.issue.number} is locked, skip creating comment`);
+        info(`#${this.issue.number} is locked, skip creating comment`);
       } else if (!this.commentBody) {
         info(`body is empty, skip creating comment`);
       } else {

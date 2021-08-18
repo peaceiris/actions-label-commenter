@@ -95,10 +95,10 @@ class Issue implements IIssueProcessor {
 
       if (res.status === 200) {
         if (state === 'closed') {
-          info(`Issue #${this.number} has been closed`);
+          info(`#${this.number} has been closed`);
           return;
         }
-        info(`Issue #${this.number} has been reopened`);
+        info(`#${this.number} has been reopened`);
       } else {
         throw new Error(`IssuesUpdateResponse.status: ${res.status}`);
       }
@@ -126,7 +126,7 @@ class Issue implements IIssueProcessor {
       groupConsoleLog('IssuesLockResponse', res);
 
       if (res.status === 204) {
-        info(`Issue #${this.number} has been locked`);
+        info(`#${this.number} has been locked`);
         return;
       } else {
         throw new Error(`IssuesLockResponse.status: ${res.status}`);
@@ -154,7 +154,7 @@ class Issue implements IIssueProcessor {
       groupConsoleLog('IssuesUnlockResponse', res);
 
       if (res.status === 204) {
-        info(`Issue #${this.number} has been unlocked`);
+        info(`#${this.number} has been unlocked`);
         return;
       } else {
         throw new Error(`IssuesUnlockResponse.status: ${res.status}`);
@@ -190,7 +190,7 @@ class Issue implements IIssueProcessor {
 
     try {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
-      info(`Pull-request #${this.number} has been marked as ready for review`);
+      info(`#${this.number} has been marked as ready for review`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       if (error instanceof GraphqlResponseError) {
@@ -224,7 +224,7 @@ class Issue implements IIssueProcessor {
 
     try {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
-      info(`Pull-request #${this.number} has been converted to draft`);
+      info(`#${this.number} has been converted to draft`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       if (error instanceof GraphqlResponseError) {
@@ -300,7 +300,7 @@ class Issue implements IIssueProcessor {
 
     try {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
-      info(`Locked #${this.number}`);
+      info(`#${this.number} has been locked`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       if (error instanceof GraphqlResponseError) {
@@ -335,7 +335,7 @@ class Issue implements IIssueProcessor {
 
     try {
       const res: GraphQlQueryResponseData = await this.githubClient.graphql(query, variables);
-      info(`Unlocked #${this.number}`);
+      info(`#${this.number} has been unlocked`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
       if (error instanceof GraphqlResponseError) {
