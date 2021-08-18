@@ -136,7 +136,7 @@ class ContextLoader implements IContextLoader {
       userLogin: this.userLogin,
       senderLogin: this.senderLogin,
       locked: this.locked
-    };
+    } as const;
     groupConsoleLog('Dump runContext', runContext);
     return runContext;
   }

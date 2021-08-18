@@ -40,8 +40,7 @@ class ActionProcessor implements IActionProcessor {
     this.locked = locked;
   }
 
-  async updateState(): Promise<void> {
-    // TODO: v2 Replace action with state
+  async updateIssueState(): Promise<void> {
     if (this.config.action === 'close') {
       await this.issue.updateState('closed');
     } else if (this.config.action === 'open') {
@@ -53,6 +52,42 @@ class ActionProcessor implements IActionProcessor {
         `Invalid value "${this.config.action}" ${this.config.parentFieldName}.action`
       );
     }
+  }
+
+  async updatePullRequestState(): Promise<void> {
+    if (this.config.draft === true) {
+      if (this.config.action === 'close') {
+        await this.issue.convertPullRequestToDraft();
+        await this.updateIssueState();
+      } else if (this.config.action === 'open') {
+        await this.updateIssueState();
+        await this.issue.convertPullRequestToDraft();
+      }
+    } else if (this.config.draft === false) {
+      if (this.config.action === 'close') {
+        await this.issue.markPullRequestReadyForReview();
+        await this.updateIssueState();
+      } else if (this.config.action === 'open') {
+        await this.updateIssueState();
+        await this.issue.markPullRequestReadyForReview();
+      }
+    } else {
+      await this.updateIssueState();
+    }
+  }
+
+  async updateState(): Promise<void> {
+    if (this.eventAlias === 'discussion') {
+      return;
+    }
+
+    if (this.eventAlias === 'pr') {
+      this.updatePullRequestState();
+      return;
+    }
+
+    // issue
+    this.updateIssueState();
   }
 
   async process(): Promise<void> {
@@ -73,15 +108,7 @@ class ActionProcessor implements IActionProcessor {
         this.setLocked(false);
       }
 
-      if (this.eventAlias !== 'discussion') {
-        await this.updateState();
-      }
-
-      if (this.eventAlias === 'pr' && this.config.draft) {
-        await this.issue.convertPullRequestToDraft();
-      } else if (this.config.draft === false) {
-        await this.issue.markPullRequestReadyForReview();
-      }
+      await this.updateState();
 
       if (this.locked) {
         info(`Issue #${this.issue.number} is locked, skip creating comment`);

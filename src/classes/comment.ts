@@ -119,7 +119,7 @@ class Comment implements ICommentGenerator {
       labelName: this.runContext.labelName,
       author: this.runContext.userLogin,
       labeler: this.runContext.senderLogin
-    };
+    } as const;
   }
 
   get render(): string {

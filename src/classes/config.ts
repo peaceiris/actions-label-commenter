@@ -1,10 +1,16 @@
 import {GitHub} from '@actions/github/lib/utils';
+import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
 import {groupConsoleLog, info} from '../logger';
 import {IContext} from './context-loader';
 import {LockReason} from './issue';
+
+const octokit = new GitHub();
+type ReposGetContentResponse = GetResponseTypeFromEndpointMethod<
+  typeof octokit.rest.repos.getContent
+>;
 
 type Locking = 'lock' | 'unlock' | undefined;
 type Action = 'close' | 'open' | undefined;
@@ -91,7 +97,7 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
           }
         }
       ]
-    };
+    } as const;
     const config = await new ConfigLoader(runContext, configPlaceholder).loadConfig(
       runContext,
       githubClient
@@ -109,26 +115,33 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
       lockReason: this.lockReason,
       draft: this.draft,
       answer: this.answer
-    };
+    } as const;
     return config;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async loadConfig(runContext: IContext, githubClient: InstanceType<typeof GitHub>): Promise<any> {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const response: any = await githubClient.rest.repos.getContent({
+      const res: ReposGetContentResponse = await githubClient.rest.repos.getContent({
         owner: runContext.owner,
         repo: runContext.repo,
         path: runContext.configFilePath,
         ref: runContext.sha
       });
-      groupConsoleLog('Dump githubClient.rest.repos.getContent response', response);
-      info(
-        `Fetched ${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/blob/${runContext.sha}/${runContext.configFilePath}`
-      );
 
-      return yaml.load(Buffer.from(response.data.content, response.data.encoding).toString());
+      groupConsoleLog('Dump githubClient.rest.repos.getContent response', res);
+
+      if (res.status === 200) {
+        info(
+          `Fetched ${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/blob/${runContext.sha}/${runContext.configFilePath}`
+        );
+        return yaml.load(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          Buffer.from((res.data as any).content, (res.data as any).encoding).toString()
+        );
+      } else {
+        throw new Error(`ReposGetContentResponse.status: ${res.status}`);
+      }
     } catch (error) {
       groupConsoleLog('Dump error.stack', error.stack);
       throw new Error(error.message);
