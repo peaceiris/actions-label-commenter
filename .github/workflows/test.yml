@@ -21,18 +21,9 @@ jobs:
         run: echo "::set-output name=NVMRC::$(cat .nvmrc)"
         id: nvm
 
-      - name: Setup Node
-        uses: actions/setup-node@v2.4.0
+      - uses: peaceiris/workflows/setup-node@v0.10.0
         with:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
-
-      - name: Cache dependencies
-        uses: actions/cache@v2.1.6
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - run: npm i -g npm
       - run: npm ci
