@@ -72,7 +72,7 @@ class Issue implements IIssueProcessor {
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       }
     }
   }
@@ -99,7 +99,7 @@ class Issue implements IIssueProcessor {
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       }
     }
   }
@@ -123,7 +123,7 @@ class Issue implements IIssueProcessor {
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       }
     }
   }
@@ -176,10 +176,10 @@ class Issue implements IIssueProcessor {
       if (error instanceof GraphqlResponseError) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         groupConsoleLog('Request failed', error.request as any);
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       } else {
         if (error instanceof Error) {
-          throw new Error(error.message as string);
+          throw new Error(error.message);
         }
       }
     }
@@ -210,10 +210,10 @@ class Issue implements IIssueProcessor {
       if (error instanceof GraphqlResponseError) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         groupConsoleLog('Request failed', error.request as any);
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       } else {
         if (error instanceof Error) {
-          throw new Error(error.message as string);
+          throw new Error(error.message);
         }
         throw new Error('unexpected error');
       }
@@ -249,10 +249,10 @@ class Issue implements IIssueProcessor {
       if (error instanceof GraphqlResponseError) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         groupConsoleLog('Request failed', error.request as any);
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       } else {
         if (error instanceof Error) {
-          throw new Error(error.message as string);
+          throw new Error(error.message);
         }
         throw new Error('unexpected error');
       }
@@ -286,10 +286,10 @@ class Issue implements IIssueProcessor {
       if (error instanceof GraphqlResponseError) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         groupConsoleLog('Request failed', error.request as any);
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       } else {
         if (error instanceof Error) {
-          throw new Error(error.message as string);
+          throw new Error(error.message);
         }
         throw new Error('unexpected error');
       }
@@ -321,10 +321,10 @@ class Issue implements IIssueProcessor {
       if (error instanceof GraphqlResponseError) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         groupConsoleLog('Request failed', error.request as any);
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       } else {
         if (error instanceof Error) {
-          throw new Error(error.message as string);
+          throw new Error(error.message);
         }
         throw new Error('unexpected error');
       }
@@ -356,10 +356,10 @@ class Issue implements IIssueProcessor {
       if (error instanceof GraphqlResponseError) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         groupConsoleLog('Request failed', error.request as any);
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       } else {
         if (error instanceof Error) {
-          throw new Error(error.message as string);
+          throw new Error(error.message);
         }
         throw new Error('unexpected error');
       }

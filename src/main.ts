@@ -33,7 +33,7 @@ export async function run(): Promise<void> {
     await actionProcessor.process();
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(error.message as string);
+      throw new Error(error.message);
     }
   }
 }

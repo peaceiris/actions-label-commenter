@@ -108,7 +108,7 @@ class ActionProcessor implements IActionProcessor {
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       }
     }
   }
