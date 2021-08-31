@@ -107,7 +107,7 @@ class ContextLoader implements IContextLoader {
     } catch (error) {
       groupConsoleLog('Dump context', context);
       if (error instanceof Error) {
-        throw new Error(error.message as string);
+        throw new Error(error.message);
       }
     }
   }
