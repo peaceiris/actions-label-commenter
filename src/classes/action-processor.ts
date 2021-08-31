@@ -107,7 +107,9 @@ class ActionProcessor implements IActionProcessor {
         this.setLocked(true);
       }
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        throw new Error(error.message as string);
+      }
     }
   }
 }

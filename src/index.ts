@@ -7,7 +7,11 @@ import {run} from './main';
   try {
     await run();
   } catch (error) {
-    groupConsoleLog('Dump error.stack', error.stack);
-    setFailed(`Action failed with error: ${error.message}`);
+    if (error instanceof Error) {
+      groupConsoleLog('Dump error.stack', error.message);
+      setFailed(error.message);
+    } else {
+      setFailed('unexpected error');
+    }
   }
 })();
