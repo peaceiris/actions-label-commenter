@@ -32,6 +32,8 @@ export async function run(): Promise<void> {
     );
     await actionProcessor.process();
   } catch (error) {
-    throw new Error(error.message);
+    if (error instanceof Error) {
+      throw new Error(error.message as string);
+    }
   }
 }

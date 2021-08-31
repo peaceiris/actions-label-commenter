@@ -1,7 +1,9 @@
 import {context} from '@actions/github';
 import {GitHub} from '@actions/github/lib/utils';
 import type {GraphQlQueryResponseData} from '@octokit/graphql';
+import {GraphqlResponseError} from '@octokit/graphql';
 import type {RequestParameters} from '@octokit/graphql/dist-types/types';
+// eslint-disable-next-line import/named
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 import {groupConsoleLog, info} from '../logger';
@@ -69,7 +71,9 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesCreateCommentResponse.status: ${res.status}`);
       }
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        throw new Error(error.message as string);
+      }
     }
   }
 
@@ -94,7 +98,9 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesUpdateResponse.status: ${res.status}`);
       }
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        throw new Error(error.message as string);
+      }
     }
   }
 
@@ -116,7 +122,9 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesLockResponse.status: ${res.status}`);
       }
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        throw new Error(error.message as string);
+      }
     }
   }
 
@@ -137,7 +145,9 @@ class Issue implements IIssueProcessor {
         throw new Error(`IssuesUnlockResponse.status: ${res.status}`);
       }
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     }
   }
 
@@ -163,8 +173,15 @@ class Issue implements IIssueProcessor {
       info(`Pull-request #${this.number} has been marked as ready for review`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
-      groupConsoleLog('Request failed', error.request);
-      throw new Error(error.message);
+      if (error instanceof GraphqlResponseError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        groupConsoleLog('Request failed', error.request as any);
+        throw new Error(error.message as string);
+      } else {
+        if (error instanceof Error) {
+          throw new Error(error.message as string);
+        }
+      }
     }
   }
 
@@ -190,8 +207,16 @@ class Issue implements IIssueProcessor {
       info(`Pull-request #${this.number} has been converted to draft`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
-      groupConsoleLog('Request failed', error.request);
-      throw new Error(error.message);
+      if (error instanceof GraphqlResponseError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        groupConsoleLog('Request failed', error.request as any);
+        throw new Error(error.message as string);
+      } else {
+        if (error instanceof Error) {
+          throw new Error(error.message as string);
+        }
+        throw new Error('unexpected error');
+      }
     }
   }
 
@@ -221,8 +246,16 @@ class Issue implements IIssueProcessor {
       groupConsoleLog('GraphQlQueryResponseData', res);
       return res.addDiscussionComment.comment.id;
     } catch (error) {
-      groupConsoleLog('Request failed', error.request);
-      throw new Error(error.message);
+      if (error instanceof GraphqlResponseError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        groupConsoleLog('Request failed', error.request as any);
+        throw new Error(error.message as string);
+      } else {
+        if (error instanceof Error) {
+          throw new Error(error.message as string);
+        }
+        throw new Error('unexpected error');
+      }
     }
   }
 
@@ -250,8 +283,16 @@ class Issue implements IIssueProcessor {
       info(`Locked #${this.number}`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
-      groupConsoleLog('Request failed', error.request);
-      throw new Error(error.message);
+      if (error instanceof GraphqlResponseError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        groupConsoleLog('Request failed', error.request as any);
+        throw new Error(error.message as string);
+      } else {
+        if (error instanceof Error) {
+          throw new Error(error.message as string);
+        }
+        throw new Error('unexpected error');
+      }
     }
   }
 
@@ -277,8 +318,16 @@ class Issue implements IIssueProcessor {
       info(`Unlocked #${this.number}`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
-      groupConsoleLog('Request failed', error.request);
-      throw new Error(error.message);
+      if (error instanceof GraphqlResponseError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        groupConsoleLog('Request failed', error.request as any);
+        throw new Error(error.message as string);
+      } else {
+        if (error instanceof Error) {
+          throw new Error(error.message as string);
+        }
+        throw new Error('unexpected error');
+      }
     }
   }
 
@@ -304,8 +353,16 @@ class Issue implements IIssueProcessor {
       info(`Mark the discussion comment as answer`);
       groupConsoleLog('GraphQlQueryResponseData', res);
     } catch (error) {
-      groupConsoleLog('Request failed', error.request);
-      throw new Error(error.message);
+      if (error instanceof GraphqlResponseError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        groupConsoleLog('Request failed', error.request as any);
+        throw new Error(error.message as string);
+      } else {
+        if (error instanceof Error) {
+          throw new Error(error.message as string);
+        }
+        throw new Error('unexpected error');
+      }
     }
   }
 }

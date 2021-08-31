@@ -63,7 +63,9 @@ class ConfigLoader implements IConfigLoader {
       this.draft = this.getDraft();
       this.answer = this.getAnswer();
     } catch (error) {
-      throw new Error(error.message);
+      if (error instanceof Error) {
+        throw new Error(error.message as string);
+      }
     }
   }
 
