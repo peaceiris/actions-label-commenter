@@ -1,4 +1,5 @@
 import {GitHub} from '@actions/github/lib/utils';
+// eslint-disable-next-line import/named
 import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 import yaml from 'js-yaml';
 import {get} from 'lodash-es';
