@@ -29,13 +29,13 @@ const config = {
       name: 'invalid',
       labeled: {
         issue: {
-          body: 'Thank you @{{ issue.user.login }} for suggesting this. Please follow the {{ eventName }} templates.',
+          body: 'Thank you @{{ author }} for suggesting this. Please follow the {{ eventName }} templates.',
           action: 'close',
           locking: 'lock',
           lock_reason: 'resolved'
         },
         pr: {
-          body: 'Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the {{ eventName }} templates.',
+          body: 'Thank you @{{ author }} for suggesting this. Please follow the {{ eventName }} templates.',
           action: 'close',
           locking: 'lock'
         }
@@ -68,12 +68,15 @@ describe('header and footer', () => {
     comment: {
       header: 'Hi, there.',
       footer:
-        "---\n\n> This is an automated comment created by the [peaceiris/actions-label-commenter]. Responding to the bot or mentioning it won't have any effect.\n\n[peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter"
+        "---\n\n> This is an automated comment created by the [{{ owner }}/{{ repo }}]. Responding to the bot or mentioning it won't have any effect.\n\n[{{ owner }}/{{ repo }}]: https://github.com/{{ owner }}/{{ repo }}"
     },
     ...config
-  };
+  } as const;
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'issue',
@@ -83,7 +86,7 @@ describe('header and footer', () => {
     userLogin: 'userLogin',
     senderLogin: 'senderLogin',
     locked: false
-  };
+  } as const;
   const cfg: IConfig = {
     config: configWithComment,
     parentFieldName: 'labels.invalid.labeled.issue',
@@ -91,7 +94,7 @@ describe('header and footer', () => {
     locking: 'unlock',
     action: 'close',
     lockReason: 'resolved'
-  };
+  } as const;
 
   test('comment.render returns expected comment with header and footer', () => {
     const comment: Comment = new Comment(ctx, cfg);
@@ -114,6 +117,9 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 describe('isDebug', () => {
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'issue',
@@ -123,7 +129,7 @@ describe('isDebug', () => {
     userLogin: 'userLogin',
     senderLogin: 'senderLogin',
     locked: false
-  };
+  } as const;
   const cfg: IConfig = {
     config: config,
     parentFieldName: 'labels.invalid.labeled.issue',
@@ -131,7 +137,7 @@ describe('isDebug', () => {
     locking: 'unlock',
     action: 'close',
     lockReason: 'resolved'
-  };
+  } as const;
 
   test('comment.render returns expected comment if isDebug is false', () => {
     const comment: Comment = new Comment(ctx, cfg);
@@ -159,6 +165,9 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 describe('invalid.labeled.issue', () => {
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'issues',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'issue',
@@ -168,7 +177,7 @@ describe('invalid.labeled.issue', () => {
     userLogin: 'userLogin',
     senderLogin: 'senderLogin',
     locked: false
-  };
+  } as const;
   const cfg: IConfig = {
     config: config,
     parentFieldName: 'labels.invalid.labeled.issue',
@@ -176,7 +185,7 @@ describe('invalid.labeled.issue', () => {
     locking: undefined,
     action: 'close',
     lockReason: 'resolved'
-  };
+  } as const;
   const comment: Comment = new Comment(ctx, cfg);
 
   test('comment.render returns expected comment', () => {
@@ -191,6 +200,9 @@ Thank you @userLogin for suggesting this. Please follow the issue templates.
 describe('invalid.labeled.pr pull_request', () => {
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'pull_request',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'pr',
@@ -200,7 +212,7 @@ describe('invalid.labeled.pr pull_request', () => {
     userLogin: 'userLogin',
     senderLogin: 'senderLogin',
     locked: false
-  };
+  } as const;
   const cfg: IConfig = {
     config: config,
     parentFieldName: 'labels.invalid.labeled.issue',
@@ -208,7 +220,7 @@ describe('invalid.labeled.pr pull_request', () => {
     locking: undefined,
     action: 'close',
     lockReason: undefined
-  };
+  } as const;
   const comment: Comment = new Comment(ctx, cfg);
 
   test('comment.render returns expected comment', () => {
@@ -223,6 +235,9 @@ Thank you @userLogin for suggesting this. Please follow the pull request templat
 describe('invalid.labeled.pr pull_request_target', () => {
   const ctx: IContext = {
     configFilePath: '.github/label-commenter-config.yml',
+    sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+    owner: 'peaceiris',
+    repo: 'actions-label-commenter',
     eventName: 'pull_request_target',
     id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
     eventAlias: 'pr',
@@ -232,7 +247,7 @@ describe('invalid.labeled.pr pull_request_target', () => {
     userLogin: 'userLogin',
     senderLogin: 'senderLogin',
     locked: false
-  };
+  } as const;
   const cfg: IConfig = {
     config: config,
     parentFieldName: 'labels.invalid.labeled.issue',
@@ -240,7 +255,7 @@ describe('invalid.labeled.pr pull_request_target', () => {
     locking: undefined,
     action: 'close',
     lockReason: undefined
-  };
+  } as const;
   const comment: Comment = new Comment(ctx, cfg);
 
   test('comment.render returns expected comment', () => {
@@ -256,6 +271,9 @@ describe('placeholders', () => {
   test('comment.render returns expected comment, author', () => {
     const ctx: IContext = {
       configFilePath: '.github/label-commenter-config.yml',
+      sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+      owner: 'peaceiris',
+      repo: 'actions-label-commenter',
       eventName: 'discussion',
       id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
       eventAlias: 'discussion',
@@ -265,7 +283,7 @@ describe('placeholders', () => {
       userLogin: 'userLogin',
       senderLogin: 'senderLogin',
       locked: false
-    };
+    } as const;
     const cfg: IConfig = {
       config: config,
       parentFieldName: 'labels.invalid.labeled.discussion',
@@ -273,7 +291,7 @@ describe('placeholders', () => {
       locking: undefined,
       action: undefined,
       lockReason: undefined
-    };
+    } as const;
     const comment: Comment = new Comment(ctx, cfg);
     expect(comment.render).toBe(`\
 Thank you @userLogin for suggesting this. @senderLogin will reply to this discussion.
@@ -285,6 +303,9 @@ Thank you @userLogin for suggesting this. @senderLogin will reply to this discus
   test('comment.render returns expected comment, eventName, number, labelName', () => {
     const ctx: IContext = {
       configFilePath: '.github/label-commenter-config.yml',
+      sha: '70a7e5a7341326e42a96580b0134a4054c47e2a8',
+      owner: 'peaceiris',
+      repo: 'actions-label-commenter',
       eventName: 'pull_request',
       id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
       eventAlias: 'pr',
@@ -294,7 +315,7 @@ Thank you @userLogin for suggesting this. @senderLogin will reply to this discus
       userLogin: 'userLogin',
       senderLogin: 'senderLogin',
       locked: false
-    };
+    } as const;
     const cfg: IConfig = {
       config: config,
       parentFieldName: 'labels.locked (spam).labeled.pr',
@@ -302,7 +323,7 @@ Thank you @userLogin for suggesting this. @senderLogin will reply to this discus
       locking: 'lock',
       action: 'close',
       lockReason: 'spam'
-    };
+    } as const;
     const comment: Comment = new Comment(ctx, cfg);
     expect(comment.render).toBe(`\
 This pull request #1 has been **LOCKED** with the label locked (spam)!\n\nPlease do not spam messages on this project. You may get blocked from this repository for doing so.

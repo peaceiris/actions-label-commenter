@@ -36,6 +36,9 @@ const eventType = (eventName: EventName): EventAlias =>
 
 interface IContext {
   readonly configFilePath: string;
+  readonly sha: string;
+  readonly owner: string;
+  readonly repo: string;
 
   readonly eventName: EventName;
   readonly id: string;
@@ -54,7 +57,6 @@ interface IContextLoader extends IContext {
   readonly payload: Payload;
   readonly runContext: IContext;
 
-  dumpContext(): void;
   getRunContext(): IContext;
   getId(): string;
   getEventName(): EventName;
@@ -74,6 +76,9 @@ class ContextLoader implements IContextLoader {
   readonly runContext: IContext;
 
   readonly configFilePath: string;
+  readonly sha: string;
+  readonly owner: string;
+  readonly repo: string;
 
   readonly eventName: EventName;
   readonly id: string;
@@ -86,12 +91,16 @@ class ContextLoader implements IContextLoader {
   readonly locked: boolean;
 
   constructor(inputs: Inputs, context: Context) {
+    groupConsoleLog('Dump GitHub context', context);
     try {
       this.inputs = inputs;
       this.context = context;
       this.payload = context.payload as Payload;
 
       this.configFilePath = this.inputs.ConfigFilePath;
+      this.sha = this.context.sha;
+      this.owner = this.context.repo.owner;
+      this.repo = this.context.repo.repo;
 
       this.eventName = this.getEventName();
       this.id = this.getId();
@@ -112,14 +121,12 @@ class ContextLoader implements IContextLoader {
     }
   }
 
-  dumpContext(): void {
-    groupConsoleLog('Dump GitHub context', this.context);
-    info(`Issue number: ${this.issueNumber}`);
-  }
-
   getRunContext(): IContext {
     const runContext: IContext = {
       configFilePath: this.inputs.ConfigFilePath,
+      sha: this.sha,
+      owner: this.owner,
+      repo: this.repo,
       eventName: this.eventName,
       id: this.id,
       eventAlias: this.eventAlias,
@@ -129,7 +136,7 @@ class ContextLoader implements IContextLoader {
       userLogin: this.userLogin,
       senderLogin: this.senderLogin,
       locked: this.locked
-    };
+    } as const;
     groupConsoleLog('Dump runContext', runContext);
     return runContext;
   }

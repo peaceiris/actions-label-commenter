@@ -1,11 +1,17 @@
-import fs from 'fs';
-
+import {GitHub} from '@actions/github/lib/utils';
+// eslint-disable-next-line import/named
+import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 import yaml from 'js-yaml';
 import {get} from 'lodash-es';
 
-import {groupConsoleLog} from '../logger';
+import {groupConsoleLog, info} from '../logger';
 import {IContext} from './context-loader';
 import {LockReason} from './issue';
+
+const octokit = new GitHub();
+type ReposGetContentResponse = GetResponseTypeFromEndpointMethod<
+  typeof octokit.rest.repos.getContent
+>;
 
 type Locking = 'lock' | 'unlock' | undefined;
 type Action = 'close' | 'open' | undefined;
@@ -14,14 +20,20 @@ type Answer = boolean | undefined;
 
 interface IConfig {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly config: any;
+  readonly config?: any;
   readonly parentFieldName: string;
-  readonly labelIndex: string;
-  readonly action: Action;
-  readonly locking: Locking;
-  readonly lockReason: LockReason;
-  readonly draft?: Draft;
-  readonly answer?: Answer;
+  labelIndex: string;
+  action: Action;
+  locking: Locking;
+  lockReason: LockReason;
+  draft?: Draft;
+  answer?: Answer;
+}
+
+interface IConfigLoaderConstructor {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  new (runContext: IContext, config?: any): IConfigLoader;
+  build(runContext: IContext, githubClient: InstanceType<typeof GitHub>): Promise<IConfigLoader>;
 }
 
 interface IConfigLoader extends IConfig {
@@ -29,8 +41,7 @@ interface IConfigLoader extends IConfig {
 
   getConfig(): IConfig;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  loadConfig(): any;
-  dumpConfig(): void;
+  loadConfig(runContext: IContext, githubClient: InstanceType<typeof GitHub>): any;
   getLabelIndex(): string;
   getLocking(): Locking;
   getAction(): Action;
@@ -38,23 +49,26 @@ interface IConfigLoader extends IConfig {
   getAnswer(): Answer;
 }
 
-class ConfigLoader implements IConfigLoader {
+const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements IConfigLoader {
   readonly runContext: IContext;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly config: any;
+  readonly config?: any;
   readonly parentFieldName: string;
-  readonly labelIndex: string;
-  readonly action: Action;
-  readonly locking: Locking;
-  readonly lockReason: LockReason;
-  readonly draft?: Draft;
-  readonly answer?: Answer;
+  labelIndex: string;
+  action: Action;
+  locking: Locking;
+  lockReason: LockReason;
+  draft?: Draft;
+  answer?: Answer;
 
-  constructor(runContext: IContext) {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+  constructor(runContext: IContext, config?: any) {
     try {
       this.runContext = runContext;
-      this.config = this.loadConfig();
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.config = config;
       this.parentFieldName = `labels.${this.runContext.labelName}.${this.runContext.labelEvent}.${this.runContext.eventAlias}`;
       this.labelIndex = this.getLabelIndex();
       this.action = this.getAction();
@@ -66,7 +80,31 @@ class ConfigLoader implements IConfigLoader {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
+      throw new Error('unexpected error');
     }
+  }
+
+  static async build(
+    runContext: IContext,
+    githubClient: InstanceType<typeof GitHub>
+  ): Promise<IConfigLoader> {
+    const configPlaceholder = {
+      labels: [
+        {
+          name: 'invalid',
+          labeled: {
+            issue: {
+              body: 'body placeholder'
+            }
+          }
+        }
+      ]
+    } as const;
+    const config = await new ConfigLoader(runContext, configPlaceholder).loadConfig(
+      runContext,
+      githubClient
+    );
+    return new ConfigLoader(runContext, config);
   }
 
   getConfig(): IConfig {
@@ -79,17 +117,40 @@ class ConfigLoader implements IConfigLoader {
       lockReason: this.lockReason,
       draft: this.draft,
       answer: this.answer
-    };
+    } as const;
     return config;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  loadConfig(): any {
-    return yaml.load(fs.readFileSync(this.runContext.configFilePath, 'utf8'));
-  }
+  async loadConfig(runContext: IContext, githubClient: InstanceType<typeof GitHub>): Promise<any> {
+    try {
+      const res: ReposGetContentResponse = await githubClient.rest.repos.getContent({
+        owner: runContext.owner,
+        repo: runContext.repo,
+        path: runContext.configFilePath,
+        ref: runContext.sha
+      });
 
-  dumpConfig(): void {
-    groupConsoleLog('Dump config', this.config);
+      groupConsoleLog('Dump githubClient.rest.repos.getContent response', res);
+
+      if (res.status === 200) {
+        info(
+          `Fetched ${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/blob/${runContext.sha}/${runContext.configFilePath}`
+        );
+        return yaml.load(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          Buffer.from((res.data as any).content, (res.data as any).encoding).toString()
+        );
+      } else {
+        throw new Error(`ReposGetContentResponse.status: ${res.status}`);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        groupConsoleLog('Dump error.stack', error.stack);
+        throw new Error(error.message);
+      }
+      throw new Error('unexpected error');
+    }
   }
 
   getLabelIndex(): string {
@@ -146,6 +207,6 @@ class ConfigLoader implements IConfigLoader {
       `${this.runContext.labelEvent}.${this.runContext.eventAlias}.answer`
     );
   }
-}
+};
 
 export {Locking, Action, Draft, Answer, IConfig, IConfigLoader, ConfigLoader};
