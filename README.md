@@ -68,13 +68,9 @@ name: Label Commenter
 
 on:
   issues:
-    types:
-      - labeled
-      - unlabeled
+    types: [labeled, unlabeled]
   pull_request_target:
-    types:
-      - labeled
-      - unlabeled
+    types: [labeled, unlabeled]
 
 permissions:
   contents: read
