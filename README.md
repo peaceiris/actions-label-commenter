@@ -16,7 +16,7 @@ Label Commenter Action
 
 </div>
 
-This action is one of label triggered GitHub Actions for posting a template comment, and automatically open/close/lock/unlock issues or pull-requests.
+This action is one of label triggered GitHub Actions for posting a template comment, and automatically open/close/lock/unlock issues, pull-requests and discussions.
 
 This Action was submitted to the [GitHub Actions Hackathon] and featured by GitHub. ([Featured actions from the GitHub Actions Hackathon - The GitHub Blog])
 
@@ -33,7 +33,12 @@ This Action was submitted to the [GitHub Actions Hackathon] and featured by GitH
 - [Getting Started](#getting-started)
   - [Workflow Setting](#workflow-setting)
   - [Action Setting](#action-setting)
-- [Options](#options)
+- [Action Configuration](#action-configuration)
+  - [Issues](#issues)
+  - [Pull-requests](#pull-requests)
+  - [Discussions](#discussions)
+  - [Comment Placeholders](#comment-placeholders)
+- [Action Inputs](#action-inputs)
   - [Set a Path to Action Setting File](#set-a-path-to-action-setting-file)
   - [Set a Personal Access Token](#set-a-personal-access-token)
   - [Enable Debug Mode](#enable-debug-mode)
@@ -71,20 +76,21 @@ on:
     types: [labeled, unlabeled]
   pull_request_target:
     types: [labeled, unlabeled]
+  discussion:
+    types: [labeled, unlabeled]
 
 permissions:
   contents: read
   issues: write
   pull-requests: write
+  discussions: write
 
 jobs:
   comment:
     runs-on: ubuntu-20.04
+    timeout-minutes: 1
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Label Commenter
-        uses: peaceiris/actions-label-commenter@v1
+      - uses: peaceiris/actions-label-commenter@v2
 ```
 
 ### Action Setting
@@ -92,120 +98,28 @@ jobs:
 Create your action configuration file `.github/label-commenter-config.yml` as follows.
 
 ```yaml
-comment:
-  header: Hi, there.
-  footer: "\
-    ---\n\n\
-    > This is an automated comment created by the [peaceiris/actions-label-commenter]. \
-    Responding to the bot or mentioning it won't have any effect.\n\n\
-    [peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter"
-
 labels:
-  - name: invalid
-    labeled:
-      issue:
-        body: Please follow the issue templates.
-        action: close
-      pr:
-        body: Thank you @{{ pull_request.user.login }} for suggesting this. Please follow the pull request templates.
-        action: close
-    unlabeled:
-      issue:
-        body: Thank you for following the template. The repository owner will reply.
-        action: open
-  - name: forum
-    labeled:
-      issue:
-        body: |
-          Please ask questions about GitHub Actions at the following forum.
-          https://github.community/c/github-actions
-        action: close
-  - name: wontfix
-    labeled:
-      issue:
-        body: This will not be worked on but we appreciate your contribution.
-        action: close
-    unlabeled:
-      issue:
-        body: This has become active again.
-        action: open
-  - name: duplicate
-    labeled:
-      issue:
-        body: This issue already exists.
-        action: close
-  - name: good first issue
-    labeled:
-      issue:
-        body: This issue is easy for contributing. Everyone can work on this.
-  - name: proposal
-    labeled:
-      issue:
-        body: Thank you @{{ issue.user.login }} for suggesting this.
   - name: locked (spam)
     labeled:
       issue:
-        body: |
-          This issue has been **LOCKED** because of spam!
+        body: &locked_spam_body |
+          This {{ eventName }} \#{{ number }} has been **LOCKED** with the label {{ labelName }}!
 
-          Please do not spam messages and/or issues on the issue tracker. You may get blocked from this repository for doing so.
+          Please do not spam messages on this project. You may get blocked from this repository for doing so.
         action: close
         locking: lock
         lock_reason: spam
       pr:
-        body: |
-          This pull-request has been **LOCKED** because of spam!
-
-          Please do not spam messages and/or pull-requests on this project. You may get blocked from this repository for doing so.
+        body: *locked_spam_body
         action: close
         locking: lock
         lock_reason: spam
-  - name: locked (heated)
-    labeled:
-      issue:
-        body: |
-          This issue has been **LOCKED** because of heated conversation!
-
-          We appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.
+        draft: true
+      discussion:
+        body: *locked_spam_body
         locking: lock
-        lock_reason: too heated
-      pr:
-        body: |
-          This pull-request has been **LOCKED** because of heated conversation!
-
-          We appreciate exciting conversations, as long as they won't become too aggressive and/or emotional.
-        locking: lock
-        lock_reason: too heated
-    unlabeled:
-      issue:
-        body: |
-          This issue has been unlocked now.
-        locking: unlock
-      pr:
-        body: |
-          This pull-request has been unlocked now.
-        locking: unlock
-  - name: locked (off-topic)
-    labeled:
-      issue:
-        body: |
-          This issue has been **LOCKED** because of off-topic conversations!
-
-          Please use our other means of communication for casual chats.
-        action: close
-        locking: lock
-        lock_reason: off-topic
-  - name: locked (resolved)
-    labeled:
-      issue:
-        body: |
-          This issue has been **LOCKED** because of it being resolved!
-
-          The issue has been fixed and is therefore considered resolved.
-          If you still encounter this or it has changed, open a new issue instead of responding to solved ones.
-        action: close
-        locking: lock
-        lock_reason: resolved
+        lock_reason: spam
+        answer: true
 ```
 
 <div align="right">
@@ -214,15 +128,30 @@ labels:
 
 
 
-## Options
+## Action Configuration
+
+### Issues
+
+### Pull-requests
+
+### Discussions
+
+### Comment Placeholders
+
+<div align="right">
+<a href="#table-of-contents">Back to TOC ☝️</a>
+</div>
+
+
+
+## Action Inputs
 
 ### Set a Path to Action Setting File
 
 Default is `.github/label-commenter-config.yml`
 
 ```yaml
-- name: Label Commenter
-  uses: peaceiris/actions-label-commenter@v1
+- uses: peaceiris/actions-label-commenter@v2
   with:
     config_file: ./path_to/your_config.yml
 ```
@@ -232,8 +161,7 @@ Default is `.github/label-commenter-config.yml`
 Default is `${{ github.token }}`
 
 ```yaml
-- name: Label Commenter
-  uses: peaceiris/actions-label-commenter@v1
+- uses: peaceiris/actions-label-commenter@v2
   with:
     github_token: ${{ secrets.GH_PAT }}
 ```
@@ -241,8 +169,7 @@ Default is `${{ github.token }}`
 ### Enable Debug Mode
 
 ```yaml
-- name: Label Commenter
-  uses: peaceiris/actions-label-commenter@v1
+- uses: peaceiris/actions-label-commenter@v2
   env:
     RUNNER_DEBUG: 1
 ```
