@@ -21,7 +21,7 @@ jobs:
         run: echo "::set-output name=NVMRC::$(cat .nvmrc)"
         id: nvm
 
-      - uses: peaceiris/workflows/setup-node@v0.10.0
+      - uses: peaceiris/workflows/setup-node@v0.11.0
         with:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
