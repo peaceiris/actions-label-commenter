@@ -26,7 +26,7 @@
       "jest --config jest.config.json --findRelatedTests"
     ],
     "README.md": [
-      "npx doctoc@2.0.0 --github"
+      "npx doctoc@2.1.0 --github"
     ]
   },
   "repository": {
