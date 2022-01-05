@@ -4,3 +4,5 @@ coverage
 .eslintcache
 .env
 node_modules
+
+.idea
