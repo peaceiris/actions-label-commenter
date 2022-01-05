@@ -4,8 +4,8 @@
   "description": "Label Commenter GitHub Action",
   "main": "lib/index.js",
   "engines": {
-    "node": ">=14.17.3",
-    "npm": ">=7.19.1"
+    "node": ">=16.13.1",
+    "npm": ">=8.3.0"
   },
   "scripts": {
     "postinstall": "npx husky install",
@@ -60,7 +60,7 @@
     "@types/js-yaml": "^4.0.3",
     "@types/lodash-es": "^4.17.5",
     "@types/mustache": "^4.1.2",
-    "@types/node": "~14",
+    "@types/node": "~16",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
     "@vercel/ncc": "^0.31.1",

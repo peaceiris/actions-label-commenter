@@ -21,7 +21,7 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2019
+    "ecmaVersion": 2021
   },
   "settings": {
     "import/resolver": {
