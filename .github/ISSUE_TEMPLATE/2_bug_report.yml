@@ -51,4 +51,4 @@ body:
       label: Additional context.
       description: Write any other context about the question here.
     validations:
-      required: true
+      required: false
