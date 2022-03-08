@@ -35,7 +35,6 @@ body:
         Please use [a permanent link](https://docs.github.com/en/github/managing-files-in-a-repository/managing-files-on-github/getting-permanent-links-to-files), not a default branch.
       render: markdown
       value: |
-        Public repository:
         YAML config:
         YAML workflow:
     validations:
