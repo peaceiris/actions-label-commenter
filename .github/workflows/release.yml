@@ -11,6 +11,6 @@ jobs:
     timeout-minutes: 1
     steps:
       - uses: actions/checkout@v3
-      - uses: peaceiris/workflows/create-release-npm@v0.14.1
+      - uses: peaceiris/workflows/create-release-npm@v0.15.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
