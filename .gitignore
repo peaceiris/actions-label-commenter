@@ -1,6 +1,14 @@
+# General
 .DS_Store
-coverage
+
+# Editors
+.vscode/*.log
+
+# node
+node_modules
 .npm
 .eslintcache
+
+# Repository
 .env
-node_modules
+coverage
