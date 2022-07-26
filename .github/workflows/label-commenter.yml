@@ -8,20 +8,26 @@ on:
   discussion:
     types: [labeled, unlabeled]
 
-permissions:
-  contents: read
-  issues: write
-  pull-requests: write
-
 jobs:
   comment:
     runs-on: ubuntu-20.04
-    timeout-minutes: 1
+    timeout-minutes: 2
+    permissions: {}
+    # permissions:
+    #   contents: read
+    #   issues: write
+    #   pull-requests: write
     steps:
-      - name: Label Commenter
-        uses: peaceiris/actions-label-commenter@c2d00660c86f2b9ed0fb35b372c451558eba85b3
+      - uses: peaceiris/github-app-token@v1.0.4
+        id: app
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
+      - uses: peaceiris/actions-label-commenter@c2d00660c86f2b9ed0fb35b372c451558eba85b3
         env:
           RUNNER_DEBUG: 1
         with:
-          github_token: ${{ secrets.GH_PAT }}
+          github_token: ${{ steps.app.outputs.token }}
+          # github_token: ${{ secrets.GH_PAT }}
           # config_file: .github/label-commenter-config.yml
