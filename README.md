@@ -296,13 +296,11 @@ name: "Pull Request Labeler"
 on:
   - pull_request_target
 
-permissions:
-  contents: read
-  pull-requests: write
-
 jobs:
   triage:
     runs-on: ubuntu-20.04
+    permissions: {}
+    timeout-minutes: 1
     steps:
       - uses: actions/labeler@v3
         with:
