@@ -24,7 +24,7 @@ jobs:
       - run: npm ci
       - name: Install licensed
         env:
-          LICENSED_VERSION: "3.4.4"
+          LICENSED_VERSION: "3.7.3"
         run: |
           cd "${RUNNER_TEMP}"
           curl -Lfs -o licensed.tar.gz "https://github.com/github/licensed/releases/download/${LICENSED_VERSION}/licensed-${LICENSED_VERSION}-linux-x64.tar.gz"
