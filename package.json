@@ -4,8 +4,8 @@
   "description": "Label Commenter GitHub Action",
   "main": "lib/index.js",
   "engines": {
-    "node": ">=14.17.3",
-    "npm": ">=7.19.1"
+    "node": ">=16.17.0",
+    "npm": ">=8.18.0"
   },
   "scripts": {
     "postinstall": "npx husky install",
