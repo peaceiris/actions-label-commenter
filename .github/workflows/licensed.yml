@@ -1,0 +1,33 @@
+name: Licensed
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read .nvmrc
+        run: echo "::set-output name=NVMRC::$(cat .nvmrc)"
+        id: nvm
+      - uses: peaceiris/workflows/setup-node@v0.16.0
+        with:
+          node-version: "${{ steps.nvm.outputs.NVMRC }}"
+      - run: npm i -g npm
+      - run: npm ci
+      - name: Install licensed
+        env:
+          LICENSED_VERSION: "3.4.4"
+        run: |
+          cd "${RUNNER_TEMP}"
+          curl -Lfs -o "licensed.tar.gz https://github.com/github/licensed/releases/download/${LICENSED_VERSION}/licensed-${LICENSED_VERSION}-linux-x64.tar.gz"
+          sudo tar -xzf licensed.tar.gz
+          sudo mv licensed /usr/local/bin/licensed
+      - run: licensed status
