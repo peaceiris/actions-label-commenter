@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
 
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -26,12 +26,6 @@ jobs:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - run: npm i -g npm
       - run: npm ci
-      - name: Install licensed
-        env:
-          LICENSED_VERSION: "3.7.3"
-        run: |
-          cd "${RUNNER_TEMP}"
-          curl -Lfs -o licensed.tar.gz "https://github.com/github/licensed/releases/download/${LICENSED_VERSION}/licensed-${LICENSED_VERSION}-linux-x64.tar.gz"
-          sudo tar -xzf licensed.tar.gz
-          sudo mv licensed /usr/local/bin/licensed
-      - run: licensed status
+      - run: bundle install
+      - run: bundle exec licensed cache
+      - run: bundle exec licensed status
