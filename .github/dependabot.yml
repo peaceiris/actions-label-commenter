@@ -1,24 +1,33 @@
 version: 2
 updates:
 
-- package-ecosystem: npm
+- package-ecosystem: "npm"
   directory: "/"
   schedule:
-    interval: daily
-    time: '11:00'
-    timezone: Japan
+    interval: "daily"
+    time: "11:00"
+    timezone: "Japan"
   allow:
   - dependency-type: "production"
   commit-message:
-    prefix: deps
+    prefix: "deps"
 
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
     interval: "daily"
-    time: '11:00'
-    timezone: Japan
+    time: "11:00"
+    timezone: "Japan"
   labels:
-  - "CI/CD"
+  - "cicd"
   commit-message:
-    prefix: ci
+    prefix: "ci"
+
+- package-ecosystem: "bundler"
+  directory: "/"
+  schedule:
+    interval: "daily"
+    time: "11:00"
+    timezone: "Japan"
+  commit-message:
+    prefix: "ci"

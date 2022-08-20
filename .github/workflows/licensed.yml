@@ -24,11 +24,10 @@ jobs:
       - uses: peaceiris/workflows/setup-node@v0.16.0
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
-      - run: npm i -g npm
       - run: npm ci
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - run: bundle install
-      - run: bundle exec licensed cache
-      - run: bundle exec licensed status
+      - run: npm run bundle:install
+      - run: npm run licensed:cache
+      - run: npm run licensed:status
