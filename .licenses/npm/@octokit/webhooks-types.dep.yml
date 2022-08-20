@@ -1,0 +1,11 @@
+---
+name: "@octokit/webhooks-types"
+version: 5.5.1
+type: npm
+summary: Generated TypeScript definitions based on community contributed JSON Schemas
+homepage:
+license: mit
+licenses:
+- sources: README.md
+  text: "[MIT](LICENSE.md)"
+notices: []

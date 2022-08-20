@@ -13,3 +13,9 @@ allowed:
 
 reviewed:
   npm:
+
+ignored:
+  npm:
+    - "@actions/http-client"
+    - "argparse"
+    - "lodash-es"
