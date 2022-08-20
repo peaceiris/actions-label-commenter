@@ -17,10 +17,7 @@
     "fmt": "prettier --write '**/*.ts'",
     "fmt:check": "prettier --check '**/*.ts'",
     "all": "npm run fmt && npm run lint:fix && npm run tsc && npm test",
-    "release": "standard-version",
-    "bundle:install": "bundle install",
-    "licensed:cache": "bundle exec licensed cache",
-    "licensed:status": "bundle exec licensed status"
+    "release": "standard-version"
   },
   "lint-staged": {
     "{src,__tests__}/**/*.ts": [
