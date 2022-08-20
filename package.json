@@ -4,8 +4,8 @@
   "description": "Label Commenter GitHub Action",
   "main": "lib/index.js",
   "engines": {
-    "node": ">=14.17.3",
-    "npm": ">=7.19.1"
+    "node": ">=16.17.0",
+    "npm": ">=8.18.0"
   },
   "scripts": {
     "postinstall": "npx husky install",
@@ -17,10 +17,7 @@
     "fmt": "prettier --write '**/*.ts'",
     "fmt:check": "prettier --check '**/*.ts'",
     "all": "npm run fmt && npm run lint:fix && npm run tsc && npm test",
-    "release": "standard-version",
-    "bundle:install": "bundle install",
-    "licensed:cache": "bundle exec licensed cache",
-    "licensed:status": "bundle exec licensed status"
+    "release": "standard-version"
   },
   "lint-staged": {
     "{src,__tests__}/**/*.ts": [
