@@ -1,14 +1,18 @@
 # General
 .DS_Store
+*~
 
 # Editors
 .vscode/*.log
 
-# node
+# JavaScript
 node_modules
 .npm
 .eslintcache
 
+# Rudy
+.bundle/
+vendor/
+
 # Repository
-.env
 coverage
