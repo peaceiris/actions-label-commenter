@@ -26,6 +26,9 @@ jobs:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - run: npm i -g npm
       - run: npm ci
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
       - run: bundle install
       - run: bundle exec licensed cache
       - run: bundle exec licensed status
