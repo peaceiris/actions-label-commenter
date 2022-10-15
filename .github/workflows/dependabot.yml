@@ -22,7 +22,9 @@ jobs:
 
       - name: Approve and Merge
         if: |
-          (steps.meta.outputs.package-ecosystem == 'github_actions')
+          (steps.meta.outputs.package-ecosystem == 'github_actions') ||
+          (steps.meta.outputs.package-ecosystem == 'npm_and_yarn' && steps.meta.outputs.update-type == 'version-update:semver-minor') ||
+          (steps.meta.outputs.package-ecosystem == 'npm_and_yarn' && steps.meta.outputs.update-type == 'version-update:semver-patch')
         run: |
           gh pr checkout "${PR_URL}" # sets the upstream metadata for `gh pr status`
           if [ "$(gh pr status --json reviewDecision -q .currentBranch.reviewDecision)" != "APPROVED" ]; then
