@@ -16,8 +16,7 @@
     "tsc": "tsc --noEmit",
     "fmt": "prettier --write '**/*.ts'",
     "fmt:check": "prettier --check '**/*.ts'",
-    "all": "npm run fmt && npm run lint:fix && npm run tsc && npm test",
-    "release": "standard-version"
+    "all": "npm run fmt && npm run lint:fix && npm run tsc && npm test"
   },
   "lint-staged": {
     "{src,__tests__}/**/*.ts": [
