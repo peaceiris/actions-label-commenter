@@ -1,3 +1,4 @@
 ignore:
-  - "lib/*"
+  - "dist/*"
+  - "dist_release/*"
   - "src/logger.ts"

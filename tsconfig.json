@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2019",
+    "target": "es2021",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "./lib",
+    "outDir": "./dist",
     "rootDir": "./src",
     "removeComments": true,
     "strict": true,
@@ -13,5 +13,5 @@
     "moduleResolution": "node",
     "strictPropertyInitialization": false,
   },
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "exclude": ["node_modules", "**/*.test.ts", "dist", "dist_release"]
 }

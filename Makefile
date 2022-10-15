@@ -21,10 +21,6 @@ test:
 all:
 	docker-compose run --rm -T dev npm run all
 
-.PHONY: release
-release:
-	bash ./scripts/release.sh
-
 .PHONY: create-pre-release
 create-pre-release:
 	bash ./scripts/pre-release.sh

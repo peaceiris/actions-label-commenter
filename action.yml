@@ -11,8 +11,8 @@ inputs:
     default: '.github/label-commenter-config.yml'
     required: false
 runs:
-  using: 'node12'
-  main: 'lib/index.js'
+  using: 'node16'
+  main: 'dist_release/index.js'
 branding:
   icon: 'tag'
   color: 'orange'

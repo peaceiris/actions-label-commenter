@@ -1,0 +1,39 @@
+name: Dependabot Helper
+
+on:
+  pull_request:
+    paths:
+      - "package-lock.json"
+      - "package.json"
+
+jobs:
+  npm:
+    runs-on: ubuntu-22.04
+    if: github.actor == 'dependabot[bot]'
+    permissions:
+      contents: write
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: peaceiris/workflows/setup-git@v0.17.1
+
+      - uses: peaceiris/workflows/setup-node@v0.17.1
+        with:
+          node-version-file: ".nvmrc"
+
+      - run: npm ci
+      - run: npm run build
+      - run: git status
+      - run: git diff --exit-code
+      - name: Commit and Push
+        if: failure()
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          git checkout -b "${HEAD_REF}" "origin/${HEAD_REF}"
+          git add .
+          git commit -m "chore: npm run build"
+          git push
