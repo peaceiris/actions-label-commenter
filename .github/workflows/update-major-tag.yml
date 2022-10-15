@@ -6,8 +6,10 @@ on:
 
 jobs:
   update:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 1
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
 

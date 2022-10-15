@@ -12,18 +12,16 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 5
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v3
 
-      - name: Read .nvmrc
-        run: echo "::set-output name=NVMRC::$(cat .nvmrc)"
-        id: nvm
-
-      - uses: peaceiris/workflows/setup-node@v0.16.0
+      - uses: peaceiris/workflows/setup-node@v0.17.1
         with:
-          node-version: '${{ steps.nvm.outputs.NVMRC }}'
+          node-version-file: '.nvmrc'
 
       - run: npm ci
       - run: npm run fmt:check

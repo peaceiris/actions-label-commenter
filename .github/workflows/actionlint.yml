@@ -14,6 +14,8 @@ jobs:
   actionlint:
     runs-on: ubuntu-22.04
     timeout-minutes: 1
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v3
       - uses: docker://rhysd/actionlint:latest

@@ -23,14 +23,13 @@ on:
       - 'Makefile'
       - 'docker-compose.yml'
 
-permissions:
-  contents: read
-  packages: write
-
 jobs:
   dev-image-test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 4
+    permissions:
+      contents: read
+      packages: write
     env:
       COMPOSE_DOCKER_CLI_BUILD: 1
       DOCKER_BUILDKIT: 1
