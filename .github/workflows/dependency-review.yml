@@ -12,4 +12,4 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/dependency-review-action@v1
+      - uses: actions/dependency-review-action@v2
