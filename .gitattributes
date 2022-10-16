@@ -1,2 +1,2 @@
-dist/** linguist-generated=false
-dist_release/** linguist-generated=false
+dist/** linguist-generated=true
+dist_release/** linguist-generated=true
