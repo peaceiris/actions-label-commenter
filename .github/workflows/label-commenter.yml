@@ -24,7 +24,7 @@ jobs:
           app_id: ${{ secrets.GH_APP_ID }}
           private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
-      - uses: peaceiris/actions-label-commenter@c2d00660c86f2b9ed0fb35b372c451558eba85b3
+      - uses: peaceiris/actions-label-commenter@66ec71131edf4e168faaf14d970a241377b3288c
         env:
           RUNNER_DEBUG: 1
         with:
