@@ -22,3 +22,5 @@ updates:
   - "cicd"
   commit-message:
     prefix: "ci"
+  ignore:
+  - dependency-name: "peaceiris/actions-label-commenter"
