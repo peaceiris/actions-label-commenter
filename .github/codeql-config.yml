@@ -1,0 +1,8 @@
+name: 'JavaScript GitHub Action'
+
+paths:
+  - 'src'
+paths-ignore:
+  - 'node_modules'
+  - 'dist'
+  - '__tests__'

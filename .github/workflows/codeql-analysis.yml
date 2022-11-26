@@ -4,11 +4,15 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
+    paths:
+      - '.github/codeql-config.yml'
+      - '.github/workflows/codeql-analysis.yml'
+      - 'src'
   pull_request:
-    paths-ignore:
-      - '**.md'
+    paths:
+      - '.github/codeql-config.yml'
+      - '.github/workflows/codeql-analysis.yml'
+      - 'src'
 
 jobs:
   CodeQL-Build:
@@ -22,13 +26,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+      - uses: github/codeql-action/init@v2
         with:
+          config-file: ./.github/codeql-config.yml
           languages: javascript
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+      - uses: github/codeql-action/autobuild@v2
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+      - uses: github/codeql-action/analyze@v2
