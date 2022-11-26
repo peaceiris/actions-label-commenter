@@ -4,6 +4,9 @@ name: 'Dependency Review'
 
 on:
   pull_request:
+    paths:
+      - "package-lock.json"
+      - "package.json"
 
 jobs:
   dependency-review:

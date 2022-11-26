@@ -2,6 +2,9 @@ name: Dependabot Merger
 
 on:
   pull_request:
+    paths:
+      - "package-lock.json"
+      - "package.json"
 
 jobs:
   main:
