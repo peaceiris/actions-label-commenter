@@ -18,9 +18,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: peaceiris/workflows/setup-git@v0.17.2
+      - uses: peaceiris/workflows/setup-git@v0.18.1
 
-      - uses: peaceiris/workflows/setup-node@v0.17.2
+      - uses: peaceiris/workflows/setup-node@v0.18.1
         with:
           node-version-file: ".nvmrc"
 

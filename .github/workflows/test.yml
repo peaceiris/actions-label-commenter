@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: peaceiris/workflows/setup-node@v0.17.2
+      - uses: peaceiris/workflows/setup-node@v0.18.1
         with:
           node-version-file: '.nvmrc'
 
