@@ -1,4 +1,4 @@
-name: Dependabot Helper
+name: Renovate Helper
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
 jobs:
   npm:
     runs-on: ubuntu-22.04
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'renovate[bot]'
     permissions:
       contents: write
     timeout-minutes: 5
