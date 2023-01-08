@@ -3,7 +3,7 @@
   "description": "Label Commenter GitHub Action",
   "main": "dist/index.js",
   "engines": {
-    "node": ">=16.18.0",
+    "node": ">=v16.19.0",
     "npm": ">=8.19.3"
   },
   "scripts": {
