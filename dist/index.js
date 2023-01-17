@@ -15212,6 +15212,9 @@ class ActionProcessor {
             if (error instanceof Error) {
                 throw new Error(error.message);
             }
+            else {
+                throw new Error('unexpected error');
+            }
         }
     }
 }
@@ -15347,7 +15350,9 @@ const ConfigLoader = class ConfigLoader {
             if (error instanceof Error) {
                 throw new Error(error.message);
             }
-            throw new Error('unexpected error');
+            else {
+                throw new Error('unexpected error');
+            }
         }
     }
     static async build(runContext, githubClient) {
@@ -15401,7 +15406,9 @@ const ConfigLoader = class ConfigLoader {
                 (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                 throw new Error(error.message);
             }
-            throw new Error('unexpected error');
+            else {
+                throw new Error('unexpected error');
+            }
         }
     }
     getLabelIndex() {
@@ -15486,6 +15493,9 @@ class ContextLoader {
             (0, logger_1.groupConsoleLog)('Dump context', context);
             if (error instanceof Error) {
                 throw new Error(error.message);
+            }
+            else {
+                throw new Error('unexpected error');
             }
         }
     }
@@ -15646,7 +15656,9 @@ class Issue {
                 (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                 throw new Error(error.message);
             }
-            throw new Error('unexpected error');
+            else {
+                throw new Error('unexpected error');
+            }
         }
     }
     async updateState(state) {
@@ -15674,7 +15686,9 @@ class Issue {
                 (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                 throw new Error(error.message);
             }
-            throw new Error('unexpected error');
+            else {
+                throw new Error('unexpected error');
+            }
         }
     }
     async lock(reason) {
@@ -15699,7 +15713,9 @@ class Issue {
                 (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                 throw new Error(error.message);
             }
-            throw new Error('unexpected error');
+            else {
+                throw new Error('unexpected error');
+            }
         }
     }
     async unlock() {
@@ -15723,7 +15739,9 @@ class Issue {
                 (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                 throw new Error(error.message);
             }
-            throw new Error('unexpected error');
+            else {
+                throw new Error('unexpected error');
+            }
         }
     }
     async markPullRequestReadyForReview() {
@@ -15757,7 +15775,9 @@ class Issue {
                     (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                     throw new Error(error.message);
                 }
-                throw new Error('unexpected error');
+                else {
+                    throw new Error('unexpected error');
+                }
             }
         }
     }
@@ -15792,7 +15812,9 @@ class Issue {
                     (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                     throw new Error(error.message);
                 }
-                throw new Error('unexpected error');
+                else {
+                    throw new Error('unexpected error');
+                }
             }
         }
     }
@@ -15831,7 +15853,9 @@ class Issue {
                     (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                     throw new Error(error.message);
                 }
-                throw new Error('unexpected error');
+                else {
+                    throw new Error('unexpected error');
+                }
             }
         }
     }
@@ -15868,7 +15892,9 @@ class Issue {
                     (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                     throw new Error(error.message);
                 }
-                throw new Error('unexpected error');
+                else {
+                    throw new Error('unexpected error');
+                }
             }
         }
     }
@@ -15903,7 +15929,9 @@ class Issue {
                     (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                     throw new Error(error.message);
                 }
-                throw new Error('unexpected error');
+                else {
+                    throw new Error('unexpected error');
+                }
             }
         }
     }
@@ -15938,7 +15966,9 @@ class Issue {
                     (0, logger_1.groupConsoleLog)('Dump error.stack', error.stack);
                     throw new Error(error.message);
                 }
-                throw new Error('unexpected error');
+                else {
+                    throw new Error('unexpected error');
+                }
             }
         }
     }
@@ -16025,6 +16055,9 @@ async function run() {
     catch (error) {
         if (error instanceof Error) {
             throw new Error(error.message);
+        }
+        else {
+            throw new Error('unexpected error');
         }
     }
 }
