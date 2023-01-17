@@ -36,7 +36,7 @@ test('if github_token is empty, throw error', () => {
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const inputs: Inputs = new Inputs();
-  }).toThrowError('Input required and not supplied: github_token');
+  }).toThrow('Input required and not supplied: github_token');
 });
 
 test('if config_file is empty, throw error', () => {
@@ -46,5 +46,5 @@ test('if config_file is empty, throw error', () => {
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const inputs: Inputs = new Inputs();
-  }).toThrowError('Input required and not supplied: config_file');
+  }).toThrow('Input required and not supplied: config_file');
 });

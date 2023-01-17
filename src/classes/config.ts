@@ -79,8 +79,9 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
+      } else {
+        throw new Error('unexpected error');
       }
-      throw new Error('unexpected error');
     }
   }
 
@@ -148,8 +149,9 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
       if (error instanceof Error) {
         groupConsoleLog('Dump error.stack', error.stack);
         throw new Error(error.message);
+      } else {
+        throw new Error('unexpected error');
       }
-      throw new Error('unexpected error');
     }
   }
 
