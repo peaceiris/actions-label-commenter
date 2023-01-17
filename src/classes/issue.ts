@@ -74,8 +74,9 @@ class Issue implements IIssueProcessor {
       if (error instanceof Error) {
         groupConsoleLog('Dump error.stack', error.stack);
         throw new Error(error.message);
+      } else {
+        throw new Error('unexpected error');
       }
-      throw new Error('unexpected error');
     }
   }
 
@@ -103,8 +104,9 @@ class Issue implements IIssueProcessor {
       if (error instanceof Error) {
         groupConsoleLog('Dump error.stack', error.stack);
         throw new Error(error.message);
+      } else {
+        throw new Error('unexpected error');
       }
-      throw new Error('unexpected error');
     }
   }
 
@@ -129,8 +131,9 @@ class Issue implements IIssueProcessor {
       if (error instanceof Error) {
         groupConsoleLog('Dump error.stack', error.stack);
         throw new Error(error.message);
+      } else {
+        throw new Error('unexpected error');
       }
-      throw new Error('unexpected error');
     }
   }
 
@@ -154,8 +157,9 @@ class Issue implements IIssueProcessor {
       if (error instanceof Error) {
         groupConsoleLog('Dump error.stack', error.stack);
         throw new Error(error.message);
+      } else {
+        throw new Error('unexpected error');
       }
-      throw new Error('unexpected error');
     }
   }
 
@@ -189,8 +193,9 @@ class Issue implements IIssueProcessor {
         if (error instanceof Error) {
           groupConsoleLog('Dump error.stack', error.stack);
           throw new Error(error.message);
+        } else {
+          throw new Error('unexpected error');
         }
-        throw new Error('unexpected error');
       }
     }
   }
@@ -225,8 +230,9 @@ class Issue implements IIssueProcessor {
         if (error instanceof Error) {
           groupConsoleLog('Dump error.stack', error.stack);
           throw new Error(error.message);
+        } else {
+          throw new Error('unexpected error');
         }
-        throw new Error('unexpected error');
       }
     }
   }
@@ -265,8 +271,9 @@ class Issue implements IIssueProcessor {
         if (error instanceof Error) {
           groupConsoleLog('Dump error.stack', error.stack);
           throw new Error(error.message);
+        } else {
+          throw new Error('unexpected error');
         }
-        throw new Error('unexpected error');
       }
     }
   }
@@ -303,8 +310,9 @@ class Issue implements IIssueProcessor {
         if (error instanceof Error) {
           groupConsoleLog('Dump error.stack', error.stack);
           throw new Error(error.message);
+        } else {
+          throw new Error('unexpected error');
         }
-        throw new Error('unexpected error');
       }
     }
   }
@@ -339,8 +347,9 @@ class Issue implements IIssueProcessor {
         if (error instanceof Error) {
           groupConsoleLog('Dump error.stack', error.stack);
           throw new Error(error.message);
+        } else {
+          throw new Error('unexpected error');
         }
-        throw new Error('unexpected error');
       }
     }
   }
@@ -375,8 +384,9 @@ class Issue implements IIssueProcessor {
         if (error instanceof Error) {
           groupConsoleLog('Dump error.stack', error.stack);
           throw new Error(error.message);
+        } else {
+          throw new Error('unexpected error');
         }
-        throw new Error('unexpected error');
       }
     }
   }
