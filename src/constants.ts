@@ -4,6 +4,6 @@ const ActionInfo = {
   Owner: 'peaceiris'
 } as const;
 
-type ActionInfo = typeof ActionInfo[keyof typeof ActionInfo];
+type ActionInfo = (typeof ActionInfo)[keyof typeof ActionInfo];
 
 export {ActionInfo};
