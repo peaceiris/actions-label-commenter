@@ -1,2 +1,2 @@
-npm install
+npm ci
 git remote prune origin
