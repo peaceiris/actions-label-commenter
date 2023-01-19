@@ -46,12 +46,12 @@ describe('Comment and close', () => {
       } as const;
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(1);
-      expect(issueMock.createComment).toBeCalledWith(commentBody);
-      expect(issueMock.updateState).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledWith('closed');
-      expect(issueMock.lock).toBeCalledTimes(0);
-      expect(issueMock.unlock).toBeCalledTimes(0);
+      expect(issueMock.createComment).toHaveBeenCalledTimes(1);
+      expect(issueMock.createComment).toHaveBeenCalledWith(commentBody);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledWith('closed');
+      expect(issueMock.lock).toHaveBeenCalledTimes(0);
+      expect(issueMock.unlock).toHaveBeenCalledTimes(0);
     });
   }
 });
@@ -70,13 +70,13 @@ describe('Comment, close, and lock without reason', () => {
       } as const;
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(1);
-      expect(issueMock.createComment).toBeCalledWith(commentBody);
-      expect(issueMock.updateState).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledWith('closed');
-      expect(issueMock.lock).toBeCalledTimes(1);
-      expect(issueMock.lock).toBeCalledWith(config.lockReason);
-      expect(issueMock.unlock).toBeCalledTimes(0);
+      expect(issueMock.createComment).toHaveBeenCalledTimes(1);
+      expect(issueMock.createComment).toHaveBeenCalledWith(commentBody);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledWith('closed');
+      expect(issueMock.lock).toHaveBeenCalledTimes(1);
+      expect(issueMock.lock).toHaveBeenCalledWith(config.lockReason);
+      expect(issueMock.unlock).toHaveBeenCalledTimes(0);
     });
   }
 });
@@ -95,13 +95,13 @@ describe('Comment, close, and lock with lockReason', () => {
       } as const;
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(1);
-      expect(issueMock.createComment).toBeCalledWith(commentBody);
-      expect(issueMock.updateState).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledWith('closed');
-      expect(issueMock.lock).toBeCalledTimes(1);
-      expect(issueMock.lock).toBeCalledWith(config.lockReason);
-      expect(issueMock.unlock).toBeCalledTimes(0);
+      expect(issueMock.createComment).toHaveBeenCalledTimes(1);
+      expect(issueMock.createComment).toHaveBeenCalledWith(commentBody);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledWith('closed');
+      expect(issueMock.lock).toHaveBeenCalledTimes(1);
+      expect(issueMock.lock).toHaveBeenCalledWith(config.lockReason);
+      expect(issueMock.unlock).toHaveBeenCalledTimes(0);
     });
   }
 });
@@ -120,13 +120,13 @@ describe('Unlock, open and comment', () => {
       } as const;
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, true);
       await actionProcessor.process();
-      expect(issueMock.unlock).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledWith('open');
-      expect(issueMock.createComment).toBeCalledTimes(1);
-      expect(issueMock.createComment).toBeCalledWith(commentBody);
+      expect(issueMock.unlock).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledWith('open');
+      expect(issueMock.createComment).toHaveBeenCalledTimes(1);
+      expect(issueMock.createComment).toHaveBeenCalledWith(commentBody);
 
-      expect(issueMock.lock).toBeCalledTimes(0);
+      expect(issueMock.lock).toHaveBeenCalledTimes(0);
     });
   }
 });
@@ -145,12 +145,12 @@ describe('Comment and open', () => {
       } as const;
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(1);
-      expect(issueMock.createComment).toBeCalledWith(commentBody);
-      expect(issueMock.updateState).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledWith('open');
-      expect(issueMock.lock).toBeCalledTimes(0);
-      expect(issueMock.unlock).toBeCalledTimes(0);
+      expect(issueMock.createComment).toHaveBeenCalledTimes(1);
+      expect(issueMock.createComment).toHaveBeenCalledWith(commentBody);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledWith('open');
+      expect(issueMock.lock).toHaveBeenCalledTimes(0);
+      expect(issueMock.unlock).toHaveBeenCalledTimes(0);
     });
   }
 });
@@ -184,11 +184,11 @@ describe('Open without comment if the issue is locked', () => {
       } as const;
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, true);
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(0);
-      expect(issueMock.updateState).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledWith('open');
-      expect(issueMock.lock).toBeCalledTimes(0);
-      expect(issueMock.unlock).toBeCalledTimes(0);
+      expect(issueMock.createComment).toHaveBeenCalledTimes(0);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledWith('open');
+      expect(issueMock.lock).toHaveBeenCalledTimes(0);
+      expect(issueMock.unlock).toHaveBeenCalledTimes(0);
     });
   }
 });
@@ -207,16 +207,16 @@ describe('Skip all actions for a label that has no configuration', () => {
       } as const;
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(0);
-      expect(issueMock.updateState).toBeCalledTimes(0);
-      expect(issueMock.lock).toBeCalledTimes(0);
-      expect(issueMock.unlock).toBeCalledTimes(0);
-      expect(issueMock.markPullRequestReadyForReview).toBeCalledTimes(0);
-      expect(issueMock.convertPullRequestToDraft).toBeCalledTimes(0);
-      expect(issueMock.addDiscussionComment).toBeCalledTimes(0);
-      expect(issueMock.lockLockable).toBeCalledTimes(0);
-      expect(issueMock.unlockLockable).toBeCalledTimes(0);
-      expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+      expect(issueMock.createComment).toHaveBeenCalledTimes(0);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(0);
+      expect(issueMock.lock).toHaveBeenCalledTimes(0);
+      expect(issueMock.unlock).toHaveBeenCalledTimes(0);
+      expect(issueMock.markPullRequestReadyForReview).toHaveBeenCalledTimes(0);
+      expect(issueMock.convertPullRequestToDraft).toHaveBeenCalledTimes(0);
+      expect(issueMock.addDiscussionComment).toHaveBeenCalledTimes(0);
+      expect(issueMock.lockLockable).toHaveBeenCalledTimes(0);
+      expect(issueMock.unlockLockable).toHaveBeenCalledTimes(0);
+      expect(issueMock.markDiscussionCommentAsAnswer).toHaveBeenCalledTimes(0);
     });
   }
 });
@@ -236,12 +236,12 @@ describe('Skip comment if body is empty', () => {
       const commentBody = '';
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(0);
-      expect(issueMock.updateState).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledWith('closed');
-      expect(issueMock.lock).toBeCalledTimes(1);
-      expect(issueMock.lock).toBeCalledWith('spam');
-      expect(issueMock.unlock).toBeCalledTimes(0);
+      expect(issueMock.createComment).toHaveBeenCalledTimes(0);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledWith('closed');
+      expect(issueMock.lock).toHaveBeenCalledTimes(1);
+      expect(issueMock.lock).toHaveBeenCalledWith('spam');
+      expect(issueMock.unlock).toHaveBeenCalledTimes(0);
     });
   }
 });
@@ -272,12 +272,12 @@ describe('Toggle draft status', () => {
       } as const;
       const actionProcessor = new ActionProcessor('pr', config, commentBody, issueMock, false);
       await actionProcessor.process();
-      expect(issueMock.createComment).toBeCalledTimes(1);
-      expect(issueMock.updateState).toBeCalledTimes(1);
-      expect(issueMock.lock).toBeCalledTimes(0);
-      expect(issueMock.unlock).toBeCalledTimes(0);
-      expect(issueMock.markPullRequestReadyForReview).toBeCalledTimes(t.draft ? 0 : 1);
-      expect(issueMock.convertPullRequestToDraft).toBeCalledTimes(t.draft ? 1 : 0);
+      expect(issueMock.createComment).toHaveBeenCalledTimes(1);
+      expect(issueMock.updateState).toHaveBeenCalledTimes(1);
+      expect(issueMock.lock).toHaveBeenCalledTimes(0);
+      expect(issueMock.unlock).toHaveBeenCalledTimes(0);
+      expect(issueMock.markPullRequestReadyForReview).toHaveBeenCalledTimes(t.draft ? 0 : 1);
+      expect(issueMock.convertPullRequestToDraft).toHaveBeenCalledTimes(t.draft ? 1 : 0);
     });
   }
 });
@@ -297,11 +297,11 @@ describe('discussion', () => {
     } as const;
     const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
     await actionProcessor.process();
-    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
-    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
-    expect(issueMock.lockLockable).toBeCalledTimes(0);
-    expect(issueMock.unlockLockable).toBeCalledTimes(0);
-    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledWith(commentBody);
+    expect(issueMock.lockLockable).toHaveBeenCalledTimes(0);
+    expect(issueMock.unlockLockable).toHaveBeenCalledTimes(0);
+    expect(issueMock.markDiscussionCommentAsAnswer).toHaveBeenCalledTimes(0);
   });
 
   test(`Comment and lock`, async () => {
@@ -316,12 +316,12 @@ describe('discussion', () => {
     } as const;
     const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
     await actionProcessor.process();
-    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
-    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
-    expect(issueMock.lockLockable).toBeCalledTimes(1);
-    expect(issueMock.lockLockable).toBeCalledWith(config.lockReason);
-    expect(issueMock.unlockLockable).toBeCalledTimes(0);
-    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledWith(commentBody);
+    expect(issueMock.lockLockable).toHaveBeenCalledTimes(1);
+    expect(issueMock.lockLockable).toHaveBeenCalledWith(config.lockReason);
+    expect(issueMock.unlockLockable).toHaveBeenCalledTimes(0);
+    expect(issueMock.markDiscussionCommentAsAnswer).toHaveBeenCalledTimes(0);
   });
 
   test(`Comment and lock without reason`, async () => {
@@ -336,12 +336,12 @@ describe('discussion', () => {
     } as const;
     const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
     await actionProcessor.process();
-    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
-    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
-    expect(issueMock.lockLockable).toBeCalledTimes(1);
-    expect(issueMock.lockLockable).toBeCalledWith(config.lockReason);
-    expect(issueMock.unlockLockable).toBeCalledTimes(0);
-    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledWith(commentBody);
+    expect(issueMock.lockLockable).toHaveBeenCalledTimes(1);
+    expect(issueMock.lockLockable).toHaveBeenCalledWith(config.lockReason);
+    expect(issueMock.unlockLockable).toHaveBeenCalledTimes(0);
+    expect(issueMock.markDiscussionCommentAsAnswer).toHaveBeenCalledTimes(0);
   });
 
   test(`Comment and unlock`, async () => {
@@ -356,11 +356,11 @@ describe('discussion', () => {
     } as const;
     const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, true);
     await actionProcessor.process();
-    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
-    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
-    expect(issueMock.lockLockable).toBeCalledTimes(0);
-    expect(issueMock.unlockLockable).toBeCalledTimes(1);
-    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(0);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledWith(commentBody);
+    expect(issueMock.lockLockable).toHaveBeenCalledTimes(0);
+    expect(issueMock.unlockLockable).toHaveBeenCalledTimes(1);
+    expect(issueMock.markDiscussionCommentAsAnswer).toHaveBeenCalledTimes(0);
   });
 
   test(`Comment and mark as answer`, async () => {
@@ -375,10 +375,10 @@ describe('discussion', () => {
     } as const;
     const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, false);
     await actionProcessor.process();
-    expect(issueMock.addDiscussionComment).toBeCalledTimes(1);
-    expect(issueMock.addDiscussionComment).toBeCalledWith(commentBody);
-    expect(issueMock.lockLockable).toBeCalledTimes(0);
-    expect(issueMock.unlockLockable).toBeCalledTimes(0);
-    expect(issueMock.markDiscussionCommentAsAnswer).toBeCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledTimes(1);
+    expect(issueMock.addDiscussionComment).toHaveBeenCalledWith(commentBody);
+    expect(issueMock.lockLockable).toHaveBeenCalledTimes(0);
+    expect(issueMock.unlockLockable).toHaveBeenCalledTimes(0);
+    expect(issueMock.markDiscussionCommentAsAnswer).toHaveBeenCalledTimes(1);
   });
 });
