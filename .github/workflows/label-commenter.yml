@@ -18,7 +18,7 @@ jobs:
     #   issues: write
     #   pull-requests: write
     steps:
-      - uses: peaceiris/actions-github-app-token@v1.1.5
+      - uses: peaceiris/actions-github-app-token@v1.1.6
         id: app
         with:
           app_id: ${{ secrets.GH_APP_ID }}
