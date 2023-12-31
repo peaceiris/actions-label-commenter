@@ -2,6 +2,6 @@
   "git.ignoreLimitWarning": true,
   "deno.enable": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "never"
   }
 }
