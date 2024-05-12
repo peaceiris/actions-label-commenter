@@ -12,4 +12,4 @@ on:
 
 jobs:
   actionlint:
-    uses: peaceiris/workflows/.github/workflows/actionlint.yml@main
+    uses: peaceiris/workflows/.github/workflows/actionlint.yml@v0.20.0
