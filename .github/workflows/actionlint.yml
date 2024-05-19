@@ -5,10 +5,10 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/*'
+      - '.github/workflows/*.ya?ml'
   pull_request:
     paths:
-      - '.github/workflows/*'
+      - '.github/workflows/*.ya?ml'
 
 jobs:
   actionlint:
