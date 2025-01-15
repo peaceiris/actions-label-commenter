@@ -24,11 +24,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: peaceiris/workflows/setup-node@v0.19.1
+      - uses: peaceiris/workflows/setup-node@v0.21.1
         with:
           node-version-file: ".nvmrc"
 
-      - uses: peaceiris/workflows/setup-git@v0.19.1
+      - uses: peaceiris/workflows/setup-git@v0.21.1
 
       - run: npm ci
 
