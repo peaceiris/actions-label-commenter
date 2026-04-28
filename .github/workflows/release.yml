@@ -20,15 +20,15 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: peaceiris/workflows/setup-node@v0.21.1
+      - uses: peaceiris/workflows/setup-node@v0.21.3
         with:
           node-version-file: ".nvmrc"
 
-      - uses: peaceiris/workflows/setup-git@v0.21.1
+      - uses: peaceiris/workflows/setup-git@v0.21.3
 
       - run: npm ci
 

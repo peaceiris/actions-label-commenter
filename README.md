@@ -79,9 +79,9 @@ permissions:
 
 jobs:
   comment:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Label Commenter
         uses: peaceiris/actions-label-commenter@v1
@@ -302,7 +302,7 @@ jobs:
     permissions: {}
     timeout-minutes: 1
     steps:
-      - uses: actions/labeler@v3
+      - uses: actions/labeler@v6
         with:
           repo-token: "${{ secrets.GH_PAT }}"
 ```
