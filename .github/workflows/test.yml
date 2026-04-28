@@ -17,9 +17,9 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: peaceiris/workflows/setup-node@v0.21.1
+      - uses: peaceiris/workflows/setup-node@v0.21.3
         with:
           node-version-file: '.nvmrc'
 
@@ -31,9 +31,9 @@ jobs:
       - run: npm test
 
       - name: Upload test coverage as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage
 
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v6
