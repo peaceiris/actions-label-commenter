@@ -1,3 +1,4 @@
+import {jest} from '@jest/globals';
 import {getOctokit} from '@actions/github';
 
 import {ActionProcessor} from '../../src/classes/action-processor';
@@ -7,7 +8,7 @@ import {Issue} from '../../src/classes/issue';
 
 const commentBody = `hello`;
 const githubClient = getOctokit('token');
-const issueMock: Issue = {
+const issueMock = {
   githubClient: githubClient,
   id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
   number: 1,
@@ -21,7 +22,7 @@ const issueMock: Issue = {
   lockLockable: jest.fn(),
   unlockLockable: jest.fn(),
   markDiscussionCommentAsAnswer: jest.fn()
-} as const;
+} as unknown as Issue;
 const tests: Array<EventAlias> = ['issue', 'pr'];
 
 // beforeAll(() => {
@@ -167,7 +168,7 @@ describe('Open without comment if the issue is locked', () => {
         lockReason: undefined,
         answer: undefined
       } as const;
-      const issueMock: Issue = {
+      const issueMock = {
         githubClient: githubClient,
         id: 'MDExOlB1bGxSZXF1ZXN0NzA2MTE5NTg0',
         number: 1,
@@ -181,7 +182,7 @@ describe('Open without comment if the issue is locked', () => {
         lockLockable: jest.fn(),
         unlockLockable: jest.fn(),
         markDiscussionCommentAsAnswer: jest.fn()
-      } as const;
+      } as unknown as Issue;
       const actionProcessor = new ActionProcessor(t, config, commentBody, issueMock, true);
       await actionProcessor.process();
       expect(issueMock.createComment).toHaveBeenCalledTimes(0);

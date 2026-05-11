@@ -1,3 +1,4 @@
+import {jest} from '@jest/globals';
 import {Comment} from '../../src/classes/comment';
 import {IConfig} from '../../src/classes/config';
 import {IContext} from '../../src/classes/context-loader';

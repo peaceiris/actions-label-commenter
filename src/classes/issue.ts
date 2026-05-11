@@ -3,18 +3,22 @@ import {GitHub} from '@actions/github/lib/utils';
 import type {GraphQlQueryResponseData} from '@octokit/graphql';
 import {GraphqlResponseError} from '@octokit/graphql';
 import type {RequestParameters} from '@octokit/graphql/dist-types/types';
-// eslint-disable-next-line import/named
-import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
+import type {GetResponseTypeFromEndpointMethod} from '@octokit/types';
 
 import {groupConsoleLog, info} from '../logger';
 
-const octokit = new GitHub();
 type IssuesCreateCommentResponse = GetResponseTypeFromEndpointMethod<
-  typeof octokit.rest.issues.createComment
+  InstanceType<typeof GitHub>['rest']['issues']['createComment']
 >;
-type IssuesUpdateResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.update>;
-type IssuesLockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.lock>;
-type IssuesUnlockResponse = GetResponseTypeFromEndpointMethod<typeof octokit.rest.issues.unlock>;
+type IssuesUpdateResponse = GetResponseTypeFromEndpointMethod<
+  InstanceType<typeof GitHub>['rest']['issues']['update']
+>;
+type IssuesLockResponse = GetResponseTypeFromEndpointMethod<
+  InstanceType<typeof GitHub>['rest']['issues']['lock']
+>;
+type IssuesUnlockResponse = GetResponseTypeFromEndpointMethod<
+  InstanceType<typeof GitHub>['rest']['issues']['unlock']
+>;
 
 type IssueState = 'open' | 'closed';
 type LockReason = 'off-topic' | 'too heated' | 'resolved' | 'spam' | undefined;

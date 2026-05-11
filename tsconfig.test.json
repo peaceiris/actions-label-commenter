@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "types": ["node", "jest"]
+  },
+  "exclude": ["node_modules", "dist", "dist_release"]
+}

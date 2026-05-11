@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2021",
+    "target": "es2022",
     "module": "commonjs",
     "sourceMap": true,
     "outDir": "./dist",
@@ -11,6 +11,8 @@
     "esModuleInterop": true,
     "noUncheckedIndexedAccess": true,
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
+    "types": ["node", "jest"],
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
   },

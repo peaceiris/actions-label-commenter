@@ -1,3 +1,4 @@
+import {jest} from '@jest/globals';
 import {Inputs} from '../../src/classes/inputs';
 import {getDefaultInputs, cleanupEnvs} from '../../src/test-helper';
 

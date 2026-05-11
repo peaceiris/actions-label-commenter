@@ -1,16 +1,14 @@
 import {GitHub} from '@actions/github/lib/utils';
-// eslint-disable-next-line import/named
-import {GetResponseTypeFromEndpointMethod} from '@octokit/types';
-import yaml from 'js-yaml';
+import type {GetResponseTypeFromEndpointMethod} from '@octokit/types';
+import {load} from 'js-yaml';
 import {get} from 'lodash-es';
 
 import {groupConsoleLog, info} from '../logger';
 import {IContext} from './context-loader';
 import {LockReason} from './issue';
 
-const octokit = new GitHub();
 type ReposGetContentResponse = GetResponseTypeFromEndpointMethod<
-  typeof octokit.rest.repos.getContent
+  InstanceType<typeof GitHub>['rest']['repos']['getContent']
 >;
 
 type Locking = 'lock' | 'unlock' | undefined;
@@ -62,12 +60,11 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
   draft?: Draft;
   answer?: Answer;
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(runContext: IContext, config?: any) {
     try {
       this.runContext = runContext;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.config = config;
       this.parentFieldName = `labels.${this.runContext.labelName}.${this.runContext.labelEvent}.${this.runContext.eventAlias}`;
       this.labelIndex = this.getLabelIndex();
@@ -138,7 +135,7 @@ const ConfigLoader: IConfigLoaderConstructor = class ConfigLoader implements ICo
         info(
           `Fetched ${process.env['GITHUB_SERVER_URL']}/${process.env['GITHUB_REPOSITORY']}/blob/${runContext.sha}/${runContext.configFilePath}`
         );
-        return yaml.load(
+        return load(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           Buffer.from((res.data as any).content, (res.data as any).encoding).toString()
         );
